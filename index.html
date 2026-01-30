@@ -448,9 +448,69 @@
 
         /* 契約書タブのスタイル */
         .contract-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .contract-subtabs {
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 0 24px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .contract-subtab {
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .contract-subtab:hover {
+            color: #1a1a1a;
+        }
+
+        .contract-subtab.active {
+            color: #0891b2;
+            border-bottom-color: #0891b2;
+        }
+
+        .add-contract-subtab {
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 8px;
+        }
+
+        .add-contract-subtab:hover {
+            border-color: #0891b2;
+            color: #0891b2;
+            background: #f0f9ff;
+        }
+
+        .contract-content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 24px;
+        }
+
+        .contract-content-inner {
             max-width: 800px;
             margin: 0 auto;
-            padding: 40px 24px;
         }
 
         .ai-explain-card {
@@ -866,82 +926,103 @@
             <!-- 契約書タブ -->
             <div class="tab-content" id="contract">
                 <div class="contract-container">
-                    <div class="ai-explain-card">
-                        <div class="explain-header">
-                            <span class="explain-icon">💡</span>
-                            <span class="explain-title">第3条をわかりやすく</span>
-                        </div>
-                        <div class="explain-text">
-                            <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。<br>
-                            <strong>何もしなければ:</strong> 自動的にもう半年延長されます。
-                        </div>
-                        <div class="explain-alert">
-                            ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動で更新されます
-                        </div>
+                    <!-- 契約書サブタブ -->
+                    <div class="contract-subtabs">
+                        <button class="contract-subtab active" onclick="switchContractSubtab('basic')">
+                            📄 基本契約書
+                        </button>
+                        <button class="contract-subtab" onclick="switchContractSubtab('individual-a')">
+                            📋 個別契約(案件A)
+                        </button>
+                        <button class="contract-subtab" onclick="switchContractSubtab('individual-b')">
+                            📋 個別契約(案件B)
+                        </button>
+                        <button class="add-contract-subtab" onclick="addNewContract()">
+                            + 新規追加
+                        </button>
                     </div>
 
-                    <div class="document">
-                        <div class="doc-main-title">業務委託基本契約書</div>
-
-                        <div class="doc-article">
-                            <div class="article-title">第1条(契約の目的)</div>
-                            <div class="article-content">
-                                本契約は、甲が乙に対して、デジタルマーケティング支援業務を提供することを目的とする。
+                    <!-- 契約書コンテンツ -->
+                    <div class="contract-content-area">
+                        <div class="contract-content-inner">
+                            <div class="ai-explain-card">
+                                <div class="explain-header">
+                                    <span class="explain-icon">💡</span>
+                                    <span class="explain-title">第3条をわかりやすく</span>
+                                </div>
+                                <div class="explain-text">
+                                    <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。<br>
+                                    <strong>何もしなければ:</strong> 自動的にもう半年延長されます。
+                                </div>
+                                <div class="explain-alert">
+                                    ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動で更新されます
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第2条(業務内容)</div>
-                            <div class="article-content">
-                                甲は乙に対し、以下の業務を提供する。<br>
-                                (1) デジタルマーケティング戦略の立案<br>
-                                (2) 広告運用の最適化及び改善提案<br>
-                                (3) 月次レポートの作成及び提出
-                            </div>
-                        </div>
+                            <div class="document">
+                                <div class="doc-main-title">業務委託基本契約書</div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第3条(契約期間)</div>
-                            <div class="article-content">
-                                本契約の有効期間は、2026年2月1日から<span class="highlight-change">6ヶ月間</span>とする。<br>
-                                本契約は、期間満了の<span class="highlight-change">2ヶ月前</span>までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとする。
-                            </div>
-                        </div>
+                                <div class="doc-article">
+                                    <div class="article-title">第1条(契約の目的)</div>
+                                    <div class="article-content">
+                                        本契約は、甲が乙に対して、デジタルマーケティング支援業務を提供することを目的とする。
+                                    </div>
+                                </div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第4条(報酬及び支払条件)</div>
-                            <div class="article-content">
-                                1. 乙は甲に対し、月額<span class="highlight-change">48万円</span>(税別)を報酬として支払う。<br>
-                                2. 報酬の支払いは、月末締め翌月末払いとする。<br>
-                                3. 振込手数料は乙の負担とする。
-                            </div>
-                        </div>
+                                <div class="doc-article">
+                                    <div class="article-title">第2条(業務内容)</div>
+                                    <div class="article-content">
+                                        甲は乙に対し、以下の業務を提供する。<br>
+                                        (1) デジタルマーケティング戦略の立案<br>
+                                        (2) 広告運用の最適化及び改善提案<br>
+                                        (3) 月次レポートの作成及び提出
+                                    </div>
+                                </div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第5条(知的財産権)</div>
-                            <div class="article-content">
-                                本契約に基づき甲が作成した成果物に関する知的財産権は、対価の完済をもって乙に帰属する。
-                            </div>
-                        </div>
+                                <div class="doc-article">
+                                    <div class="article-title">第3条(契約期間)</div>
+                                    <div class="article-content">
+                                        本契約の有効期間は、2026年2月1日から<span class="highlight-change">6ヶ月間</span>とする。<br>
+                                        本契約は、期間満了の<span class="highlight-change">2ヶ月前</span>までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとする。
+                                    </div>
+                                </div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第6条(秘密保持)</div>
-                            <div class="article-content">
-                                甲及び乙は、本契約の履行に関連して知り得た相手方の秘密情報を、相手方の事前の書面による承諾なく第三者に開示又は漏洩してはならない。
-                            </div>
-                        </div>
+                                <div class="doc-article">
+                                    <div class="article-title">第4条(報酬及び支払条件)</div>
+                                    <div class="article-content">
+                                        1. 乙は甲に対し、月額<span class="highlight-change">48万円</span>(税別)を報酬として支払う。<br>
+                                        2. 報酬の支払いは、月末締め翌月末払いとする。<br>
+                                        3. 振込手数料は乙の負担とする。
+                                    </div>
+                                </div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第7条(損害賠償)</div>
-                            <div class="article-content">
-                                甲及び乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、賠償額の上限は直近3ヶ月分の報酬額とする。
-                            </div>
-                        </div>
+                                <div class="doc-article">
+                                    <div class="article-title">第5条(知的財産権)</div>
+                                    <div class="article-content">
+                                        本契約に基づき甲が作成した成果物に関する知的財産権は、対価の完済をもって乙に帰属する。
+                                    </div>
+                                </div>
 
-                        <div class="doc-article">
-                            <div class="article-title">第8条(契約解除)</div>
-                            <div class="article-content">
-                                甲及び乙は、相手方が本契約に重大な違反をし、相当期間を定めた書面による催告後も是正されない場合、本契約を解除することができる。
+                                <div class="doc-article">
+                                    <div class="article-title">第6条(秘密保持)</div>
+                                    <div class="article-content">
+                                        甲及び乙は、本契約の履行に関連して知り得た相手方の秘密情報を、相手方の事前の書面による承諾なく第三者に開示又は漏洩してはならない。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第7条(損害賠償)</div>
+                                    <div class="article-content">
+                                        甲及び乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、賠償額の上限は直近3ヶ月分の報酬額とする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第8条(契約解除)</div>
+                                    <div class="article-content">
+                                        甲及び乙は、相手方が本契約に重大な違反をし、相当期間を定めた書面による催告後も是正されない場合、本契約を解除することができる。
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1106,7 +1187,7 @@
     </div>
 
     <script>
-        // タブ切り替え
+        // メインタブ切り替え
         function switchMainTab(tabId) {
             document.querySelectorAll('.main-tab').forEach(tab => {
                 tab.classList.remove('active');
@@ -1117,6 +1198,41 @@
                 content.classList.remove('active');
             });
             document.getElementById(tabId).classList.add('active');
+        }
+
+        // 契約書サブタブ切り替え
+        function switchContractSubtab(subtabId) {
+            document.querySelectorAll('.contract-subtab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 実際のアプリでは、ここで該当する契約書のコンテンツを読み込む
+            if (subtabId === 'individual-a') {
+                alert('個別契約(案件A)を表示します。\n\n実際のアプリでは、ここで契約書の内容が切り替わります。');
+            } else if (subtabId === 'individual-b') {
+                alert('個別契約(案件B)を表示します。\n\n実際のアプリでは、ここで契約書の内容が切り替わります。');
+            }
+        }
+
+        // 新しい契約を追加
+        function addNewContract() {
+            const contractName = prompt('新しい契約の名前を入力してください\n(例: 個別契約(案件C)、保守契約 など)');
+            if (contractName) {
+                const subtabs = document.querySelector('.contract-subtabs');
+                const addBtn = document.querySelector('.add-contract-subtab');
+                
+                // 新しいタブを作成
+                const newTab = document.createElement('button');
+                newTab.className = 'contract-subtab';
+                newTab.textContent = `📋 ${contractName}`;
+                newTab.onclick = function() { switchContractSubtab('new'); };
+                
+                // 追加ボタンの前に挿入
+                subtabs.insertBefore(newTab, addBtn);
+                
+                alert(`「${contractName}」を作成しました!`);
+            }
         }
 
         // テキストエリア自動リサイズ
