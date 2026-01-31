@@ -7,6 +7,43 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-negotiation">
+    <!-- 紙吹雪コンテナ -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- グローバルステータスバナー（相手方合意待ち） -->
+    <div class="global-status-banner waiting" id="globalStatusBanner">
+        <div class="global-status-content">
+            <div class="global-status-pulse"></div>
+            <div class="global-status-icon">⏳</div>
+            <div class="global-status-text">
+                <div class="global-status-title">相手方の合意を待っています</div>
+                <div class="global-status-desc">株式会社XYZ（田中太郎様）が「この内容で合意」を押すと契約が成立します</div>
+            </div>
+        </div>
+        <div class="global-status-action">
+            <span class="global-status-time">あなたが合意してから: 2時間前</span>
+        </div>
+    </div>
+
+    <!-- 合意完了バナー（非表示） -->
+    <div class="global-status-banner agreed hidden" id="globalAgreedBanner">
+        <div class="global-status-content">
+            <div class="global-status-icon">🎉</div>
+            <div class="global-status-text">
+                <div class="global-status-title">契約が成立しました！</div>
+                <div class="global-status-desc">両者の合意が完了しました。契約書をダウンロードできます。</div>
+            </div>
+        </div>
+        <div class="global-status-action">
+            <button class="global-status-download-btn" onclick="downloadContract()">📥 契約書をダウンロード</button>
+        </div>
+    </div>
+
+    <!-- デモ用トグルボタン -->
+    <button class="demo-status-toggle" id="demoStatusToggle" onclick="toggleDemoStatus()">
+        🎭 ステータスをデモ
+    </button>
+
     <!-- ヘッダー -->
     <div class="header">
         <div class="header-left">

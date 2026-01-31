@@ -979,3 +979,178 @@ function openNegotiationsList() {
 function closeNegotiationsList() {
     // 現在のページが一覧なので何もしない
 }
+
+// ============================================
+// デモ用ステータス切り替え機能
+// ============================================
+
+// ステータス: 'negotiating' → 'waiting' → 'agreed' → 'negotiating' ...
+let demoStatus = 'waiting';
+
+function initDemoStatusBanner() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('demoStatusToggle');
+    const waitingBanner = document.getElementById('globalStatusBanner');
+    const agreedBanner = document.getElementById('globalAgreedBanner');
+    
+    if (!toggleBtn || !waitingBanner) return;
+    
+    // 初期状態を設定
+    updateDemoStatus(demoStatus);
+}
+
+function toggleDemoStatus() {
+    // ステータスを順番に切り替え
+    if (demoStatus === 'waiting') {
+        demoStatus = 'agreed';
+        // 合意完了時に紙吹雪を発射！
+        launchConfetti();
+    } else if (demoStatus === 'agreed') {
+        demoStatus = 'negotiating';
+    } else {
+        demoStatus = 'waiting';
+    }
+    
+    updateDemoStatus(demoStatus);
+}
+
+function updateDemoStatus(status) {
+    const body = document.body;
+    const toggleBtn = document.getElementById('demoStatusToggle');
+    const waitingBanner = document.getElementById('globalStatusBanner');
+    const agreedBanner = document.getElementById('globalAgreedBanner');
+    const agreeBtn = document.getElementById('agreeBtn');
+    const headerElement = document.querySelector('.header');
+    
+    if (!toggleBtn || !waitingBanner || !agreedBanner) return;
+    
+    // トグルボタンのクラスをリセット
+    toggleBtn.classList.remove('status-waiting', 'status-agreed', 'status-negotiating');
+    
+    // バナーの表示状態を更新
+    switch(status) {
+        case 'waiting':
+            // 相手方合意待ち
+            waitingBanner.classList.remove('hidden');
+            agreedBanner.classList.add('hidden');
+            body.classList.add('has-status-banner');
+            toggleBtn.classList.add('status-waiting');
+            
+            // 合意ボタンを「合意済み」表示
+            if (agreeBtn) {
+                agreeBtn.textContent = '✅ あなたは合意済み';
+                agreeBtn.classList.add('agreed');
+                agreeBtn.disabled = true;
+            }
+            break;
+            
+        case 'agreed':
+            // 両者合意完了
+            waitingBanner.classList.add('hidden');
+            agreedBanner.classList.remove('hidden');
+            body.classList.add('has-status-banner');
+            toggleBtn.classList.add('status-agreed');
+            
+            // 合意ボタンを「契約成立」表示
+            if (agreeBtn) {
+                agreeBtn.textContent = '🎉 契約成立！';
+                agreeBtn.classList.add('agreed');
+                agreeBtn.disabled = true;
+            }
+            break;
+            
+        case 'negotiating':
+            // 通常の交渉中（バナーなし）
+            waitingBanner.classList.add('hidden');
+            agreedBanner.classList.add('hidden');
+            body.classList.remove('has-status-banner');
+            toggleBtn.classList.add('status-negotiating');
+            
+            // 合意ボタンを通常状態に
+            if (agreeBtn) {
+                agreeBtn.textContent = '✅ この内容で合意';
+                agreeBtn.classList.remove('agreed');
+                agreeBtn.disabled = false;
+            }
+            break;
+    }
+}
+
+// ============================================
+// 紙吹雪アニメーション
+// ============================================
+
+function launchConfetti() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+    
+    // コンテナをクリア
+    container.innerHTML = '';
+    
+    const colors = [
+        '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
+        '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F',
+        '#BB8FCE', '#85C1E9', '#F8B500', '#FF69B4'
+    ];
+    
+    const shapes = ['circle', 'square', 'ribbon'];
+    const confettiCount = 150;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = `confetti ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+        
+        // ランダムな色
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // ランダムな開始位置
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.top = '-20px';
+        
+        // ランダムなサイズ
+        const size = 6 + Math.random() * 10;
+        if (!confetti.classList.contains('ribbon')) {
+            confetti.style.width = size + 'px';
+            confetti.style.height = size + 'px';
+        } else {
+            confetti.style.width = (size * 0.6) + 'px';
+            confetti.style.height = (size * 2) + 'px';
+        }
+        
+        // アニメーション設定
+        const duration = 2 + Math.random() * 3;
+        const delay = Math.random() * 1.5;
+        const drift = (Math.random() - 0.5) * 200;
+        
+        confetti.style.animation = `confetti-fall ${duration}s ease-out ${delay}s forwards`;
+        confetti.style.setProperty('--drift', drift + 'px');
+        
+        // 横方向の動きを追加
+        confetti.animate([
+            { transform: `translateY(-100px) translateX(0) rotate(0deg)`, opacity: 1 },
+            { transform: `translateY(100vh) translateX(${drift}px) rotate(${360 + Math.random() * 720}deg)`, opacity: 0 }
+        ], {
+            duration: duration * 1000,
+            delay: delay * 1000,
+            easing: 'ease-out',
+            fill: 'forwards'
+        });
+        
+        container.appendChild(confetti);
+    }
+    
+    // 5秒後に紙吹雪を削除
+    setTimeout(() => {
+        container.innerHTML = '';
+    }, 6000);
+}
+
+// 契約書ダウンロード（デモ用）
+function downloadContract() {
+    alert('📄 契約書をダウンロードします（デモ）\n\n実際にはPDF形式でダウンロードされます。');
+}
+
+// ページ読み込み時にデモバナーを初期化
+document.addEventListener('DOMContentLoaded', function() {
+    initDemoStatusBanner();
+});
