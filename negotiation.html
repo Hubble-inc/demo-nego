@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>業務委託基本契約書 - ContractNego</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-negotiation">
+    <!-- ヘッダー -->
+    <div class="header">
+        <div class="header-left">
+            <!-- 一覧に戻るボタン -->
+            <a href="index.html" class="back-to-list-btn">
+                <span class="back-arrow">←</span>
+                <span class="back-text">一覧</span>
+            </a>
+            <div class="contract-title">業務委託基本契約書</div>
+            <!-- メンバー表示 -->
+            <div class="header-members" id="headerMembers">
+                <button class="header-members-toggle" onclick="toggleHeaderMembersPanel(event)">
+                    <span class="header-members-count">2人</span>
+                    <span class="header-members-icon">👥</span>
+                    <span class="header-members-arrow">▼</span>
+                </button>
+                <!-- メンバーパネル（ドロップダウン） -->
+                <div class="header-members-panel" id="headerMembersPanel">
+                    <div class="header-members-list">
+                        <div class="header-member-item">
+                            <div class="header-member-avatar avatar-them">田</div>
+                            <div class="header-member-info">
+                                <div class="header-member-name">田中太郎</div>
+                                <div class="header-member-company">株式会社XYZ</div>
+                            </div>
+                        </div>
+                        <div class="header-member-item me">
+                            <div class="header-member-avatar avatar-me">佐</div>
+                            <div class="header-member-info">
+                                <div class="header-member-name">佐藤一郎 <span class="header-member-you">あなた</span></div>
+                                <div class="header-member-company">株式会社ABC</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-members-add">
+                        <button class="header-members-add-btn" onclick="openAddMemberModal()">
+                            ＋ メンバーを追加
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn primary agree-btn" id="agreeBtn" onclick="agreeContract()">
+                ✅ この内容で合意
+            </button>
+        </div>
+    </div>
+
+    <!-- メインコンテナ(2カラム) -->
+    <div class="main-wrapper">
+        <!-- 左カラム -->
+        <div class="left-column">
+            <!-- メインタブ -->
+            <div class="main-tabs">
+                <button class="main-tab active" onclick="switchMainTab('overview')">
+                    <span>📊</span>
+                    <span>概要</span>
+                </button>
+                <button class="main-tab" onclick="switchMainTab('contract')">
+                    <span>📄</span>
+                    <span>契約書</span>
+                </button>
+                <button class="main-tab" onclick="switchMainTab('management')">
+                    <span>📅</span>
+                    <span>管理</span>
+                </button>
+            </div>
+
+            <!-- 概要タブ -->
+            <div class="tab-content active" id="overview">
+                <div class="overview-container">
+                    <!-- ステータスバナー -->
+                    <div class="overview-status-banner negotiating" id="overviewStatusBanner">
+                        <div class="status-banner-icon">🔄</div>
+                        <div class="status-banner-content">
+                            <div class="status-banner-title">交渉中の内容（Ver.8 時点）</div>
+                            <div class="status-banner-desc">この概要は交渉の進行に応じて自動更新されます</div>
+                        </div>
+                        <div class="status-banner-meta">最終更新: 1/28 14:15</div>
+                    </div>
+
+                    <!-- この契約の要点カード -->
+                    <div class="summary-card key-points-card ai-generated-card">
+                        <div class="card-header">
+                            <div class="card-icon">🎯</div>
+                            <div class="card-title">この契約の要点</div>
+                            <div class="ai-badge">🤖 AI生成</div>
+                        </div>
+                        <div class="key-points-content">
+                            <ul class="key-points-list">
+                                <li>ABC社がXYZ社にマーケティング支援を提供する契約です</li>
+                                <li>期間は6ヶ月間、月額48万円の報酬</li>
+                                <li>問題なければ自動更新される形式</li>
+                            </ul>
+                        </div>
+                        <div class="ai-card-footer">
+                            <span class="ai-footer-note">💡 契約書から自動生成されています。内容をご確認ください。</span>
+                        </div>
+                    </div>
+
+                    <!-- 人・モノ・金の流れ図 -->
+                    <div class="summary-card ai-generated-card">
+                        <div class="card-header">
+                            <div class="card-icon">📈</div>
+                            <div class="card-title">人・モノ・金の流れ</div>
+                            <div class="ai-badge">🤖 AI生成</div>
+                        </div>
+                        <div class="flow-section">
+                            <div class="flow-diagram">
+                                <div class="flow-node">
+                                    <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
+                                </div>
+                                <div class="flow-arrow-container">
+                                    <div class="flow-arrow-line"></div>
+                                    <div class="flow-arrow-label">サービス提供</div>
+                                    <div class="flow-arrow-head">→</div>
+                                </div>
+                                <div class="flow-node">
+                                    <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
+                                </div>
+                            </div>
+                            <div class="flow-diagram">
+                                <div class="flow-node">
+                                    <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
+                                </div>
+                                <div class="flow-arrow-container">
+                                    <div class="flow-arrow-line reverse"></div>
+                                    <div class="flow-arrow-label money">月48万円</div>
+                                    <div class="flow-arrow-head">→</div>
+                                </div>
+                                <div class="flow-node">
+                                    <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- タイムラインカード -->
+                    <div class="summary-card ai-generated-card">
+                        <div class="card-header">
+                            <div class="card-icon">📅</div>
+                            <div class="card-title">これからのタイムライン</div>
+                            <div class="ai-badge">🤖 AI生成</div>
+                        </div>
+                        <div class="timeline">
+                            <!-- 契約開始 -->
+                            <div class="timeline-item success">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年2月1日</div>
+                                    <div class="timeline-title">🚀 契約開始</div>
+                                </div>
+                                <div class="timeline-badge completed">完了</div>
+                            </div>
+                            <!-- 2月請求 -->
+                            <div class="timeline-item payment upcoming">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年2月28日</div>
+                                    <div class="timeline-title">💰 請求書発行（2月分）</div>
+                                    <div class="timeline-amount">¥480,000（税別）</div>
+                                </div>
+                                <div class="timeline-badge upcoming">今月</div>
+                            </div>
+                            <!-- 2月分支払い -->
+                            <div class="timeline-item payment">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年3月31日</div>
+                                    <div class="timeline-title">💳 支払期日（2月分）</div>
+                                </div>
+                            </div>
+                            <!-- 3月請求 -->
+                            <div class="timeline-item payment recurring">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年3月31日</div>
+                                    <div class="timeline-title">💰 請求書発行（3月分）</div>
+                                    <div class="timeline-amount">¥480,000（税別）</div>
+                                </div>
+                                <div class="timeline-badge recurring">毎月</div>
+                            </div>
+                            <!-- 更新判断期限 -->
+                            <div class="timeline-item warning">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年5月31日</div>
+                                    <div class="timeline-title">⚠️ 契約更新判断期限</div>
+                                    <div class="timeline-alert">この日までに連絡しないと自動更新</div>
+                                </div>
+                                <div class="timeline-badge warning">重要</div>
+                            </div>
+                            <!-- 契約満了 -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年7月31日</div>
+                                    <div class="timeline-title">🏁 契約満了</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-note">
+                            <span>💡 請求・支払いは契約条件に基づいて自動計算されています</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 契約書タブ -->
+            <div class="tab-content" id="contract">
+                <div class="contract-container">
+                    <!-- ステータスバー -->
+                    <div class="contract-status-bar">
+                        <div class="status-left">
+                            <span class="status-badge" id="contractStatusBadge">💬 交渉中</span>
+                        </div>
+                        <div class="status-right">
+                            <button class="status-action-btn" id="editLockBtn" onclick="toggleEditLock()">
+                                📝 Wordで編集
+                            </button>
+                            <button class="status-action-btn" onclick="openUploadModal()">📤 アップロード</button>
+                            <button class="status-action-btn" onclick="downloadWord()">📥 ダウンロード</button>
+                        </div>
+                    </div>
+
+                    <!-- 契約書サブタブ -->
+                    <div class="contract-subtabs">
+                        <button class="contract-subtab active" onclick="switchContractSubtab('basic')">
+                            📄 基本契約書
+                        </button>
+                        <button class="contract-subtab" onclick="switchContractSubtab('individual-a')">
+                            📋 個別契約(案件A)
+                        </button>
+                        <button class="add-contract-subtab" onclick="addNewContract()">
+                            + 新規追加
+                        </button>
+                    </div>
+
+                    <!-- 契約書コンテンツ -->
+                    <div class="contract-content-area">
+                        <!-- 左側: バージョンツリー -->
+                        <div class="version-tree-panel">
+                            <div class="version-tree-header">
+                                <span class="version-tree-title">📋 バージョン履歴</span>
+                                <label class="version-compare-toggle">
+                                    <input type="checkbox" id="compareMode" onchange="toggleCompareMode()">
+                                    <span>比較</span>
+                                </label>
+                            </div>
+                            <div class="version-tree-list">
+                                <!-- Ver 8 (現在) -->
+                                <div class="version-item current" data-version="8">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 8</span>
+                                            <span class="version-badge current">最新</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/28 14:15</span>
+                                        </div>
+                                        <div class="version-changes">契約期間を6ヶ月に変更</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="8">
+                                    </div>
+                                </div>
+                                <!-- Ver 7 -->
+                                <div class="version-item" data-version="7">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 7</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/28 11:35</span>
+                                        </div>
+                                        <div class="version-changes">報酬を48万円に修正</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="7">
+                                    </div>
+                                </div>
+                                <!-- Ver 6 -->
+                                <div class="version-item" data-version="6">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 6</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/28 10:20</span>
+                                        </div>
+                                        <div class="version-changes">初回ドラフト送付</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="6">
+                                    </div>
+                                </div>
+                                <!-- Ver 5 -->
+                                <div class="version-item" data-version="5">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 5</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/27 16:40</span>
+                                        </div>
+                                        <div class="version-changes">秘密保持条項を追加</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="5">
+                                    </div>
+                                </div>
+                                <!-- Ver 4 -->
+                                <div class="version-item" data-version="4">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 4</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/27 14:20</span>
+                                        </div>
+                                        <div class="version-changes">業務内容を詳細化</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="4">
+                                    </div>
+                                </div>
+                                <!-- Ver 3 -->
+                                <div class="version-item" data-version="3">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 3</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/26 11:00</span>
+                                        </div>
+                                        <div class="version-changes">報酬条項を修正</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="3">
+                                    </div>
+                                </div>
+                                <!-- Ver 2 -->
+                                <div class="version-item" data-version="2">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 2</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/25 15:30</span>
+                                        </div>
+                                        <div class="version-changes">契約期間を1年に設定</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="2">
+                                    </div>
+                                </div>
+                                <!-- Ver 1 (初版) -->
+                                <div class="version-item" data-version="1">
+                                    <div class="version-node first">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 1</span>
+                                            <span class="version-badge initial">初版</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/24 10:00</span>
+                                        </div>
+                                        <div class="version-changes">契約書作成</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="version-tree-footer">
+                                <button class="compare-btn" id="compareBtn" disabled>
+                                    🔍 バージョン比較
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 右側: 契約書本文 -->
+                        <div class="contract-content-inner">
+                            <!-- AI解説カード -->
+                            <div class="ai-explain-card">
+                                <div class="explain-header">
+                                    <span class="explain-icon">💡</span>
+                                    <span class="explain-title">第3条をわかりやすく</span>
+                                </div>
+                                <div class="explain-text">
+                                    <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。何もしなければ自動的にもう半年延長されます。
+                                </div>
+                                <div class="explain-alert">
+                                    ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動更新されます
+                                </div>
+                            </div>
+
+                            <!-- 契約書本文 -->
+                            <div class="document">
+                                <div class="doc-main-title">業務委託基本契約書</div>
+
+                                <div class="doc-preamble">
+                                    株式会社ABC（以下「甲」という）と株式会社XYZ（以下「乙」という）は、甲が乙に委託する業務に関し、以下のとおり業務委託基本契約（以下「本契約」という）を締結する。
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第1条（目的）</div>
+                                    <div class="article-content">
+                                        本契約は、甲が乙に対してデジタルマーケティング支援業務（以下「本業務」という）を委託し、乙がこれを受託するにあたり、甲乙間の権利義務関係を定めることを目的とする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第2条（業務内容）</div>
+                                    <div class="article-content">
+                                        1. 乙が甲に提供する本業務の具体的内容は、以下のとおりとする。<br>
+                                        <div class="article-list">
+                                            (1) Webサイトの運用・改善提案<br>
+                                            (2) SNSマーケティング戦略の立案・実行<br>
+                                            (3) 広告運用（リスティング広告、SNS広告等）<br>
+                                            (4) 月次レポートの作成・報告<br>
+                                            (5) その他、上記に付随する業務
+                                        </div>
+                                        2. 業務の詳細については、別途個別契約にて定めるものとする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第3条（契約期間）</div>
+                                    <div class="article-content">
+                                        1. 本契約の有効期間は、2026年2月1日から<span class="highlight-change">6ヶ月間</span>とする。<br>
+                                        2. 本契約は、期間満了の<span class="highlight-change">2ヶ月前</span>までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとし、以後も同様とする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第4条（報酬）</div>
+                                    <div class="article-content">
+                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change commented" data-comment-id="1">金48万円</span><span class="comment-indicator" onclick="showCommentThread(1)">💬 2</span>（消費税別）を支払うものとする。<br>
+                                        2. 報酬の支払いは、<span class="commented" data-comment-id="2">毎月末日締め、翌月末日払い</span><span class="comment-indicator" onclick="showCommentThread(2)">💬 1</span>とする。<br>
+                                        3. 振込手数料は甲の負担とする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第5条（経費）</div>
+                                    <div class="article-content">
+                                        本業務の遂行に必要な経費のうち、広告出稿費用その他甲が事前に承認した費用については、甲が実費を負担するものとする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第6条（秘密保持）</div>
+                                    <div class="article-content">
+                                        1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>
+                                        2. 前項の義務は、<span class="commented" data-comment-id="3">本契約終了後3年間</span><span class="comment-indicator" onclick="showCommentThread(3)">💬 1</span>存続するものとする。<br>
+                                        3. 次の各号に該当する情報は、秘密情報から除外する。<br>
+                                        <div class="article-list">
+                                            (1) 開示時点で既に公知であった情報<br>
+                                            (2) 開示後、受領者の責によらず公知となった情報<br>
+                                            (3) 開示時点で受領者が既に保有していた情報<br>
+                                            (4) 正当な権限を有する第三者から秘密保持義務を負うことなく入手した情報
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第7条（知的財産権）</div>
+                                    <div class="article-content">
+                                        1. 本業務の遂行により生じた成果物に関する著作権その他の知的財産権は、報酬の支払い完了をもって甲に帰属するものとする。<br>
+                                        2. 乙は、成果物について著作者人格権を行使しないものとする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第8条（再委託）</div>
+                                    <div class="article-content">
+                                        乙は、甲の事前の書面による承諾を得ることなく、本業務の全部又は一部を第三者に再委託してはならない。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第9条（契約解除）</div>
+                                    <div class="article-content">
+                                        1. 甲又は乙は、相手方が次の各号のいずれかに該当した場合、何らの催告なく直ちに本契約を解除することができる。<br>
+                                        <div class="article-list">
+                                            (1) 本契約に違反し、相当期間を定めて催告しても是正されないとき<br>
+                                            (2) 支払停止又は支払不能となったとき<br>
+                                            (3) 破産手続開始、民事再生手続開始、会社更生手続開始の申立てがあったとき<br>
+                                            (4) 差押え、仮差押え、仮処分又は競売の申立てがあったとき<br>
+                                            (5) 解散又は営業停止となったとき
+                                        </div>
+                                        2. 前項により本契約が解除された場合、解除された当事者は、相手方に対し、損害賠償責任を負うものとする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第10条（損害賠償）</div>
+                                    <div class="article-content">
+                                        甲又は乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、損害賠償の累計額は、本契約に基づき甲が乙に支払った報酬の総額を上限とする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第11条（反社会的勢力の排除）</div>
+                                    <div class="article-content">
+                                        1. 甲及び乙は、自己又は自己の役員が、暴力団、暴力団員、暴力団関係企業、総会屋その他の反社会的勢力（以下「反社会的勢力」という）に該当しないことを表明し、保証する。<br>
+                                        2. 甲又は乙は、相手方が前項に違反した場合、何らの催告なく直ちに本契約を解除することができる。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第12条（権利義務の譲渡禁止）</div>
+                                    <div class="article-content">
+                                        甲及び乙は、相手方の事前の書面による承諾なく、本契約上の地位又は本契約に基づく権利義務の全部若しくは一部を第三者に譲渡し、又は担保に供してはならない。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第13条（協議事項）</div>
+                                    <div class="article-content">
+                                        本契約に定めのない事項又は本契約の解釈に疑義が生じた事項については、甲乙誠意をもって協議し、解決するものとする。
+                                    </div>
+                                </div>
+
+                                <div class="doc-article">
+                                    <div class="article-title">第14条（管轄裁判所）</div>
+                                    <div class="article-content">
+                                        本契約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とする。
+                                    </div>
+                                </div>
+
+                                <!-- 署名欄 -->
+                                <div class="signature-section">
+                                    <div class="signature-date">
+                                        本契約締結の証として、本書2通を作成し、甲乙記名押印のうえ、各1通を保有する。
+                                    </div>
+                                    <div class="signature-date-line">
+                                        2026年　　月　　日
+                                    </div>
+
+                                    <div class="signature-parties">
+                                        <div class="signature-party">
+                                            <div class="party-label">【甲】</div>
+                                            <div class="party-info">
+                                                <div class="party-line">
+                                                    <span class="party-field">住所</span>
+                                                    <span class="party-value">東京都渋谷区○○1-2-3</span>
+                                                </div>
+                                                <div class="party-line">
+                                                    <span class="party-field">会社名</span>
+                                                    <span class="party-value">株式会社ABC</span>
+                                                </div>
+                                                <div class="party-line">
+                                                    <span class="party-field">代表者</span>
+                                                    <span class="party-value signature-line">代表取締役　佐藤 一郎　<span class="seal-circle">印</span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="signature-party">
+                                            <div class="party-label">【乙】</div>
+                                            <div class="party-info">
+                                                <div class="party-line">
+                                                    <span class="party-field">住所</span>
+                                                    <span class="party-value">東京都港区△△4-5-6</span>
+                                                </div>
+                                                <div class="party-line">
+                                                    <span class="party-field">会社名</span>
+                                                    <span class="party-value">株式会社XYZ</span>
+                                                </div>
+                                                <div class="party-line">
+                                                    <span class="party-field">代表者</span>
+                                                    <span class="party-value signature-line">代表取締役　田中 太郎　<span class="seal-circle">印</span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 管理タブ -->
+            <div class="tab-content" id="management">
+                <div class="management-container">
+                    <div class="management-grid">
+                        <!-- 重要な日付カード（左上に配置・最重要） -->
+                        <div class="action-card important-dates-card">
+                            <div class="action-header">
+                                <div class="action-title">📅 重要な日付</div>
+                                <div class="contract-status-badge active">✅ 契約進行中</div>
+                            </div>
+                            <div class="important-dates-list">
+                                <div class="important-date-item">
+                                    <div class="date-icon start">🚀</div>
+                                    <div class="date-info">
+                                        <div class="date-label">契約開始日</div>
+                                        <div class="date-value">2026年2月1日</div>
+                                    </div>
+                                    <div class="date-status completed">完了</div>
+                                </div>
+                                <div class="important-date-item highlight">
+                                    <div class="date-icon warning">⚠️</div>
+                                    <div class="date-info">
+                                        <div class="date-label">更新判断期限</div>
+                                        <div class="date-value">2026年5月31日</div>
+                                        <div class="date-note">この日までに連絡しないと自動更新</div>
+                                    </div>
+                                    <div class="date-countdown">あと93日</div>
+                                </div>
+                                <div class="important-date-item">
+                                    <div class="date-icon end">🏁</div>
+                                    <div class="date-info">
+                                        <div class="date-label">契約満了日</div>
+                                        <div class="date-value">2026年7月31日</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 金額サマリーカード -->
+                        <div class="action-card amount-summary-card">
+                            <div class="action-header">
+                                <div class="action-title">💰 金額サマリー</div>
+                            </div>
+                            <div class="amount-summary">
+                                <div class="amount-main">
+                                    <div class="amount-label">月額報酬</div>
+                                    <div class="amount-value">¥480,000<span class="amount-tax">（税別）</span></div>
+                                </div>
+                                <div class="amount-details">
+                                    <div class="amount-detail-item">
+                                        <span class="detail-label">契約期間合計（6ヶ月）</span>
+                                        <span class="detail-value">¥2,880,000</span>
+                                    </div>
+                                    <div class="amount-detail-item">
+                                        <span class="detail-label">支払い条件</span>
+                                        <span class="detail-value">毎月末締め / 翌月末払い</span>
+                                    </div>
+                                    <div class="amount-detail-item">
+                                        <span class="detail-label">振込手数料</span>
+                                        <span class="detail-value">甲（ABC社）負担</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 次のアクションカード -->
+                        <div class="action-card">
+                            <div class="action-header">
+                                <div class="action-title">📌 次のアクション</div>
+                            </div>
+                            <div class="action-list">
+                                <div class="action-item urgent">
+                                    <div class="action-item-header">
+                                        <div class="action-item-title">契約更新の判断</div>
+                                        <div class="action-item-date">あと93日</div>
+                                    </div>
+                                    <div class="action-item-desc">5/31までに更新可否を決定</div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-item-header">
+                                        <div class="action-item-title">月次レポート提出</div>
+                                        <div class="action-item-date">2/28</div>
+                                    </div>
+                                    <div class="action-item-desc">1月分の実績レポートを提出</div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-item-header">
+                                        <div class="action-item-title">請求書発行</div>
+                                        <div class="action-item-date">2/28</div>
+                                    </div>
+                                    <div class="action-item-desc">2月分 48万円の請求書を発行</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- アクティビティログカード -->
+                        <div class="action-card activity-log-card">
+                            <div class="action-header">
+                                <div class="action-title">📝 アクティビティ</div>
+                            </div>
+                            <div class="activity-log-list">
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-them">田</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>田中太郎</strong>が契約期間を6ヶ月に変更</div>
+                                        <div class="activity-log-time">1月28日 14:15</div>
+                                    </div>
+                                </div>
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-me">佐</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>佐藤一郎</strong>が報酬を48万円に修正</div>
+                                        <div class="activity-log-time">1月28日 11:35</div>
+                                    </div>
+                                </div>
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-them">田</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>田中太郎</strong>が初回ドラフトを送付</div>
+                                        <div class="activity-log-time">1月28日 10:20</div>
+                                    </div>
+                                </div>
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-me">佐</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>佐藤一郎</strong>が秘密保持条項を追加</div>
+                                        <div class="activity-log-time">1月27日 16:40</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="activity-log-more">すべてのアクティビティを見る →</button>
+                        </div>
+
+                        <!-- 関連ドキュメントカード -->
+                        <div class="action-card">
+                            <div class="action-header">
+                                <div class="action-title">📎 関連ドキュメント</div>
+                                <button class="add-document-btn">+ 追加</button>
+                            </div>
+                            <div class="document-list">
+                                <div class="document-item">
+                                    <div class="document-icon">📄</div>
+                                    <div class="document-info">
+                                        <div class="document-name">見積書</div>
+                                        <div class="document-date">2026/01/15</div>
+                                    </div>
+                                </div>
+                                <div class="document-item">
+                                    <div class="document-icon">📋</div>
+                                    <div class="document-info">
+                                        <div class="document-name">発注書</div>
+                                        <div class="document-date">2026/01/20</div>
+                                    </div>
+                                </div>
+                                <div class="document-item">
+                                    <div class="document-icon">💰</div>
+                                    <div class="document-info">
+                                        <div class="document-name">請求書(1月分)</div>
+                                        <div class="document-date">2026/01/31</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右カラム: 交渉チャット -->
+        <div class="right-column">
+            <!-- コメントスレッドパネル -->
+            <div class="comment-thread-panel" id="commentThreadPanel">
+                <div class="thread-header">
+                    <div class="thread-title">📍 コメントスレッド</div>
+                    <button class="thread-close" onclick="closeCommentThread()">&times;</button>
+                </div>
+                <div class="thread-reference" id="threadReference"></div>
+                <div class="thread-comments" id="threadComments"></div>
+                <div class="thread-input">
+                    <textarea class="thread-textarea" id="threadTextarea" placeholder="返信を入力..."></textarea>
+                    <button class="thread-send-btn" onclick="sendThreadReply()">送信</button>
+                </div>
+            </div>
+
+            <div class="chat-header">
+                <div class="chat-title">💬 メッセージ</div>
+            </div>
+
+            <div class="messages-area" id="messages">
+                <div class="message">
+                    <div class="message-header">
+                        <div class="message-avatar avatar-them">田</div>
+                        <span class="message-sender">田中太郎</span>
+                        <span class="message-time">1月28日 10:20</span>
+                    </div>
+                    <div class="message-bubble">
+                        基本契約書のドラフトをお送りしました。ご確認お願いします。
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="message-header">
+                        <div class="message-avatar avatar-me">佐</div>
+                        <span class="message-sender">あなた</span>
+                        <span class="message-time">1月28日 11:35</span>
+                    </div>
+                    <div class="message-bubble">
+                        確認しました!第3条の契約期間を6ヶ月でお願いできますか?
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="message-header">
+                        <div class="message-avatar avatar-them">田</div>
+                        <span class="message-sender">田中太郎</span>
+                        <span class="message-time">1月28日 14:15</span>
+                    </div>
+                    <div class="message-bubble">
+                        承知しました!6ヶ月で問題ありません。
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-container">
+                    <textarea class="input-field" id="messageInput" placeholder="メッセージを入力..." rows="2"></textarea>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                            <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- テキスト選択ポップアップメニュー -->
+    <div class="selection-popup" id="selectionPopup">
+        <button class="popup-btn" onclick="aiExplain()">
+            <span class="popup-icon">🤖</span>
+            <span>AIで解説</span>
+        </button>
+        <button class="popup-btn" onclick="openCommentInput()">
+            <span class="popup-icon">💬</span>
+            <span>コメント</span>
+        </button>
+    </div>
+
+    <!-- コメント入力モーダル -->
+    <div class="modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
+        <div class="modal-content comment-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">💬 コメントを追加</div>
+                <button class="modal-close" onclick="closeCommentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="comment-selected-text" id="commentSelectedText"></div>
+                <textarea class="comment-textarea" id="commentTextarea" placeholder="コメントを入力..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeCommentModal()">キャンセル</button>
+                <button class="modal-btn primary" onclick="submitComment()">コメントを送信</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI解説モーダル -->
+    <div class="modal-overlay" id="aiExplainModal" onclick="closeAiExplainModal(event)">
+        <div class="modal-content ai-explain-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">🤖 AI解説</div>
+                <button class="modal-close" onclick="closeAiExplainModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ai-selected-text" id="aiSelectedText"></div>
+                <div class="ai-explanation" id="aiExplanation">
+                    <div class="ai-loading" id="aiLoading">
+                        <div class="loading-spinner"></div>
+                        <span>解説を生成中...</span>
+                    </div>
+                    <div class="ai-result" id="aiResult"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeAiExplainModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wordアップロードモーダル -->
+    <div class="modal-overlay" id="uploadModal" onclick="closeUploadModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">📤 Wordファイルをアップロード</div>
+                <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea"
+                     ondragover="handleDragOver(event)"
+                     ondragleave="handleDragLeave(event)"
+                     ondrop="handleDrop(event)">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">ファイルをドラッグ&ドロップ</div>
+                    <div class="upload-subtext">または</div>
+                    <label class="upload-btn">
+                        ファイルを選択
+                        <input type="file" accept=".docx,.doc" onchange="handleFileSelect(event)" hidden>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 差分確認モーダル -->
+    <div class="modal-overlay" id="diffModal" onclick="closeDiffModal(event)">
+        <div class="modal-content diff-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">🔍 変更内容の確認</div>
+                <button class="modal-close" onclick="closeDiffModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="diff-list">
+                    <div class="diff-item">
+                        <div class="diff-location">第3条(契約期間)</div>
+                        <div class="diff-content">
+                            <div class="diff-old">
+                                <span class="diff-label">変更前:</span>
+                                <span class="diff-text">期間満了の<span class="diff-removed">1ヶ月前</span>までに...</span>
+                            </div>
+                            <div class="diff-new">
+                                <span class="diff-label">変更後:</span>
+                                <span class="diff-text">期間満了の<span class="diff-added">2ヶ月前</span>までに...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="diff-item">
+                        <div class="diff-location">第4条(報酬)</div>
+                        <div class="diff-content">
+                            <div class="diff-old">
+                                <span class="diff-label">変更前:</span>
+                                <span class="diff-text">月額<span class="diff-removed">45万円</span>(税別)</span>
+                            </div>
+                            <div class="diff-new">
+                                <span class="diff-label">変更後:</span>
+                                <span class="diff-text">月額<span class="diff-added">48万円</span>(税別)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeDiffModal()">キャンセル</button>
+                <button class="modal-btn primary" onclick="applyChanges()">反映する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- メンバー追加モーダル -->
+    <div class="modal-overlay" id="addMemberModal" onclick="closeAddMemberModal(event)">
+        <div class="modal-content add-member-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">👥 メンバーを追加</div>
+                <button class="modal-close" onclick="closeAddMemberModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="add-member-section">
+                    <label class="add-member-label">メールアドレスで招待</label>
+                    <div class="add-member-input-row">
+                        <input type="email" class="add-member-input" id="addMemberEmailInput" placeholder="メールアドレスを入力...">
+                        <button class="add-member-send-btn" onclick="sendMemberInvite()">招待</button>
+                    </div>
+                </div>
+
+                <div class="add-member-divider">
+                    <span>または</span>
+                </div>
+
+                <div class="add-member-section">
+                    <label class="add-member-label">🔗 招待リンクをコピー</label>
+                    <div class="add-member-link-row">
+                        <input type="text" class="add-member-link-input" id="addMemberLinkInput" value="https://nego.app/join/abc123xyz..." readonly>
+                        <button class="add-member-copy-btn" onclick="copyMemberInviteLink()">📋</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

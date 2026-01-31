@@ -29,6 +29,32 @@ body {
     gap: 12px;
 }
 
+/* 一覧に戻るボタン */
+.back-to-list-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.back-to-list-btn:hover {
+    background: #e5e7eb;
+    color: #1a1a1a;
+}
+
+.back-to-list-btn .back-arrow {
+    font-size: 14px;
+}
+
 .contract-title {
     font-size: 16px;
     font-weight: 600;
@@ -2335,36 +2361,101 @@ body {
 }
 
 /* ============================================
-   新規交渉開始ウィザード
+   ページレイアウト
    ============================================ */
 
-.wizard-overlay {
+/* 一覧ページ */
+.page-list {
+    overflow: auto;
+}
+
+.page-list .negotiations-list-page {
+    display: block;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.page-list .wizard-page {
+    display: none;
+}
+
+.page-list .wizard-page.active {
+    display: block;
+}
+
+/* 交渉詳細ページ */
+.page-negotiation {
+    overflow: hidden;
+}
+
+/* ============================================
+   新規交渉開始ウィザード（フルページ版）
+   ============================================ */
+
+.wizard-page {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-}
-
-.wizard-overlay.active {
-    display: flex;
-}
-
-.wizard-container {
     background: white;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 640px;
-    max-height: 90vh;
-    overflow: hidden;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.wizard-page.active {
+    display: block;
+}
+
+.wizard-page-container {
+    min-height: 100vh;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.wizard-page-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+}
+
+.wizard-back-to-list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.wizard-back-to-list:hover {
+    background: #e5e7eb;
+    color: #1a1a1a;
+}
+
+.wizard-page-logo {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0891b2;
+}
+
+.wizard-page-header-spacer {
+    width: 100px;
 }
 
 /* ステッパー */
@@ -2372,9 +2463,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 28px 40px;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border-bottom: 1px solid #e5e7eb;
+    padding: 28px 0;
+    margin-bottom: 12px;
 }
 
 .stepper-item {
@@ -2445,9 +2535,8 @@ body {
 /* ウィザードステップ */
 .wizard-step {
     display: none;
-    padding: 32px 40px;
+    padding: 32px 0;
     flex: 1;
-    overflow-y: auto;
 }
 
 .wizard-step.active {
@@ -2834,9 +2923,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 20px 40px;
-    background: #fafafa;
-    border-top: 1px solid #e5e7eb;
+    padding: 24px 0 40px;
+    margin-top: auto;
 }
 
 .wizard-footer-spacer {
@@ -3162,23 +3250,12 @@ body {
 }
 
 .demo-trigger-btn.invite-demo {
-    bottom: 80px;
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
 }
 
 .demo-trigger-btn.invite-demo:hover {
     box-shadow: 0 12px 32px rgba(139, 92, 246, 0.5);
-}
-
-.demo-trigger-btn.list-demo {
-    bottom: 136px;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
-}
-
-.demo-trigger-btn.list-demo:hover {
-    box-shadow: 0 12px 32px rgba(245, 158, 11, 0.5);
 }
 
 /* ============================================
@@ -3425,24 +3502,12 @@ body {
    交渉一覧画面
    ============================================ */
 
-.negotiations-list-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+.negotiations-list-page {
+    min-height: 100vh;
     background: #f8f9fa;
-    z-index: 2000;
-    overflow-y: auto;
-}
-
-.negotiations-list-overlay.active {
-    display: block;
 }
 
 .negotiations-list-container {
-    min-height: 100vh;
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 24px;

@@ -494,39 +494,55 @@ function sendThreadReply() {
 document.addEventListener('DOMContentLoaded', function() {
     const textarea = document.getElementById('messageInput');
     
-    // バージョンツリーの初期化
-    initVersionTree();
+    // 交渉詳細ページの場合のみ初期化
+    if (textarea) {
+        // バージョンツリーの初期化
+        initVersionTree();
 
-    // テキストエリア自動リサイズ
-    textarea.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-    });
+        // テキストエリア自動リサイズ
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+        });
 
-    // Cmd/Ctrl + Enterで送信
-    textarea.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
+        // Cmd/Ctrl + Enterで送信
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // テキスト選択時のポップアップ
+        document.addEventListener('mouseup', handleTextSelection);
+        document.addEventListener('mousedown', function(e) {
+            const popup = document.getElementById('selectionPopup');
+            if (popup && !popup.contains(e.target)) {
+                popup.classList.remove('active');
+            }
+        });
+    }
 
-    // ESCキーでモーダルを閉じる
+    // ESCキーでモーダル/ウィザードを閉じる
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            closeUploadModal();
-            closeDiffModal();
-            closeCommentModal();
-            closeAiExplainModal();
-        }
-    });
-    
-    // テキスト選択時のポップアップ
-    document.addEventListener('mouseup', handleTextSelection);
-    document.addEventListener('mousedown', function(e) {
-        const popup = document.getElementById('selectionPopup');
-        if (!popup.contains(e.target)) {
-            popup.classList.remove('active');
+            // ウィザードを閉じる
+            const wizardPage = document.getElementById('wizardPage');
+            if (wizardPage && wizardPage.classList.contains('active')) {
+                hideWizard();
+                return;
+            }
+            // 招待ランディングを閉じる
+            const inviteLanding = document.getElementById('inviteLandingOverlay');
+            if (inviteLanding && inviteLanding.classList.contains('active')) {
+                closeInviteLanding();
+                return;
+            }
+            // その他のモーダルを閉じる
+            if (typeof closeUploadModal === 'function') closeUploadModal();
+            if (typeof closeDiffModal === 'function') closeDiffModal();
+            if (typeof closeCommentModal === 'function') closeCommentModal();
+            if (typeof closeAiExplainModal === 'function') closeAiExplainModal();
         }
     });
 
@@ -546,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // 新規交渉開始ウィザード
 // ============================================
 
-function openWizard() {
+function showWizard() {
     // 状態をリセット
     wizardCurrentStep = 1;
     wizardFiles = [];
@@ -557,11 +573,20 @@ function openWizard() {
     renderWizardFiles();
     renderWizardInviteEmails();
 
-    document.getElementById('wizardOverlay').classList.add('active');
+    document.getElementById('wizardPage').classList.add('active');
+}
+
+function hideWizard() {
+    document.getElementById('wizardPage').classList.remove('active');
+}
+
+// 後方互換性のため（古い関数名も保持）
+function openWizard() {
+    showWizard();
 }
 
 function closeWizard() {
-    document.getElementById('wizardOverlay').classList.remove('active');
+    hideWizard();
 }
 
 function updateWizardStep(step) {
@@ -838,15 +863,13 @@ function updateWizardSummary() {
 }
 
 function startNegotiation() {
-    // 交渉開始処理（デモ）
-    closeWizard();
-
     // ファイル名から案件名を生成
     const projectName = wizardFiles[0].name.replace(/\.(docx|doc|pdf)$/i, '');
 
     alert(`「${projectName}」の交渉を開始しました！\n\n招待した方にメールが送信されました。`);
 
-    // 実際のアプリでは、ここで既存の交渉画面に遷移
+    // 交渉詳細画面に遷移
+    location.href = 'negotiation.html';
 }
 
 // ============================================
@@ -864,13 +887,13 @@ function closeInviteLanding() {
 function signInWithGoogle() {
     // デモ: サインイン成功をシミュレート
     alert('Googleアカウントでサインインしました！\n\n交渉画面に移動します...');
-    closeInviteLanding();
+    location.href = 'negotiation.html';
 }
 
 function signInWithMicrosoft() {
     // デモ: サインイン成功をシミュレート
     alert('Microsoftアカウントでサインインしました！\n\n交渉画面に移動します...');
-    closeInviteLanding();
+    location.href = 'negotiation.html';
 }
 
 // ============================================
@@ -883,7 +906,7 @@ function toggleHeaderMembersPanel(event) {
     container.classList.toggle('active');
 }
 
-// ドキュメントクリックでパネルを閉じる
+// ドキュメントクリックでパネルを閉じる（交渉詳細ページでのみ動作）
 document.addEventListener('click', function(e) {
     const headerMembers = document.getElementById('headerMembers');
     if (headerMembers && !headerMembers.contains(e.target)) {
@@ -942,13 +965,14 @@ function copyMemberInviteLink() {
 }
 
 // ============================================
-// 交渉一覧画面
+// 交渉一覧画面（現在はindex.htmlがメインなので不要だが後方互換用に残す）
 // ============================================
 
 function openNegotiationsList() {
-    document.getElementById('negotiationsListOverlay').classList.add('active');
+    // 一覧ページに遷移
+    location.href = 'index.html';
 }
 
 function closeNegotiationsList() {
-    document.getElementById('negotiationsListOverlay').classList.remove('active');
+    // 現在のページが一覧なので何もしない
 }
