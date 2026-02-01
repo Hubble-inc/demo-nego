@@ -1043,8 +1043,8 @@ function closeNegotiationsList() {
 // デモ用ステータス切り替え機能
 // ============================================
 
-// ステータス: 'negotiating' → 'waiting' → 'agreed' → 'negotiating' ...
-let demoStatus = 'waiting';
+// ステータス: 'negotiating' → 'waiting' → 'agreed' → 'partner_editing' → 'negotiating' ...
+let demoStatus = 'negotiating';
 
 function initDemoStatusBanner() {
     const body = document.body;
@@ -1060,17 +1060,17 @@ function initDemoStatusBanner() {
 
 function toggleDemoStatus() {
     // ステータスを順番に切り替え
-    // waiting → agreed → negotiating → partner_editing → waiting
-    if (demoStatus === 'waiting') {
+    // negotiating → waiting → agreed → partner_editing → negotiating
+    if (demoStatus === 'negotiating') {
+        demoStatus = 'waiting';
+    } else if (demoStatus === 'waiting') {
         demoStatus = 'agreed';
         // 合意完了時に紙吹雪を発射！
         launchConfetti();
     } else if (demoStatus === 'agreed') {
-        demoStatus = 'negotiating';
-    } else if (demoStatus === 'negotiating') {
         demoStatus = 'partner_editing';
     } else {
-        demoStatus = 'waiting';
+        demoStatus = 'negotiating';
     }
     
     updateDemoStatus(demoStatus);
