@@ -3189,11 +3189,62 @@ body {
     margin-bottom: 0;
 }
 
+/* 案件名入力フィールド */
+.wizard-project-name-section {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.wizard-project-name-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.wizard-project-name-input {
+    width: 100%;
+    padding: 14px 40px 14px 16px;
+    border: 2px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-heading);
+    background: var(--color-white);
+    transition: all var(--transition-normal);
+}
+
+.wizard-project-name-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-container);
+}
+
+.wizard-project-name-input::placeholder {
+    color: var(--text-assist);
+    font-weight: 400;
+}
+
+.wizard-project-name-edit-icon {
+    position: absolute;
+    right: 14px;
+    color: var(--text-assist);
+    pointer-events: none;
+    transition: all var(--transition-normal);
+}
+
+.wizard-project-name-input:focus + .wizard-project-name-edit-icon {
+    color: var(--color-primary);
+}
+
 .wizard-summary-label {
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--text-default);
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .wizard-summary-list {

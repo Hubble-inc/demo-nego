@@ -590,6 +590,13 @@ function showWizard() {
     updateWizardStep(1);
     renderWizardFiles();
     renderWizardInviteEmails();
+    
+    // 案件名をリセット
+    const projectNameInput = document.getElementById('wizardProjectName');
+    if (projectNameInput) {
+        projectNameInput.value = '';
+        projectNameInput.dataset.autoSet = 'true';
+    }
 
     document.getElementById('wizardPage').classList.add('active');
 }
@@ -877,12 +884,24 @@ function copyInviteLink() {
 }
 
 function updateWizardSummary() {
-    // ファイルリスト
+    // 案件名を自動生成（拡張子を除去）
+    const projectNameInput = document.getElementById('wizardProjectName');
+    if (projectNameInput && wizardFiles.length > 0) {
+        // 最初のファイル名から拡張子を除去して案件名に設定
+        const suggestedName = wizardFiles[0].name.replace(/\.(docx|doc|pdf|xlsx|xls)$/i, '');
+        // 入力欄が空の場合のみ自動設定（ユーザーが編集した場合は上書きしない）
+        if (!projectNameInput.value || projectNameInput.dataset.autoSet === 'true') {
+            projectNameInput.value = suggestedName;
+            projectNameInput.dataset.autoSet = 'true';
+        }
+    }
+    
+    // ファイルリスト（拡張子付きで表示）
     const filesContainer = document.getElementById('wizardSummaryFiles');
     if (wizardFiles.length === 0) {
         filesContainer.innerHTML = '<li>（ファイルなし）</li>';
     } else {
-        filesContainer.innerHTML = wizardFiles.map(f => `<li>${escapeHtml(f.name)}</li>`).join('');
+        filesContainer.innerHTML = wizardFiles.map(f => `<li><span class="material-symbols-outlined icon-xs">description</span> ${escapeHtml(f.name)}</li>`).join('');
     }
 
     // 招待リスト
@@ -900,8 +919,9 @@ function updateWizardSummary() {
 }
 
 function startNegotiation() {
-    // ファイル名から案件名を生成
-    const projectName = wizardFiles[0].name.replace(/\.(docx|doc|pdf)$/i, '');
+    // 入力フィールドから案件名を取得
+    const projectNameInput = document.getElementById('wizardProjectName');
+    const projectName = projectNameInput?.value.trim() || wizardFiles[0].name.replace(/\.(docx|doc|pdf|xlsx|xls)$/i, '');
 
     alert(`「${projectName}」の交渉を開始しました！\n\n招待した方にメールが送信されました。`);
 
@@ -1255,4 +1275,13 @@ function initWizardPermissionSelector() {
             if (radio) radio.checked = true;
         });
     });
+    
+    // 案件名入力フィールドのイベントリスナー
+    const projectNameInput = document.getElementById('wizardProjectName');
+    if (projectNameInput) {
+        projectNameInput.addEventListener('input', function() {
+            // ユーザーが編集したら自動設定フラグを解除
+            this.dataset.autoSet = 'false';
+        });
+    }
 }
