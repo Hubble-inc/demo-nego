@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>契約がわかると、信頼される。 - ContractNego</title>
+    <link rel="icon" href="favicon-32.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-primary: #0061fe;
+            --blue-dark: #0047ba;
+            --blue-light: #e8f1ff;
+            --black: #1e1919;
+            --gray-dark: #637282;
+            --gray-light: #f7f5f2;
+            --white: #ffffff;
+            --yellow: #ffe94d;
+            --coral: #ff7a59;
+            --mint: #a2f5dc;
+            --lavender: #d6c4ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--black);
+            line-height: 1.6;
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: var(--white);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .header-logo {
+            height: 28px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .header-nav a {
+            color: var(--black);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .header-nav a:hover {
+            opacity: 0.7;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-text {
+            background: transparent;
+            color: var(--black);
+        }
+
+        .btn-text:hover {
+            background: var(--gray-light);
+        }
+
+        .btn-primary {
+            background: var(--blue-primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--black);
+            border: 1.5px solid var(--black);
+        }
+
+        .btn-outline:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 16px;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            padding: 140px 48px 80px;
+            background: var(--gray-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 560px;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            margin-bottom: 24px;
+        }
+
+        .hero-eyebrow-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--coral);
+            border-radius: 50%;
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--blue-primary), #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 20px;
+            color: var(--gray-dark);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .hero-note {
+            font-size: 13px;
+            color: var(--gray-dark);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image-container {
+            position: relative;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        /* 画像プレースホルダー */
+        .image-placeholder {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-dark);
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .image-placeholder-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .image-placeholder-text {
+            font-weight: 500;
+        }
+
+        .image-placeholder-hint {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .hero-image-placeholder {
+            aspect-ratio: 16/10;
+        }
+
+        .hero-floating-card {
+            position: absolute;
+            bottom: -30px;
+            left: -40px;
+            background: var(--white);
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-floating-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--mint);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .hero-floating-text {
+            font-size: 14px;
+        }
+
+        .hero-floating-title {
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .hero-floating-desc {
+            color: var(--gray-dark);
+            font-size: 13px;
+        }
+
+        /* ===== Logos ===== */
+        .logos {
+            padding: 60px 48px;
+            background: var(--white);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .logos-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logos-title {
+            font-size: 14px;
+            color: var(--gray-dark);
+            margin-bottom: 32px;
+        }
+
+        .logos-grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            opacity: 0.6;
+        }
+
+        .logos-grid span {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-dark);
+        }
+
+        /* ===== Feature Section ===== */
+        .feature-section {
+            padding: 120px 48px;
+        }
+
+        .feature-section:nth-child(even) {
+            background: var(--gray-light);
+        }
+
+        .feature-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .feature-inner.reverse {
+            direction: rtl;
+        }
+
+        .feature-inner.reverse > * {
+            direction: ltr;
+        }
+
+        .feature-content {
+            max-width: 500px;
+        }
+
+        .feature-label {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+        }
+
+        .feature-label.blue {
+            background: var(--blue-light);
+            color: var(--blue-primary);
+        }
+
+        .feature-label.coral {
+            background: #ffe5df;
+            color: var(--coral);
+        }
+
+        .feature-label.mint {
+            background: #d4f9ed;
+            color: #00a67e;
+        }
+
+        .feature-label.lavender {
+            background: #ede5ff;
+            color: #7c3aed;
+        }
+
+        .feature-title {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .feature-desc {
+            font-size: 18px;
+            color: var(--gray-dark);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .feature-list-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--black);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--blue-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: gap 0.2s;
+        }
+
+        .feature-link:hover {
+            gap: 12px;
+        }
+
+        .feature-visual {
+            position: relative;
+        }
+
+        .feature-image-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .feature-image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .feature-image-placeholder {
+            aspect-ratio: 4/3;
+        }
+
+        /* ===== Stats ===== */
+        .stats {
+            padding: 100px 48px;
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .stats-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .stats-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .stats-desc {
+            font-size: 20px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--yellow), var(--coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ===== How It Works ===== */
+        .how-it-works {
+            padding: 120px 48px;
+            background: var(--white);
+        }
+
+        .how-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .how-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .how-desc {
+            font-size: 20px;
+            color: var(--gray-dark);
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+        }
+
+        .how-step {
+            text-align: center;
+            padding: 48px 32px;
+            background: var(--gray-light);
+            border-radius: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .how-step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .how-step-number {
+            width: 56px;
+            height: 56px;
+            background: var(--black);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 auto 24px;
+        }
+
+        .how-step-icon {
+            font-size: 56px;
+            margin-bottom: 24px;
+        }
+
+        .how-step-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .how-step-desc {
+            font-size: 16px;
+            color: var(--gray-dark);
+            line-height: 1.7;
+        }
+
+        /* ===== Trust Cycle ===== */
+        .trust {
+            padding: 120px 48px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--white);
+        }
+
+        .trust-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .trust-quote {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .trust-quote-highlight {
+            background: linear-gradient(135deg, var(--yellow), var(--coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .trust-subquote {
+            font-size: 24px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 60px;
+        }
+
+        .trust-cycle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .trust-cycle-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .trust-cycle-arrow {
+            font-size: 24px;
+            color: var(--yellow);
+        }
+
+        /* ===== CTA ===== */
+        .cta {
+            padding: 120px 48px;
+            background: var(--blue-primary);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .cta-desc {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .cta .btn-primary {
+            background: var(--white);
+            color: var(--blue-primary);
+        }
+
+        .cta .btn-primary:hover {
+            background: var(--gray-light);
+        }
+
+        .cta .btn-outline {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .cta .btn-outline:hover {
+            background: var(--white);
+            color: var(--blue-primary);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: var(--black);
+            color: rgba(255,255,255,0.7);
+            padding: 80px 48px 40px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            height: 28px;
+            filter: brightness(0) invert(1);
+            margin-bottom: 16px;
+        }
+
+        .footer-tagline {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 80px;
+        }
+
+        .footer-column h4 {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-legal a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+        }
+
+        .footer-legal a:hover {
+            color: var(--white);
+        }
+
+        /* ===== Demo Button ===== */
+        .demo-float-btn {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: var(--black);
+            color: var(--white);
+            padding: 16px 28px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-float-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .hero-inner,
+            .feature-inner {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .feature-inner.reverse {
+                direction: ltr;
+            }
+
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .feature-title {
+                font-size: 36px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .how-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 24px;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .hero,
+            .feature-section,
+            .stats,
+            .how-it-works,
+            .trust,
+            .cta {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .hero {
+                padding-top: 120px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-desc {
+                font-size: 17px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .hero-floating-card {
+                display: none;
+            }
+
+            .feature-title,
+            .stats-title,
+            .how-title,
+            .trust-quote,
+            .cta-title {
+                font-size: 32px;
+            }
+
+            .trust-cycle {
+                flex-direction: column;
+            }
+
+            .trust-cycle-arrow {
+                transform: rotate(90deg);
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .logos-grid {
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <img src="hubble-logo.svg" alt="ContractNego" class="header-logo">
+        <nav class="header-nav">
+            <a href="#features">機能</a>
+            <a href="#how">使い方</a>
+            <a href="#pricing">料金</a>
+            <a href="#enterprise">法人向け</a>
+        </nav>
+        <div class="header-actions">
+            <a href="#" class="btn btn-text">ログイン</a>
+            <a href="index.html" class="btn btn-outline">デモを見る</a>
+            <a href="#" class="btn btn-primary">無料で始める</a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-eyebrow">
+                    <span class="hero-eyebrow-dot"></span>
+                    契約交渉の新しいかたち
+                </div>
+                <h1 class="hero-title">
+                    契約がわかると、<br>
+                    <span class="highlight">信頼される。</span>
+                </h1>
+                <p class="hero-desc">
+                    AIが契約書をあなたの言葉に翻訳。<br>
+                    理解して交渉し、守れる約束を結ぶ。<br>
+                    それが、次のビジネスを生む。
+                </p>
+                <div class="hero-cta">
+                    <a href="#" class="btn btn-primary btn-large">無料で始める</a>
+                    <a href="index.html" class="btn btn-outline btn-large">デモを体験</a>
+                </div>
+                <p class="hero-note">クレジットカード不要・3分で開始</p>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <img src="hero-main.png" alt="ContractNego 交渉画面">
+                </div>
+                <div class="hero-floating-card">
+                    <div class="hero-floating-icon">🤖</div>
+                    <div class="hero-floating-text">
+                        <div class="hero-floating-title">AIが契約書を翻訳</div>
+                        <div class="hero-floating-desc">難しい条文もすぐ理解</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logos -->
+    <section class="logos">
+        <div class="logos-inner">
+            <p class="logos-title">多くの企業に選ばれています</p>
+            <div class="logos-grid">
+                <span>Company A</span>
+                <span>Company B</span>
+                <span>Company C</span>
+                <span>Company D</span>
+                <span>Company E</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 1: AI Translation -->
+    <section class="feature-section" id="features">
+        <div class="feature-inner">
+            <div class="feature-content">
+                <span class="feature-label blue">AI翻訳</span>
+                <h2 class="feature-title">契約書が、<br>あなたの言葉になる</h2>
+                <p class="feature-desc">
+                    法律用語だらけの契約書も、AIが日本語に翻訳。
+                    「つまり何を約束しているのか」が一瞬でわかります。
+                </p>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>難解な条文を平易な表現に自動変換</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>金額・期間・責任範囲を自動でハイライト</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>契約の要点を3行で自動サマリー</span>
+                    </li>
+                </ul>
+                <a href="index.html" class="feature-link">
+                    デモで体験する <span>→</span>
+                </a>
+            </div>
+            <div class="feature-visual">
+                <div class="feature-image-container">
+                    <img src="feature-ai.png" alt="AI解説機能">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 2: Real-time Negotiation -->
+    <section class="feature-section">
+        <div class="feature-inner reverse">
+            <div class="feature-content">
+                <span class="feature-label coral">リアルタイム交渉</span>
+                <h2 class="feature-title">その場で交渉、<br>その場で解決</h2>
+                <p class="feature-desc">
+                    メールの往復は不要。条項ごとにコメントを残し、
+                    チャットしながら契約を仕上げます。
+                </p>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>条項ごとのコメントスレッドで議論</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>チャット機能で認識のズレを防止</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>全てのやりとりが自動で記録</span>
+                    </li>
+                </ul>
+                <a href="index.html" class="feature-link">
+                    デモで体験する <span>→</span>
+                </a>
+            </div>
+            <div class="feature-visual">
+                <div class="feature-image-container">
+                    <img src="feature-chat.png" alt="コメント・チャット機能">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 3: Timeline -->
+    <section class="feature-section">
+        <div class="feature-inner">
+            <div class="feature-content">
+                <span class="feature-label mint">期日管理</span>
+                <h2 class="feature-title">大事な約束を、<br>絶対に忘れない</h2>
+                <p class="feature-desc">
+                    契約開始から満了まで、重要な日付をタイムラインで可視化。
+                    更新判断期限も見逃しません。
+                </p>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>重要日付をタイムラインで一覧表示</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>期限が近づくと自動でリマインド</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>「次に何をすべきか」が常にわかる</span>
+                    </li>
+                </ul>
+                <a href="index.html" class="feature-link">
+                    デモで体験する <span>→</span>
+                </a>
+            </div>
+            <div class="feature-visual">
+                <div class="feature-image-container">
+                    <img src="feature-timeline.png" alt="タイムライン機能">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 4: Version Control -->
+    <section class="feature-section">
+        <div class="feature-inner reverse">
+            <div class="feature-content">
+                <span class="feature-label lavender">バージョン管理</span>
+                <h2 class="feature-title">誰が何を変えたか、<br>完全に把握</h2>
+                <p class="feature-desc">
+                    全ての変更履歴を自動記録。「どのバージョンが最新？」
+                    という混乱はもうありません。
+                </p>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>変更のたびに自動でバージョン作成</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>2つのバージョンを並べて差分比較</span>
+                    </li>
+                    <li>
+                        <span class="feature-list-icon">✓</span>
+                        <span>監査対応も万全の履歴管理</span>
+                    </li>
+                </ul>
+                <a href="index.html" class="feature-link">
+                    デモで体験する <span>→</span>
+                </a>
+            </div>
+            <div class="feature-visual">
+                <div class="feature-image-container">
+                    <img src="feature-version.png" alt="バージョン管理機能">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-inner">
+            <div class="stats-header">
+                <h2 class="stats-title">契約交渉を、もっとシンプルに</h2>
+                <p class="stats-desc">導入企業からの声</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">70%</div>
+                    <div class="stat-label">契約締結までの時間を短縮</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">法務への問い合わせが減少</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">ユーザーが「わかりやすい」と回答</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how">
+        <div class="how-inner">
+            <div class="how-header">
+                <h2 class="how-title">3ステップで、今すぐ始める</h2>
+                <p class="how-desc">複雑な設定は不要。誰でもすぐに使えます。</p>
+            </div>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="how-step-number">1</div>
+                    <div class="how-step-icon">📄</div>
+                    <h3 class="how-step-title">アップロード</h3>
+                    <p class="how-step-desc">契約書ファイルをドラッグ＆ドロップ。Word・PDFに対応。</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-number">2</div>
+                    <div class="how-step-icon">📨</div>
+                    <h3 class="how-step-title">招待</h3>
+                    <p class="how-step-desc">相手のメールアドレスを入力、またはリンクを共有。</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-number">3</div>
+                    <div class="how-step-icon">🤝</div>
+                    <h3 class="how-step-title">交渉開始</h3>
+                    <p class="how-step-desc">同じ画面で契約を仕上げる。AIに聞きながら、チャットしながら。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust -->
+    <section class="trust">
+        <div class="trust-inner">
+            <h2 class="trust-quote">
+                「この人は<span class="trust-quote-highlight">約束を守る</span>」<br>
+                そう思われる人になる
+            </h2>
+            <p class="trust-subquote">それが、次のビジネスにつながる</p>
+            <div class="trust-cycle">
+                <div class="trust-cycle-item">契約を理解する</div>
+                <span class="trust-cycle-arrow">→</span>
+                <div class="trust-cycle-item">守れる約束だけ結ぶ</div>
+                <span class="trust-cycle-arrow">→</span>
+                <div class="trust-cycle-item">確実に履行する</div>
+                <span class="trust-cycle-arrow">→</span>
+                <div class="trust-cycle-item">信頼を獲得</div>
+                <span class="trust-cycle-arrow">→</span>
+                <div class="trust-cycle-item">次のビジネスへ</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="cta-inner">
+            <h2 class="cta-title">契約がわかる自分へ、今日から</h2>
+            <p class="cta-desc">まずは無料で、契約交渉の新しい体験を</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary btn-large">無料で始める</a>
+                <a href="index.html" class="btn btn-outline btn-large">デモを体験</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="hubble-logo.svg" alt="ContractNego" class="footer-logo">
+                    <p class="footer-tagline">契約がわかると、信頼される。ContractNegoは契約交渉をシンプルにし、ビジネスの信頼関係を深めます。</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>プロダクト</h4>
+                        <ul>
+                            <li><a href="#">機能</a></li>
+                            <li><a href="#">料金</a></li>
+                            <li><a href="#">法人向け</a></li>
+                            <li><a href="#">セキュリティ</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>リソース</h4>
+                        <ul>
+                            <li><a href="#">ヘルプセンター</a></li>
+                            <li><a href="#">導入事例</a></li>
+                            <li><a href="#">ブログ</a></li>
+                            <li><a href="#">API</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>会社情報</h4>
+                        <ul>
+                            <li><a href="#">会社概要</a></li>
+                            <li><a href="#">採用情報</a></li>
+                            <li><a href="#">お問い合わせ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Hubble Inc. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">プライバシーポリシー</a>
+                    <a href="#">利用規約</a>
+                    <a href="#">特定商取引法に基づく表記</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Float Button -->
+    <a href="index.html" class="demo-float-btn">
+        ✨ デモを体験
+    </a>
+</body>
+</html>

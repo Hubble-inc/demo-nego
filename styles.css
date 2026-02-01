@@ -3373,6 +3373,16 @@ body {
     box-shadow: 0 12px 32px rgba(139, 92, 246, 0.5);
 }
 
+.demo-trigger-btn.website-demo {
+    bottom: 88px;
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
+    box-shadow: 0 8px 24px rgba(60, 120, 200, 0.4);
+}
+
+.demo-trigger-btn.website-demo:hover {
+    box-shadow: 0 12px 32px rgba(60, 120, 200, 0.5);
+}
+
 /* ============================================
    チャットヘッダー メンバー機能
    ============================================ */
