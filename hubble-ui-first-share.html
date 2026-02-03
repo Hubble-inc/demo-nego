@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株主間契約書 - Hubble（初回共有）</title>
+    <link rel="icon" href="favicon-32.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="hubble-design-tokens.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-note);
+            color: var(--text-default);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== ヘッダー ===== */
+        .hubble-header {
+            background: var(--color-white);
+            border-bottom: 1px solid var(--border-default);
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+        }
+
+        .hubble-header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .hubble-logo {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+        }
+
+        .hubble-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--text-assist);
+        }
+
+        .hubble-breadcrumb a {
+            color: var(--text-assist);
+            text-decoration: none;
+        }
+
+        .hubble-breadcrumb a:hover {
+            color: var(--text-link);
+        }
+
+        .hubble-breadcrumb-current {
+            color: var(--text-heading);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .hubble-header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .hubble-header-btn {
+            padding: 8px 16px;
+            background: var(--color-white);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hubble-header-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .hubble-header-btn.primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        .hubble-header-btn.primary:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== ツールバー ===== */
+        .hubble-toolbar {
+            background: var(--color-white);
+            border-bottom: 1px solid var(--border-default);
+            padding: var(--space-2) var(--space-6);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .hubble-toolbar-btn {
+            padding: 6px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-assist);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .hubble-toolbar-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-default);
+        }
+
+        .hubble-toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border-default);
+        }
+
+        .hubble-toolbar-spacer {
+            flex: 1;
+        }
+
+        .hubble-toolbar-btn.share-nego {
+            padding: 6px 12px;
+            background: var(--color-white);
+            color: var(--color-social);
+            border: 1px solid var(--color-social);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            gap: var(--space-1);
+        }
+
+        .hubble-toolbar-btn.share-nego:hover {
+            background: var(--color-social-container);
+            color: var(--color-social);
+        }
+
+        .hubble-toolbar-btn.word-edit {
+            padding: 6px 12px;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            gap: var(--space-1);
+        }
+
+        .hubble-toolbar-btn.word-edit:hover {
+            background: #1565C0;
+            color: var(--color-white);
+        }
+
+        /* ===== メインコンテナ ===== */
+        .hubble-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ===== 左サイドバー（バージョン） ===== */
+        .hubble-sidebar {
+            width: 200px;
+            background: var(--color-white);
+            border-right: 1px solid var(--border-default);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hubble-sidebar-header {
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border-default);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-assist);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* バージョンリスト */
+        .version-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-2) 0;
+        }
+
+        .version-item {
+            display: flex;
+            align-items: flex-start;
+            padding: var(--space-2) var(--space-4);
+            cursor: pointer;
+            transition: background var(--transition-normal);
+        }
+
+        .version-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .version-item.selected {
+            background: var(--color-primary-container);
+        }
+
+        .version-number-box {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-note);
+            border: 2px solid var(--border-default);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-heading);
+            margin-right: var(--space-3);
+            flex-shrink: 0;
+        }
+
+        .version-item.selected .version-number-box {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .version-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .version-status {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .version-status-icon {
+            font-size: 14px;
+        }
+
+        .version-status.sharing {
+            color: var(--color-primary);
+        }
+
+        .version-status.shared {
+            color: var(--text-assist);
+        }
+
+        .version-status.from-partner {
+            color: var(--color-social);
+        }
+
+        .version-meta {
+            font-size: 11px;
+            color: var(--text-assist);
+        }
+
+        .version-comment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 2px 6px;
+            background: var(--bg-note);
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            color: var(--text-assist);
+            margin-left: var(--space-2);
+        }
+
+        .version-comment-badge .material-symbols-outlined {
+            font-size: 12px;
+        }
+
+        /* 交渉ステータス */
+        .nego-status {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border-default);
+            background: var(--bg-note);
+        }
+
+        .nego-status-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-assist);
+            margin-bottom: var(--space-2);
+        }
+
+        .nego-status-content {
+            font-size: var(--font-size-sm);
+            color: var(--text-heading);
+            line-height: 1.5;
+        }
+
+        .nego-status-line {
+            margin-bottom: 2px;
+        }
+
+        .nego-status-line:last-child {
+            color: var(--text-assist);
+            font-size: var(--font-size-xs);
+        }
+
+        /* 共有ボタン */
+        .share-to-nego-btn {
+            width: 100%;
+            margin-top: var(--space-3);
+            padding: 10px var(--space-4);
+            background: var(--color-primary);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .share-to-nego-btn:hover {
+            opacity: 0.9;
+        }
+
+        .share-to-nego-btn .material-symbols-outlined {
+            font-size: 18px;
+        }
+
+        /* ===== 交渉ステータスバナー ===== */
+        .nego-banner {
+            background: var(--color-social-container);
+            border-bottom: 1px solid #F5DCC8;
+            padding: var(--space-2) var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nego-banner-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .nego-banner-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--color-social);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+        }
+
+        .nego-banner-icon .material-symbols-outlined {
+            font-size: 18px;
+        }
+
+        .nego-banner-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nego-banner-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+        }
+
+        .nego-banner-status {
+            font-size: var(--font-size-xs);
+            color: var(--color-social);
+        }
+
+        .nego-banner-action {
+            padding: 8px 16px;
+            background: var(--color-social);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-white);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            text-decoration: none;
+        }
+
+        .nego-banner-action:hover {
+            opacity: 0.9;
+        }
+
+        .nego-banner-action .material-symbols-outlined {
+            font-size: 16px;
+        }
+
+        /* ===== メインコンテンツ（契約書） ===== */
+        .hubble-content {
+            flex: 1;
+            background: var(--bg-note);
+            overflow-y: auto;
+            padding: var(--space-6);
+        }
+
+        .document-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-10);
+        }
+
+        .doc-main-title {
+            text-align: center;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-heading);
+            margin-bottom: var(--space-4);
+            letter-spacing: 0.5em;
+            padding-left: 0.5em;
+        }
+
+        .doc-subtitle {
+            text-align: center;
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            margin-bottom: var(--space-8);
+        }
+
+        .doc-preamble {
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            line-height: 1.8;
+            margin-bottom: var(--space-8);
+            text-indent: 1em;
+        }
+
+        .doc-article {
+            margin-bottom: var(--space-6);
+        }
+
+        .article-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-heading);
+            margin-bottom: var(--space-2);
+        }
+
+        .article-content {
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            line-height: 1.8;
+        }
+
+        /* 署名欄 */
+        .signature-section {
+            margin-top: var(--space-10);
+            padding-top: var(--space-8);
+            border-top: 1px solid var(--border-default);
+        }
+
+        .signature-date {
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+
+        .signature-date-line {
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            text-align: center;
+            margin-bottom: var(--space-8);
+            letter-spacing: 0.5em;
+        }
+
+        .signature-block {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+
+        .signature-party-section {
+            padding: var(--space-4);
+            background: var(--bg-note);
+            border-radius: var(--radius-md);
+        }
+
+        .signature-party-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-heading);
+            margin-bottom: var(--space-2);
+        }
+
+        .signature-party-content {
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            line-height: 1.8;
+        }
+
+        /* ===== 右サイドバー（コメント） ===== */
+        .hubble-comments {
+            width: 360px;
+            background: var(--color-white);
+            border-left: 1px solid var(--border-default);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comments-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .comments-title {
+            font-size: var(--font-size-md);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+        }
+
+        .comments-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-assist);
+            cursor: pointer;
+        }
+
+        .comments-enter-hint {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+        }
+
+        .comments-enter-hint input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* コメントタブ */
+        .comments-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .comments-tab {
+            flex: 1;
+            padding: var(--space-3) var(--space-4);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--text-assist);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .comments-tab:hover {
+            color: var(--text-heading);
+        }
+
+        .comments-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* コメントリスト */
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-4);
+            background: var(--color-white);
+        }
+
+        .comments-version-label {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-assist);
+            margin-bottom: var(--space-3);
+            text-align: center;
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-white);
+            border-radius: var(--radius-full);
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* コメント - 共通 */
+        .comment-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: var(--space-4);
+        }
+
+        .comment-item-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-1);
+        }
+
+        .comment-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: var(--font-weight-semibold);
+            flex-shrink: 0;
+        }
+
+        .comment-avatar.internal {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .comment-avatar.external {
+            background: var(--color-social);
+            color: var(--color-white);
+        }
+
+        .comment-author {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+        }
+
+        .comment-time {
+            font-size: 10px;
+            color: var(--text-assist);
+        }
+
+        .comment-bubble {
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            line-height: 1.6;
+        }
+
+        /* 社内コメント - 囲みなし */
+        .comment-item.internal {
+            align-items: flex-start;
+        }
+
+        .comment-item.internal .comment-bubble {
+            background: transparent;
+        }
+
+        /* 交渉コメント - オレンジ縦線 + オレンジ背景 */
+        .comment-item.external {
+            align-items: flex-start;
+        }
+
+        .comment-item.external .comment-bubble {
+            background: var(--color-social-container);
+            border-left: 3px solid var(--color-social);
+            padding: var(--space-3);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .comment-item.external .nego-reply-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            margin-top: var(--space-2);
+            padding: 4px 10px;
+            background: var(--color-white);
+            border: 1px solid var(--color-social);
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            font-weight: var(--font-weight-medium);
+            color: var(--color-social);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .comment-item.external .nego-reply-link:hover {
+            background: var(--color-social-container);
+        }
+
+        /* 削除されたコメント */
+        .comment-item.deleted .comment-bubble {
+            background: var(--bg-note);
+            border-color: var(--border-default);
+        }
+
+        .comment-deleted-notice {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2);
+            background: rgba(0,0,0,0.05);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+            margin-bottom: var(--space-2);
+        }
+
+        .comment-deleted-toggle {
+            font-size: 10px;
+            color: var(--text-link);
+            cursor: pointer;
+            margin-top: var(--space-1);
+        }
+
+        .comment-deleted-original {
+            display: none;
+            padding: var(--space-2);
+            background: rgba(0,0,0,0.03);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+            margin-top: var(--space-2);
+        }
+
+        .comment-deleted-original.show {
+            display: block;
+        }
+
+        /* コメント入力 */
+        .comments-input {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border-default);
+            background: var(--color-white);
+        }
+
+        .comments-input-area {
+            padding: var(--space-3);
+            background: var(--bg-input);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-assist);
+            min-height: 60px;
+        }
+
+        /* ===== 共有確認モーダル ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            width: 480px;
+            max-width: 90vw;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4) var(--space-6);
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .modal-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-assist);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: var(--space-6);
+        }
+
+        .share-version-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+            margin-bottom: var(--space-3);
+        }
+
+        .share-documents-list {
+            background: var(--bg-note);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .share-document-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) 0;
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+        }
+
+        .share-document-item .material-symbols-outlined {
+            font-size: 18px;
+            color: var(--text-assist);
+        }
+
+        .share-document-version {
+            margin-left: auto;
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+        }
+
+        .share-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            padding: var(--space-3);
+            background: #FFF8E1;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: #856404;
+        }
+
+        .share-warning .material-symbols-outlined {
+            font-size: 20px;
+            color: #F9A825;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-3);
+            padding: var(--space-4) var(--space-6);
+            border-top: 1px solid var(--border-default);
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .modal-btn.cancel {
+            background: var(--color-white);
+            border: 1px solid var(--border-default);
+            color: var(--text-default);
+        }
+
+        .modal-btn.cancel:hover {
+            background: var(--bg-hover);
+        }
+
+        .modal-btn.primary {
+            background: var(--color-primary);
+            border: none;
+            color: var(--color-white);
+        }
+
+        .modal-btn.primary:hover {
+            opacity: 0.9;
+        }
+
+        .modal-btn.primary:disabled {
+            background: var(--bg-note);
+            color: var(--text-assist);
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        /* ===== 招待モーダル用スタイル ===== */
+        .invite-permission-selector {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .invite-permission-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: var(--space-3);
+            background: var(--color-white);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .invite-permission-option:hover {
+            border-color: var(--color-social);
+        }
+
+        .invite-permission-option.selected {
+            border-color: var(--color-social);
+            background: var(--color-social-container);
+        }
+
+        .invite-permission-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            flex: 1;
+        }
+
+        .invite-permission-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-note);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-assist);
+        }
+
+        .invite-permission-option.selected .invite-permission-icon {
+            background: var(--color-social);
+            color: var(--color-white);
+        }
+
+        .invite-permission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .invite-permission-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+        }
+
+        .invite-permission-desc {
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+        }
+
+        .invite-permission-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-default);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+            transition: all var(--transition-normal);
+        }
+
+        .invite-permission-option.selected .invite-permission-check {
+            border-color: var(--color-social);
+            background: var(--color-social);
+            color: var(--color-white);
+        }
+
+        .invite-emails-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            margin-bottom: var(--space-2);
+        }
+
+        .invite-email-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--bg-note);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+        }
+
+        .invite-email-item .material-symbols-outlined {
+            font-size: 16px;
+            color: var(--text-assist);
+        }
+
+        .invite-email-text {
+            flex: 1;
+            color: var(--text-default);
+        }
+
+        .invite-email-remove {
+            background: none;
+            border: none;
+            color: var(--text-assist);
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invite-email-remove:hover {
+            color: var(--color-danger);
+        }
+
+        .invite-email-input-row {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .invite-email-input {
+            flex: 1;
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            outline: none;
+            transition: border-color var(--transition-normal);
+        }
+
+        .invite-email-input:focus {
+            border-color: var(--color-social);
+        }
+
+        .invite-add-email-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--color-social);
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--color-white);
+            font-size: 20px;
+            cursor: pointer;
+            transition: opacity var(--transition-normal);
+        }
+
+        .invite-add-email-btn:hover {
+            opacity: 0.9;
+        }
+
+        .invite-divider {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin: var(--space-4) 0;
+            color: var(--text-assist);
+            font-size: var(--font-size-xs);
+        }
+
+        .invite-divider::before,
+        .invite-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-default);
+        }
+
+        .invite-link-row {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .invite-link-input {
+            flex: 1;
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-assist);
+            background: var(--bg-note);
+            outline: none;
+        }
+
+        .invite-copy-btn {
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-white);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-default);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            transition: all var(--transition-normal);
+        }
+
+        .invite-copy-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .invite-link-note {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-1);
+            margin-top: var(--space-2);
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+        }
+
+        .invite-link-note .material-symbols-outlined {
+            font-size: 14px;
+            color: #F9A825;
+        }
+
+        /* ===== トースト通知 ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-inverse);
+            color: var(--color-white);
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: all var(--transition-normal);
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="hubble-header">
+        <div class="hubble-header-left">
+            <div class="hubble-logo">Hubble</div>
+            <div class="hubble-breadcrumb">
+                <a href="#">ドキュメント</a>
+                <span class="material-symbols-outlined icon-xs">chevron_right</span>
+                <a href="#">シリーズB</a>
+                <span class="material-symbols-outlined icon-xs">chevron_right</span>
+                <span class="hubble-breadcrumb-current">株主間契約書</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ツールバー -->
+    <div class="hubble-toolbar">
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">refresh</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">download</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">upload</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">print</span></button>
+        <div class="hubble-toolbar-divider"></div>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">visibility</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">search</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">zoom_in</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">zoom_out</span></button>
+        <div class="hubble-toolbar-divider"></div>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">link</span></button>
+        <button class="hubble-toolbar-btn"><span class="material-symbols-outlined icon-sm">task_alt</span></button>
+        <div class="hubble-toolbar-spacer"></div>
+        <button class="hubble-toolbar-btn share-nego" onclick="openShareModal()">
+            <span class="material-symbols-outlined icon-sm">send</span>
+            交渉相手に共有
+        </button>
+        <button class="hubble-toolbar-btn word-edit">
+            <span class="material-symbols-outlined icon-sm">edit</span>
+            Wordで編集
+        </button>
+    </div>
+
+    <!-- メインコンテナ -->
+    <div class="hubble-main">
+        <!-- 左サイドバー（バージョン管理） -->
+        <aside class="hubble-sidebar">
+            <div class="hubble-sidebar-header">Ver.</div>
+
+            <div class="version-list">
+                <div class="version-item selected" onclick="selectVersion(this)">
+                    <div class="version-number-box">3</div>
+                    <div class="version-info">
+                        <div class="version-meta">1/28 14:15</div>
+                    </div>
+                </div>
+                <div class="version-item" onclick="selectVersion(this)">
+                    <div class="version-number-box">2</div>
+                    <div class="version-info">
+                        <div class="version-meta">1/27 11:30</div>
+                    </div>
+                </div>
+                <div class="version-item" onclick="selectVersion(this)">
+                    <div class="version-number-box">1</div>
+                    <div class="version-info">
+                        <div class="version-meta">1/25 10:00</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- メインコンテンツ -->
+        <main class="hubble-content">
+            <div class="document-container">
+                <div class="doc-main-title">株 主 間 契 約 書</div>
+                <div class="doc-subtitle">（シリーズ B サードクローズ）</div>
+
+                <div class="doc-preamble">
+                    下欄記載の当事者は、発行会社の運営及び発行会社の株式の取扱い等に関し、以下のとおり合意し、この契約（以下「本契約」という。）を締結する（別紙２「加入契約書」の締結を含む。）。なお、DNX、ATV、MF、SFV、VU、MUCAP、ZVC、砂川氏、藤井氏、ドラブキン氏、JIC/VGI、SMBC日興、パーソル、阿波銀、弁コム、普通株主、発行会社及び経営株主間の2025年4月4日付け株主間契約書（シリーズBセカンドクローズ）は、本契約の締結をもって失効する。
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第1条（定義）</div>
+                    <div class="article-content">
+                        本契約において使用する以下の用語は、それぞれ以下に定める意味を有するものとする。<br><br>
+                        「A種投資家」とは、本契約締結日において発行会社のA種優先株式を保有する株主をいう。<br>
+                        「B種投資家」とは、本契約締結日において発行会社のB種優先株式を保有する株主をいう。<br>
+                        「投資家」とは、A種投資家及びB種投資家の総称をいう。<br>
+                        「経営株主」とは、発行会社の創業者である〇〇及び〇〇をいう。<br>
+                        「普通株主」とは、発行会社の普通株式を保有する株主（経営株主を除く）をいう。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第2条（株式の譲渡制限）</div>
+                    <div class="article-content">
+                        1. 経営株主及び普通株主は、発行会社の事前の書面による承諾なく、保有する発行会社の株式を第三者に譲渡、担保設定その他の処分をしてはならない。<br>
+                        2. 前項の規定にかかわらず、投資家は、その関連会社に対して株式を譲渡することができる。ただし、当該関連会社が関連会社でなくなった場合には、当該株式を譲渡した投資家に対して直ちに当該株式を譲渡しなければならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第3条（優先引受権）</div>
+                    <div class="article-content">
+                        1. 発行会社が新たに株式又は新株予約権を発行する場合、投資家は、その保有株式数に応じて、当該新規発行株式等を優先的に引き受ける権利を有する。<br>
+                        2. 発行会社は、新規発行を行おうとする場合、発行の30日前までに、投資家に対し、発行する株式等の種類、数量、価格その他の条件を書面により通知しなければならない。<br>
+                        3. 投資家は、前項の通知を受領した日から14日以内に、発行会社に対し、引受けの意思及び引受数量を書面により通知しなければならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第4条（情報提供）</div>
+                    <div class="article-content">
+                        1. 発行会社は、投資家に対し、以下の情報を提供するものとする。<br>
+                        （1）年度事業計画及び予算（毎事業年度開始後30日以内）<br>
+                        （2）月次財務諸表（翌月15日まで）<br>
+                        （3）監査済み年次財務諸表（事業年度終了後90日以内）<br>
+                        （4）株主総会及び取締役会の議事録（開催後14日以内）<br>
+                        2. 発行会社は、投資家から合理的な範囲で追加の情報提供を求められた場合、これに応じるものとする。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第5条（取締役会へのオブザーバー参加）</div>
+                    <div class="article-content">
+                        1. 投資家は、発行会社の取締役会にオブザーバーを派遣する権利を有する。<br>
+                        2. オブザーバーは、取締役会において意見を述べることができるが、議決権を有しない。<br>
+                        3. 発行会社は、取締役会の開催日時及び場所を、開催の7日前までにオブザーバーに通知しなければならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第6条（重要事項の事前承認）</div>
+                    <div class="article-content">
+                        発行会社は、以下の事項を行おうとする場合、投資家の事前の書面による承認を得なければならない。<br>
+                        （1）定款の変更<br>
+                        （2）株式の発行、自己株式の取得又は処分<br>
+                        （3）合併、会社分割、株式交換、株式移転又は事業譲渡<br>
+                        （4）解散又は清算<br>
+                        （5）1億円を超える借入れ又は債務保証<br>
+                        （6）関連当事者との重要な取引<br>
+                        （7）役員報酬の決定又は変更
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第7条（共同売却権）</div>
+                    <div class="article-content">
+                        1. 経営株主が第三者に対して株式を譲渡しようとする場合、投資家は、経営株主と同一の条件で、その保有する株式の全部又は一部を当該第三者に売却する権利を有する。<br>
+                        2. 経営株主は、株式の譲渡を行おうとする場合、譲渡の30日前までに、投資家に対し、譲渡先、譲渡価格その他の条件を書面により通知しなければならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第8条（ドラッグアロング権）</div>
+                    <div class="article-content">
+                        1. 投資家が、発行会社の株式の過半数を取得しようとする第三者に対して株式を譲渡する場合において、当該譲渡により当該第三者が発行会社の発行済株式総数の過半数を取得することとなるときは、投資家は、経営株主及び普通株主に対し、その保有する株式の全部を同一の条件で当該第三者に譲渡することを請求することができる。<br>
+                        2. 前項の請求を受けた経営株主及び普通株主は、当該請求に従わなければならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第9条（先買権）</div>
+                    <div class="article-content">
+                        1. 経営株主又は普通株主が株式を第三者に譲渡しようとする場合、投資家は、当該第三者と同一の条件で、当該株式を優先的に買い取る権利を有する。<br>
+                        2. 譲渡を希望する株主は、譲渡の30日前までに、投資家に対し、譲渡先、譲渡価格その他の条件を書面により通知しなければならない。<br>
+                        3. 投資家は、前項の通知を受領した日から14日以内に、先買権を行使するか否かを書面により通知しなければならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第10条（株式公開への協力）</div>
+                    <div class="article-content">
+                        1. 当事者は、発行会社の株式公開に向けて、相互に協力するものとする。<br>
+                        2. 発行会社は、本契約締結後5年以内に株式公開を目指すものとし、株式公開に必要な体制整備を行うものとする。<br>
+                        3. 株式公開に際し、投資家は、主幹事証券会社が求めるロックアップに応じるものとする。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第11条（競業避止）</div>
+                    <div class="article-content">
+                        1. 経営株主は、発行会社の取締役在任中及び退任後2年間、発行会社の事業と競合する事業を自ら行い、又は競合する事業を行う会社の役員若しくは従業員となってはならない。<br>
+                        2. 経営株主は、発行会社の取締役在任中及び退任後2年間、発行会社の役員又は従業員を勧誘してはならない。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第12条（秘密保持）</div>
+                    <div class="article-content">
+                        1. 当事者は、本契約に関連して知り得た相手方の秘密情報を、相手方の事前の書面による承諾なく、第三者に開示又は漏洩してはならない。<br>
+                        2. 前項の規定にかかわらず、法令又は金融商品取引所の規則により開示が義務付けられている場合、当事者は当該情報を開示することができる。ただし、開示に先立ち、相手方に通知するものとする。<br>
+                        3. 本条の義務は、本契約終了後も3年間存続する。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第13条（表明保証）</div>
+                    <div class="article-content">
+                        1. 発行会社及び経営株主は、投資家に対し、以下の事項が真実かつ正確であることを表明し、保証する。<br>
+                        （1）発行会社は、日本法に基づき適法に設立され、有効に存続する株式会社であること<br>
+                        （2）発行会社は、本契約を締結し、履行する権限を有すること<br>
+                        （3）本契約の締結及び履行が、発行会社の定款その他の内部規則に違反しないこと<br>
+                        （4）発行会社に対する訴訟、仲裁その他の法的手続が係属していないこと<br>
+                        2. 表明保証に違反した場合、違反した当事者は、相手方に対し、これにより生じた損害を賠償するものとする。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第14条（契約期間）</div>
+                    <div class="article-content">
+                        1. 本契約は、本契約締結日から効力を生じ、以下のいずれか早い時点まで有効とする。<br>
+                        （1）発行会社の株式が金融商品取引所に上場された日<br>
+                        （2）当事者全員の書面による合意により本契約が終了した日<br>
+                        （3）発行会社が解散した日<br>
+                        2. 前項の規定にかかわらず、第12条（秘密保持）の規定は、本契約終了後も存続する。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第15条（準拠法及び管轄）</div>
+                    <div class="article-content">
+                        1. 本契約は、日本法に準拠し、日本法に従って解釈されるものとする。<br>
+                        2. 本契約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とする。
+                    </div>
+                </div>
+
+                <div class="doc-article">
+                    <div class="article-title">第16条（協議事項）</div>
+                    <div class="article-content">
+                        本契約に定めのない事項又は本契約の解釈に疑義が生じた場合には、当事者は、誠実に協議の上、解決するものとする。
+                    </div>
+                </div>
+
+                <!-- 署名欄 -->
+                <div class="signature-section">
+                    <div class="signature-date">
+                        本契約締結の証として、本書を当事者の数と同数作成し、各当事者が記名押印の上、各1通を保有する。
+                    </div>
+                    <div class="signature-date-line">
+                        2026年　　月　　日
+                    </div>
+
+                    <div class="signature-block">
+                        <div class="signature-party-section">
+                            <div class="signature-party-label">【発行会社】</div>
+                            <div class="signature-party-content">
+                                住所：東京都渋谷区〇〇1-2-3<br>
+                                会社名：株式会社Hubble<br>
+                                代表者：代表取締役　早川　晋平
+                            </div>
+                        </div>
+                        <div class="signature-party-section">
+                            <div class="signature-party-label">【経営株主】</div>
+                            <div class="signature-party-content">
+                                住所：東京都〇〇区〇〇<br>
+                                氏名：早川　晋平
+                            </div>
+                        </div>
+                        <div class="signature-party-section">
+                            <div class="signature-party-label">【A種投資家】</div>
+                            <div class="signature-party-content">
+                                住所：東京都港区〇〇4-5-6<br>
+                                会社名：DNX Partners 3号投資事業有限責任組合<br>
+                                無限責任組合員：DNX Partners III, LP
+                            </div>
+                        </div>
+                        <div class="signature-party-section">
+                            <div class="signature-party-label">【B種投資家】</div>
+                            <div class="signature-party-content">
+                                住所：東京都千代田区〇〇7-8-9<br>
+                                会社名：Archetype Venture Fund 2号投資事業有限責任組合<br>
+                                無限責任組合員：Archetype Ventures GP II, LLC
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 右サイドバー（コメント） -->
+        <aside class="hubble-comments">
+            <div class="comments-header">
+                <span class="comments-title">コメント</span>
+                <div class="comments-enter-hint">
+                    <input type="checkbox" id="enterSubmit">
+                    <label for="enterSubmit">Enterで送信する</label>
+                </div>
+            </div>
+
+            <div class="comments-tabs">
+                <button class="comments-tab active" onclick="switchTab(this, 'all')">全体</button>
+                <button class="comments-tab" onclick="switchTab(this, 'legal')">法務</button>
+            </div>
+
+            <div class="comments-list">
+                <div class="comments-version-label">Ver.3 のコメント</div>
+
+                <!-- 社内コメント -->
+                <div class="comment-item internal">
+                    <div class="comment-item-header">
+                        <div class="comment-avatar internal">田</div>
+                        <span class="comment-author">田中（法務）</span>
+                        <span class="comment-time">1/28 11:30</span>
+                    </div>
+                    <div class="comment-bubble">
+                        レビュー完了しました。3条と7条を修正しています。先方に送って大丈夫です。
+                    </div>
+                </div>
+
+                <!-- 社内コメント -->
+                <div class="comment-item internal">
+                    <div class="comment-item-header">
+                        <div class="comment-avatar internal">山</div>
+                        <span class="comment-author">山本（営業）</span>
+                        <span class="comment-time">1/28 10:00</span>
+                    </div>
+                    <div class="comment-bubble">
+                        @田中さん 先方との打ち合わせで合意した内容を反映しました。法務レビューお願いします。
+                    </div>
+                </div>
+
+                <div class="comments-version-label" style="margin-top: var(--space-4);">Ver.2 のコメント</div>
+
+                <!-- 社内コメント -->
+                <div class="comment-item internal">
+                    <div class="comment-item-header">
+                        <div class="comment-avatar internal">田</div>
+                        <span class="comment-author">田中（法務）</span>
+                        <span class="comment-time">1/27 15:00</span>
+                    </div>
+                    <div class="comment-bubble">
+                        初稿を確認しました。いくつか修正が必要な箇所があります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="comments-input">
+                <div class="comments-input-area">
+                    @を入力して送信する相手を指定してコメントしてください。
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 初回共有モーダル -->
+    <div class="modal-overlay" id="shareModal">
+        <div class="modal-content" style="width: 560px;">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="material-symbols-outlined">group_add</span>
+                    交渉相手を招待
+                </div>
+                <button class="modal-close" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: var(--space-5) var(--space-6);">
+                <!-- 共有するバージョン情報 -->
+                <div style="margin-bottom: var(--space-5);">
+                    <div class="share-version-label">共有するバージョン</div>
+                    <div class="share-documents-list" style="margin-bottom: 0;">
+                        <div class="share-document-item">
+                            <span class="material-symbols-outlined">description</span>
+                            株主間契約書
+                            <span class="share-document-version">Ver.3（最新）</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 権限選択 -->
+                <div style="margin-bottom: var(--space-5);">
+                    <div class="share-version-label">この相手の権限</div>
+                    <div class="invite-permission-selector">
+                        <label class="invite-permission-option selected" data-permission="signer" onclick="selectPermission(this, 'signer')">
+                            <input type="radio" name="invitePermission" value="signer" checked hidden>
+                            <div class="invite-permission-content">
+                                <div class="invite-permission-icon"><span class="material-symbols-outlined">key</span></div>
+                                <div class="invite-permission-info">
+                                    <div class="invite-permission-title">合意権限あり</div>
+                                    <div class="invite-permission-desc">契約への合意が可能</div>
+                                </div>
+                            </div>
+                            <div class="invite-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
+                        </label>
+                        <label class="invite-permission-option" data-permission="member" onclick="selectPermission(this, 'member')">
+                            <input type="radio" name="invitePermission" value="member" hidden>
+                            <div class="invite-permission-content">
+                                <div class="invite-permission-icon"><span class="material-symbols-outlined">person</span></div>
+                                <div class="invite-permission-info">
+                                    <div class="invite-permission-title">メンバー</div>
+                                    <div class="invite-permission-desc">閲覧・編集・コメントのみ</div>
+                                </div>
+                            </div>
+                            <div class="invite-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- メールアドレスで招待 -->
+                <div style="margin-bottom: var(--space-4);">
+                    <div class="share-version-label">メールアドレスで招待</div>
+                    <div class="invite-emails-list" id="inviteEmailsList">
+                        <!-- 招待メールリストがここに表示される -->
+                    </div>
+                    <div class="invite-email-input-row">
+                        <input type="email" class="invite-email-input" id="inviteEmailInput" placeholder="メールアドレスを入力...">
+                        <button class="invite-add-email-btn" onclick="addInviteEmail()">+</button>
+                    </div>
+                </div>
+
+                <!-- 区切り線 -->
+                <div class="invite-divider">
+                    <span>または</span>
+                </div>
+
+                <!-- 招待リンク -->
+                <div>
+                    <div class="share-version-label"><span class="material-symbols-outlined icon-sm" style="vertical-align: middle;">link</span> 招待リンクをコピー</div>
+                    <div class="invite-link-row">
+                        <input type="text" class="invite-link-input" id="inviteLinkInput" value="https://nego.app/join/x7k2mP9qL..." readonly>
+                        <button class="invite-copy-btn" onclick="copyInviteLink()"><span class="material-symbols-outlined icon-sm">content_copy</span> コピー</button>
+                    </div>
+                    <p class="invite-link-note"><span class="material-symbols-outlined icon-sm">lightbulb</span> 招待された方は契約書を閲覧できます。編集・合意にはサインインが必要です。</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeShareModal()">キャンセル</button>
+                <button class="modal-btn primary" style="background: var(--color-social);" onclick="confirmShare()" id="inviteSubmitBtn" disabled>
+                    <span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                    招待して交渉を開始
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- トースト -->
+    <div class="toast" id="toast">交渉相手に共有しました</div>
+
+    <script>
+        // 招待メールリスト
+        let inviteEmails = [];
+
+        // バージョン選択
+        function selectVersion(item) {
+            document.querySelectorAll('.version-item').forEach(v => v.classList.remove('selected'));
+            item.classList.add('selected');
+        }
+
+        // コメントタブ切り替え
+        function switchTab(tab, type) {
+            document.querySelectorAll('.comments-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+        }
+
+        // 削除されたコメントの表示切り替え
+        function toggleDeletedComment(toggle) {
+            const original = toggle.nextElementSibling;
+            original.classList.toggle('show');
+            toggle.textContent = original.classList.contains('show') ? '▲ 閉じる' : '▼ 元の内容を表示';
+        }
+
+        // 共有モーダル
+        function openShareModal() {
+            document.getElementById('shareModal').classList.add('show');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('show');
+            // モーダルをリセット
+            inviteEmails = [];
+            renderInviteEmails();
+            document.getElementById('inviteEmailInput').value = '';
+            updateInviteSubmitButton();
+        }
+
+        // 権限選択
+        function selectPermission(element, permission) {
+            document.querySelectorAll('.invite-permission-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // メールアドレス追加
+        function addInviteEmail() {
+            const input = document.getElementById('inviteEmailInput');
+            const email = input.value.trim();
+
+            if (email && isValidEmail(email) && !inviteEmails.includes(email)) {
+                inviteEmails.push(email);
+                renderInviteEmails();
+                input.value = '';
+                updateInviteSubmitButton();
+            }
+        }
+
+        // メールアドレス削除
+        function removeInviteEmail(email) {
+            inviteEmails = inviteEmails.filter(e => e !== email);
+            renderInviteEmails();
+            updateInviteSubmitButton();
+        }
+
+        // メールリスト描画
+        function renderInviteEmails() {
+            const list = document.getElementById('inviteEmailsList');
+            if (inviteEmails.length === 0) {
+                list.innerHTML = '';
+                return;
+            }
+
+            list.innerHTML = inviteEmails.map(email => `
+                <div class="invite-email-item">
+                    <span class="material-symbols-outlined">mail</span>
+                    <span class="invite-email-text">${email}</span>
+                    <button class="invite-email-remove" onclick="removeInviteEmail('${email}')">
+                        <span class="material-symbols-outlined icon-sm">close</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // メール形式チェック
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // 送信ボタン状態更新
+        function updateInviteSubmitButton() {
+            const btn = document.getElementById('inviteSubmitBtn');
+            btn.disabled = inviteEmails.length === 0;
+        }
+
+        // 招待リンクコピー
+        function copyInviteLink() {
+            const input = document.getElementById('inviteLinkInput');
+            input.select();
+            document.execCommand('copy');
+            showToast('招待リンクをコピーしました');
+        }
+
+        // Enterキーでメール追加
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('inviteEmailInput');
+            if (emailInput) {
+                emailInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addInviteEmail();
+                    }
+                });
+            }
+        });
+
+        function confirmShare() {
+            closeShareModal();
+            showToast('招待を送信しました！Negoに移動します...');
+            setTimeout(() => {
+                window.location.href = 'hubble-ui.html';
+            }, 1500);
+        }
+
+        // トースト表示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // モーダル外クリックで閉じる
+        document.getElementById('shareModal').addEventListener('click', function(e) {
+            if (e.target === this) closeShareModal();
+        });
+    </script>
+</body>
+</html>

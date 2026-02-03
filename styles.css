@@ -364,6 +364,18 @@ body {
     cursor: default;
 }
 
+.header-btn.hubble-link {
+    text-decoration: none;
+    background: var(--color-primary-container);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.header-btn.hubble-link:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
 /* メインコンテナ - 2カラム */
 .main-wrapper {
     display: flex;
@@ -1301,6 +1313,93 @@ body {
     background: var(--border-default);
     color: var(--text-assist);
     cursor: not-allowed;
+}
+
+/* バージョンステータスインジケーター（Hubble連携） */
+.version-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.version-status-indicator.internal {
+    color: var(--color-primary);
+}
+
+.version-status-indicator.external {
+    color: var(--color-social);
+}
+
+/* バージョン所属ラベル（自社/先方） */
+.version-party-label {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+    font-size: 10px;
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.version-party-label.internal {
+    background: var(--color-primary-container);
+    color: var(--color-primary);
+}
+
+.version-party-label.external {
+    background: var(--color-social-container);
+    color: var(--color-social);
+}
+
+.version-comment-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-full);
+    font-size: 10px;
+}
+
+.version-dot.external {
+    background: var(--color-social) !important;
+    border-color: var(--color-social) !important;
+}
+
+/* 交渉ステータス（バージョンツリー内） */
+.version-tree-status {
+    padding: 12px;
+    background: var(--bg-note);
+    border-top: 1px solid var(--border-default);
+}
+
+.version-tree-status-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-assist);
+    margin-bottom: 8px;
+}
+
+.version-tree-status-content {
+    font-size: var(--font-size-sm);
+}
+
+.version-tree-status-content .status-line {
+    color: var(--text-heading);
+    font-weight: 500;
+}
+
+.version-tree-status-content .status-line.sub {
+    color: var(--text-assist);
+    font-weight: normal;
+    font-size: var(--font-size-xs);
+    margin-top: 2px;
 }
 
 .contract-content-inner {

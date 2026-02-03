@@ -179,6 +179,9 @@
             </div>
         </div>
         <div class="header-actions">
+            <a href="hubble-ui.html" class="header-btn hubble-link">
+                <span class="material-symbols-outlined icon-sm">open_in_new</span> Hubbleで見る
+            </a>
             <button class="header-btn primary agree-btn" id="agreeBtn" onclick="agreeContract()">
                 <span class="material-symbols-outlined icon-sm">check_circle</span> この内容で合意
             </button>
@@ -387,7 +390,7 @@
                                 </label>
                             </div>
                             <div class="version-tree-list">
-                                <!-- Ver 8 (現在) -->
+                                <!-- Ver 8 (現在・共有中) -->
                                 <div class="version-item current" data-version="8">
                                     <div class="version-node">
                                         <div class="version-line"></div>
@@ -399,6 +402,7 @@
                                             <span class="version-badge current">最新</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label internal">自社</span>
                                             <span class="version-editor">田中太郎</span>
                                             <span class="version-date">01/28 14:15</span>
                                         </div>
@@ -408,17 +412,18 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="8">
                                     </div>
                                 </div>
-                                <!-- Ver 7 -->
+                                <!-- Ver 7 (相手から) -->
                                 <div class="version-item" data-version="7">
                                     <div class="version-node">
                                         <div class="version-line"></div>
-                                        <div class="version-dot"></div>
+                                        <div class="version-dot external"></div>
                                     </div>
                                     <div class="version-info">
                                         <div class="version-header">
                                             <span class="version-number">Ver. 7</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label external">先方</span>
                                             <span class="version-editor">佐藤一郎</span>
                                             <span class="version-date">01/28 11:35</span>
                                         </div>
@@ -428,7 +433,7 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="7">
                                     </div>
                                 </div>
-                                <!-- Ver 6 -->
+                                <!-- Ver 6 (共有済み) -->
                                 <div class="version-item" data-version="6">
                                     <div class="version-node">
                                         <div class="version-line"></div>
@@ -439,6 +444,7 @@
                                             <span class="version-number">Ver. 6</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label internal">自社</span>
                                             <span class="version-editor">田中太郎</span>
                                             <span class="version-date">01/28 10:20</span>
                                         </div>
@@ -448,17 +454,18 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="6">
                                     </div>
                                 </div>
-                                <!-- Ver 5 -->
+                                <!-- Ver 5 (相手から) -->
                                 <div class="version-item" data-version="5">
                                     <div class="version-node">
                                         <div class="version-line"></div>
-                                        <div class="version-dot"></div>
+                                        <div class="version-dot external"></div>
                                     </div>
                                     <div class="version-info">
                                         <div class="version-header">
                                             <span class="version-number">Ver. 5</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label external">先方</span>
                                             <span class="version-editor">佐藤一郎</span>
                                             <span class="version-date">01/27 16:40</span>
                                         </div>
@@ -468,7 +475,7 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="5">
                                     </div>
                                 </div>
-                                <!-- Ver 4 -->
+                                <!-- Ver 4 (共有済み) -->
                                 <div class="version-item" data-version="4">
                                     <div class="version-node">
                                         <div class="version-line"></div>
@@ -479,6 +486,7 @@
                                             <span class="version-number">Ver. 4</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label internal">自社</span>
                                             <span class="version-editor">田中太郎</span>
                                             <span class="version-date">01/27 14:20</span>
                                         </div>
@@ -488,17 +496,18 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="4">
                                     </div>
                                 </div>
-                                <!-- Ver 3 -->
+                                <!-- Ver 3 (相手から) -->
                                 <div class="version-item" data-version="3">
                                     <div class="version-node">
                                         <div class="version-line"></div>
-                                        <div class="version-dot"></div>
+                                        <div class="version-dot external"></div>
                                     </div>
                                     <div class="version-info">
                                         <div class="version-header">
                                             <span class="version-number">Ver. 3</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label external">先方</span>
                                             <span class="version-editor">佐藤一郎</span>
                                             <span class="version-date">01/26 11:00</span>
                                         </div>
@@ -508,7 +517,7 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="3">
                                     </div>
                                 </div>
-                                <!-- Ver 2 -->
+                                <!-- Ver 2 (共有済み) -->
                                 <div class="version-item" data-version="2">
                                     <div class="version-node">
                                         <div class="version-line"></div>
@@ -519,6 +528,7 @@
                                             <span class="version-number">Ver. 2</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label internal">自社</span>
                                             <span class="version-editor">田中太郎</span>
                                             <span class="version-date">01/25 15:30</span>
                                         </div>
@@ -528,7 +538,7 @@
                                         <input type="checkbox" class="compare-checkbox" data-version="2">
                                     </div>
                                 </div>
-                                <!-- Ver 1 (初版) -->
+                                <!-- Ver 1 (初版・Hubbleから取り込み) -->
                                 <div class="version-item" data-version="1">
                                     <div class="version-node first">
                                         <div class="version-line"></div>
@@ -540,6 +550,7 @@
                                             <span class="version-badge initial">初版</span>
                                         </div>
                                         <div class="version-meta">
+                                            <span class="version-party-label internal">自社</span>
                                             <span class="version-editor">佐藤一郎</span>
                                             <span class="version-date">01/24 10:00</span>
                                         </div>
