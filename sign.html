@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>署名依頼 - 業務委託基本契約書</title>
+    <link rel="icon" href="favicon-32.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap">
+    <link rel="stylesheet" href="hubble-design-tokens.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            background: #f5f6f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ヘッダーバー */
+        .sign-header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sign-header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .sign-header-logo .material-symbols-outlined {
+            font-size: 20px;
+            color: var(--color-primary, #4361ee);
+        }
+
+        .sign-header-divider {
+            width: 1px;
+            height: 20px;
+            background: #e5e7eb;
+        }
+
+        .sign-header-doc {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* メインコンテンツ */
+        .sign-main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        .sign-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06);
+            max-width: 640px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* カードヘッダー（依頼情報） */
+        .sign-card-header {
+            padding: 32px 32px 24px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sign-requester {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .sign-requester-sub {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .sign-message-card {
+            background: #f0f7ff;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 16px;
+        }
+
+        .sign-message-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4361ee;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sign-message-text {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        /* カードボディ */
+        .sign-card-body {
+            padding: 24px 32px 32px;
+        }
+
+        .sign-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .sign-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        /* AI要約 */
+        .sign-ai-summary {
+            background: #fafbfc;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .sign-ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #4361ee;
+            margin-bottom: 10px;
+        }
+
+        .sign-ai-points {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sign-ai-points li {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.5;
+            padding: 3px 0 3px 18px;
+            position: relative;
+        }
+
+        .sign-ai-points li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #4361ee;
+            font-weight: bold;
+        }
+
+        /* 契約書全文（PDFスタイル） */
+        .sign-contract-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4361ee;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 16px;
+        }
+
+        .sign-contract-toggle:hover {
+            background: #f0f7ff;
+            border-color: #4361ee;
+        }
+
+        .sign-contract-toggle .material-symbols-outlined {
+            transition: transform 0.3s;
+        }
+
+        .sign-contract-toggle.expanded .material-symbols-outlined {
+            transform: rotate(180deg);
+        }
+
+        /* PDF埋め込み風コンテナ */
+        .sign-pdf-container {
+            background: #525659;
+            border-radius: 10px;
+            padding: 20px 16px;
+            margin-bottom: 24px;
+            max-height: 560px;
+            overflow-y: auto;
+        }
+
+        .sign-pdf-container.collapsed {
+            display: none;
+        }
+
+        /* PDF用スクロールバー */
+        .sign-pdf-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .sign-pdf-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sign-pdf-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+        }
+        .sign-pdf-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* PDFページ（A4風） */
+        .sign-pdf-page {
+            background: white;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 48px 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            border-radius: 2px;
+        }
+
+        .sign-pdf-page .doc-main-title {
+            font-size: 17px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #1a1a2e;
+            letter-spacing: 0.15em;
+        }
+
+        .sign-pdf-page .doc-preamble {
+            font-size: 13px;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            color: #1a1a2e;
+            text-indent: 1em;
+        }
+
+        .sign-pdf-page .doc-article {
+            margin-bottom: 16px;
+        }
+
+        .sign-pdf-page .article-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .sign-pdf-page .article-content {
+            font-size: 13px;
+            line-height: 1.9;
+            color: #1a1a2e;
+        }
+
+        .sign-pdf-page .article-list {
+            padding-left: 20px;
+            margin: 4px 0;
+        }
+
+        /* PDF内 署名欄 */
+        .sign-pdf-page .contract-signature-section {
+            margin-top: 36px;
+            padding-top: 0;
+        }
+
+        .sign-pdf-page .contract-signature-closing {
+            font-size: 13px;
+            line-height: 2;
+            color: #1a1a2e;
+            text-indent: 1em;
+            margin-bottom: 24px;
+        }
+
+        .sign-pdf-page .contract-signature-date {
+            font-size: 13px;
+            color: #1a1a2e;
+            text-align: right;
+            margin-bottom: 32px;
+            letter-spacing: 0.3em;
+        }
+
+        .sign-pdf-page .contract-signature-block {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            padding-left: 15%;
+        }
+
+        .sign-pdf-page .contract-signature-party {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sign-pdf-page .contract-party-heading {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+            letter-spacing: 0.2em;
+        }
+
+        .sign-pdf-page .contract-party-row {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            line-height: 2;
+            color: #1a1a2e;
+        }
+
+        .sign-pdf-page .contract-party-label {
+            width: 48px;
+            flex-shrink: 0;
+            color: #6b7280;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+        }
+
+        .sign-pdf-page .contract-party-value {
+            flex: 1;
+        }
+
+        .sign-pdf-page .contract-seal-area {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 12px;
+        }
+
+        .sign-pdf-page .contract-seal-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: 2px solid #d10c4a;
+            border-radius: 50%;
+            color: #d10c4a;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* PDFページ番号 */
+        .sign-pdf-page-number {
+            text-align: center;
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* 署名セクション */
+        .sign-method-label {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 14px;
+        }
+
+        .sign-input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .sign-text-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .sign-text-input:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .sign-preview-label {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 12px;
+            margin-bottom: 6px;
+        }
+
+        .typed-signature-preview {
+            font-family: 'Klee One', cursive;
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a237e;
+            padding: 12px 16px;
+            background: #fafbfc;
+            border-bottom: 2px solid #1a237e;
+            border-radius: 0;
+            min-height: 56px;
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        .typed-signature-preview.placeholder {
+            color: #d1d5db;
+            font-style: italic;
+        }
+
+        .sign-canvas-container {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .sign-canvas-container canvas {
+            display: block;
+            width: 100%;
+        }
+
+        .sign-canvas-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .sign-canvas-clear {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 13px;
+            color: #6b7280;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .sign-canvas-clear:hover {
+            background: #f9fafb;
+        }
+
+        .seal-generator-preview {
+            width: 72px;
+            height: 72px;
+            border: 3px solid #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .seal-generator-preview .seal-text {
+            font-size: 22px;
+            font-weight: 900;
+            color: #dc2626;
+            letter-spacing: 2px;
+        }
+
+        .seal-generator-preview .seal-placeholder {
+            font-size: 12px;
+            color: #d1d5db;
+        }
+
+        /* 同意チェック */
+        .sign-confirm-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: #fafbfc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #374151;
+            transition: all 0.15s;
+        }
+
+        .sign-confirm-label:hover {
+            background: #f0f0f5;
+        }
+
+        .sign-confirm-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4361ee;
+        }
+
+        /* 確定ボタン */
+        .sign-submit-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: #3cb371;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.15s;
+        }
+
+        .sign-submit-btn:hover:not(:disabled) {
+            background: #2ea060;
+        }
+
+        .sign-submit-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        /* 成功画面 */
+        .sign-success-screen {
+            display: none;
+            text-align: center;
+            padding: 48px 32px;
+        }
+
+        .sign-success-screen.active {
+            display: block;
+        }
+
+        .sign-success-icon {
+            width: 80px;
+            height: 80px;
+            background: #dcfce7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: successPop 0.5s ease-out;
+        }
+
+        .sign-success-icon .material-symbols-outlined {
+            font-size: 40px;
+            color: #16a34a;
+        }
+
+        .sign-success-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .sign-success-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .sign-success-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            background: #f0f0f5;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4361ee;
+            text-decoration: none;
+        }
+
+        .sign-success-link:hover {
+            background: #e5e7f5;
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* フッター */
+        .sign-footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* 紙吹雪 */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .sign-input-area { margin-bottom: 8px; }
+
+        /* 転送リンク */
+        .sign-forward-section {
+            margin-top: 16px;
+        }
+
+        .sign-forward-divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin-bottom: 12px;
+        }
+
+        .sign-forward-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .sign-forward-link:hover {
+            border-color: #4361ee;
+            color: #4361ee;
+            background: #f8f9ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- 紙吹雪コンテナ -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- ヘッダー -->
+    <div class="sign-header">
+        <div class="sign-header-logo">
+            <span class="material-symbols-outlined">verified_user</span>
+            HubbleSign
+        </div>
+        <div class="sign-header-divider"></div>
+        <div class="sign-header-doc">業務委託基本契約書</div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="sign-main">
+        <div class="sign-card">
+            <!-- 通常表示（署名前） -->
+            <div id="signFormView">
+                <!-- カードヘッダー: 依頼情報 -->
+                <div class="sign-card-header">
+                    <div class="sign-requester" id="signRequester">佐藤一郎さん（株式会社ABC）から</div>
+                    <div class="sign-requester-sub">署名依頼が届いています</div>
+
+                    <div class="sign-message-card">
+                        <div class="sign-message-label">
+                            <span class="material-symbols-outlined" style="font-size:16px;">chat</span>
+                            メッセージ
+                        </div>
+                        <div class="sign-message-text" id="signMessage">交渉が完了しましたので、契約書の署名をお願いいたします。</div>
+                    </div>
+                </div>
+
+                <!-- カードボディ -->
+                <div class="sign-card-body">
+                    <!-- 契約の要点 -->
+                    <div class="sign-section-title">契約の要点</div>
+                    <div class="sign-ai-summary">
+                        <div class="sign-ai-badge">
+                            <span class="material-symbols-outlined" style="font-size:14px;">smart_toy</span>
+                            AIによる要約
+                        </div>
+                        <ul class="sign-ai-points">
+                            <li><strong>期間:</strong> 6ヶ月間（自動更新あり、解約は2ヶ月前通知）</li>
+                            <li><strong>報酬:</strong> 月額48万円（税別）、毎月末締め翌月末払い</li>
+                            <li><strong>秘密保持:</strong> 契約終了後3年間</li>
+                            <li><strong>知財:</strong> 成果物の権利は支払完了後に甲に帰属</li>
+                            <li><strong>損害賠償:</strong> 累計支払報酬額が上限</li>
+                        </ul>
+                    </div>
+
+                    <!-- 契約書全文（折りたたみ） -->
+                    <button class="sign-contract-toggle expanded" id="contractToggle" onclick="toggleContract()">
+                        <span class="material-symbols-outlined" style="font-size:18px;">description</span>
+                        契約書全文
+                        <span class="material-symbols-outlined" style="font-size:18px;">expand_more</span>
+                    </button>
+
+                    <div class="sign-pdf-container" id="contractContent">
+                        <div class="sign-pdf-page">
+                            <div class="doc-main-title">業務委託基本契約書</div>
+                            <div class="doc-preamble">株式会社ABC（以下「甲」という）と株式会社XYZ（以下「乙」という）は、甲が乙に委託する業務に関し、以下のとおり業務委託基本契約（以下「本契約」という）を締結する。</div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第1条（目的）</div>
+                                <div class="article-content">本契約は、甲が乙に対してデジタルマーケティング支援業務を委託し、乙がこれを受託するにあたり、甲乙間の権利義務関係を定めることを目的とする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第2条（業務内容）</div>
+                                <div class="article-content">1. 乙が甲に提供する本業務の具体的内容は、以下のとおりとする。
+                                    <div class="article-list">(1) Webサイトの運用・改善提案<br>(2) SNSマーケティング戦略の立案・実行<br>(3) 広告運用（リスティング広告、SNS広告等）<br>(4) 月次レポートの作成・報告<br>(5) その他、上記に付随する業務</div>
+                                2. 業務の詳細については、別途個別契約にて定めるものとする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第3条（契約期間）</div>
+                                <div class="article-content">1. 本契約の有効期間は、2026年2月1日から6ヶ月間とする。<br>2. 期間満了の2ヶ月前までに書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動更新されるものとし、以降も同様とする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第4条（報酬）</div>
+                                <div class="article-content">1. 甲は乙に対し、本業務の対価として、月額金48万円（消費税別）を支払うものとする。<br>2. 報酬の支払いは、毎月末日締め、翌月末日払いとする。<br>3. 振込手数料は甲の負担とする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第5条（経費）</div>
+                                <div class="article-content">本業務の遂行に必要な経費のうち、広告出稿費用その他甲が事前に承認した費用については、甲が実費を負担するものとする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第6条（秘密保持）</div>
+                                <div class="article-content">1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>2. 前項の義務は、本契約終了後3年間存続するものとする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第7条（知的財産権）</div>
+                                <div class="article-content">1. 本業務の遂行により生じた成果物に関する著作権その他の知的財産権は、報酬の支払い完了をもって甲に帰属するものとする。<br>2. 乙は、成果物について著作者人格権を行使しないものとする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第8条（再委託）</div>
+                                <div class="article-content">乙は、甲の事前の書面による承諾を得ることなく、本業務の全部又は一部を第三者に再委託してはならない。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第9条（契約解除）</div>
+                                <div class="article-content">甲又は乙は、相手方が契約に違反し是正されないとき、支払停止又は支払不能となったとき、その他重大な事由が生じたときは、何らの催告なく直ちに本契約を解除することができる。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第10条（損害賠償）</div>
+                                <div class="article-content">本契約に違反した当事者は、相手方に生じた損害を賠償するものとする。ただし、損害賠償の累計額は、甲が乙に支払った報酬の総額を上限とする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第11条（反社会的勢力の排除）</div>
+                                <div class="article-content">甲及び乙は、自ら又はその役員等が反社会的勢力に該当しないことを表明し、保証する。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第12条（権利義務の譲渡禁止）</div>
+                                <div class="article-content">甲及び乙は、相手方の事前の書面による承諾なく、本契約上の地位又は本契約に基づく権利義務の全部若しくは一部を第三者に譲渡し、又は担保に供してはならない。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第13条（協議事項）</div>
+                                <div class="article-content">本契約に定めのない事項又は本契約の解釈に疑義が生じた事項については、甲乙誠意をもって協議し、解決するものとする。</div>
+                            </div>
+
+                            <div class="doc-article">
+                                <div class="article-title">第14条（管轄裁判所）</div>
+                                <div class="article-content">本契約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とする。</div>
+                            </div>
+
+                            <!-- 署名欄 -->
+                            <div class="contract-signature-section">
+                                <div class="contract-signature-closing">
+                                    本契約締結の証として、本書2通を作成し、甲乙記名押印のうえ、各1通を保有する。
+                                </div>
+                                <div class="contract-signature-date">
+                                    2026年　　月　　日
+                                </div>
+
+                                <div class="contract-signature-block">
+                                    <div class="contract-signature-party">
+                                        <div class="contract-party-heading">甲</div>
+                                        <div class="contract-party-row">
+                                            <span class="contract-party-label">住　所</span>
+                                            <span class="contract-party-value">東京都渋谷区○○1-2-3</span>
+                                        </div>
+                                        <div class="contract-party-row">
+                                            <span class="contract-party-label">会社名</span>
+                                            <span class="contract-party-value">株式会社ABC</span>
+                                        </div>
+                                        <div class="contract-party-row signer-row">
+                                            <span class="contract-party-label">代表者</span>
+                                            <span class="contract-party-value">代表取締役　佐藤 一郎</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract-signature-party">
+                                        <div class="contract-party-heading">乙</div>
+                                        <div class="contract-party-row">
+                                            <span class="contract-party-label">住　所</span>
+                                            <span class="contract-party-value">東京都港区△△4-5-6</span>
+                                        </div>
+                                        <div class="contract-party-row">
+                                            <span class="contract-party-label">会社名</span>
+                                            <span class="contract-party-value">株式会社XYZ</span>
+                                        </div>
+                                        <div class="contract-party-row signer-row">
+                                            <span class="contract-party-label">代表者</span>
+                                            <span class="contract-party-value">代表取締役　田中 太郎</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sign-pdf-page-number">1 / 1</div>
+                        </div>
+                    </div>
+
+                    <!-- 署名セクション -->
+                    <div class="sign-section-title" style="margin-top: 8px;">署名</div>
+                    <div class="sign-method-label">署名方法: <strong id="signMethodLabel">テキスト署名</strong></div>
+
+                    <!-- テキスト署名 -->
+                    <div class="sign-input-area" id="signInput_text">
+                        <label class="sign-input-label">氏名を入力</label>
+                        <input type="text" class="sign-text-input" id="signNameInput" value="" placeholder="例: 山田 太郎" oninput="updatePreview()">
+                        <div class="sign-preview-label">プレビュー</div>
+                        <div class="typed-signature-preview" id="signTextPreview">名前を入力</div>
+                    </div>
+
+                    <!-- 印影 -->
+                    <div class="sign-input-area" id="signInput_stamp" style="display:none;">
+                        <label class="sign-input-label">姓を入力して印影を生成</label>
+                        <input type="text" class="sign-text-input" id="signSealInput" value="" placeholder="例: 山田" oninput="updateSealPreview()">
+                        <div class="sign-preview-label">プレビュー</div>
+                        <div class="seal-generator-preview" id="signSealPreview">
+                            <span class="seal-placeholder">姓を入力</span>
+                        </div>
+                    </div>
+
+                    <!-- 同意チェック -->
+                    <label class="sign-confirm-label">
+                        <input type="checkbox" id="signConfirmCheck" onchange="updateSubmitBtn()">
+                        <span>契約書の内容を確認し、署名に同意します</span>
+                    </label>
+
+                    <!-- 確定ボタン -->
+                    <button class="sign-submit-btn" id="signSubmitBtn" disabled onclick="executeSignature()">
+                        <span class="material-symbols-outlined">verified</span>
+                        署名を確定する
+                    </button>
+
+                    <!-- 転送リンク（許可時のみ表示） -->
+                    <div class="sign-forward-section" id="signForwardSection" style="display:none;">
+                        <div class="sign-forward-divider"></div>
+                        <button class="sign-forward-link" onclick="showForwardDialog()">
+                            <span class="material-symbols-outlined" style="font-size:18px;">forward_to_inbox</span>
+                            この署名を別の方に転送する
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成功画面（署名後） -->
+            <div class="sign-success-screen" id="signSuccessView">
+                <div class="sign-success-icon">
+                    <span class="material-symbols-outlined">check_circle</span>
+                </div>
+                <div class="sign-success-title">署名が完了しました</div>
+                <div class="sign-success-desc">相手方の署名を待っています。署名が完了すると通知が届きます。</div>
+                <a href="negotiation.html" class="sign-success-link">
+                    <span class="material-symbols-outlined" style="font-size:18px;">arrow_back</span>
+                    交渉画面に戻る（デモ用）
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- フッター -->
+    <div class="sign-footer">
+        Powered by HubbleNego — 安全な電子署名プラットフォーム
+    </div>
+
+    <script>
+    // URLパラメータ読み取り
+    const params = new URLSearchParams(window.location.search);
+    const signMethod = params.get('method') || 'text';
+    const requester = params.get('from') || '佐藤一郎';
+    const signerId = params.get('id') || '';
+    const signerParty = params.get('party') || '';
+    const signerColor = params.get('color') || '#4361ee';
+    const signerName = params.get('signer') || '';
+    const allowForward = params.get('forward') !== '0';
+
+    // 初期化
+    document.addEventListener('DOMContentLoaded', () => {
+        // 依頼者名
+        const requesterEl = document.getElementById('signRequester');
+        if (requesterEl) requesterEl.textContent = `${requester}さん（株式会社ABC）から`;
+
+        // 署名方法ラベル
+        const methodLabels = { text: 'テキスト署名', stamp: '印影' };
+        const labelEl = document.getElementById('signMethodLabel');
+        if (labelEl) labelEl.textContent = methodLabels[signMethod] || 'テキスト署名';
+
+        // 署名入力エリア切替
+        document.querySelectorAll('.sign-input-area').forEach(el => el.style.display = 'none');
+        const actualMethod = (signMethod === 'draw') ? 'text' : signMethod;
+        const inputEl = document.getElementById('signInput_' + actualMethod);
+        if (inputEl) inputEl.style.display = 'block';
+
+        // 転送リンク表示
+        if (allowForward) {
+            const fwdSection = document.getElementById('signForwardSection');
+            if (fwdSection) fwdSection.style.display = 'block';
+        }
+    });
+
+    // 契約書全文トグル
+    function toggleContract() {
+        const toggle = document.getElementById('contractToggle');
+        const content = document.getElementById('contractContent');
+        toggle.classList.toggle('expanded');
+        content.classList.toggle('collapsed');
+    }
+
+    // テキストプレビュー
+    function updatePreview() {
+        const input = document.getElementById('signNameInput');
+        const preview = document.getElementById('signTextPreview');
+        if (input && preview) {
+            preview.textContent = input.value || '名前を入力';
+            preview.classList.toggle('placeholder', !input.value);
+        }
+        updateSubmitBtn();
+    }
+
+    // 印影プレビュー
+    function updateSealPreview() {
+        const input = document.getElementById('signSealInput');
+        const preview = document.getElementById('signSealPreview');
+        if (!input || !preview) return;
+        const name = input.value.trim();
+        if (!name) {
+            preview.innerHTML = '<span class="seal-placeholder">姓を入力</span>';
+        } else {
+            const lastName = name.split(/[\s　]/)[0];
+            preview.innerHTML = `<span class="seal-text">${escapeHtml(lastName)}</span>`;
+        }
+        updateSubmitBtn();
+    }
+
+    // Canvas
+    let canvas, ctx, isDrawing = false;
+
+    function initCanvas() {
+        canvas = document.getElementById('signCanvas');
+        if (!canvas) return;
+        ctx = canvas.getContext('2d');
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = 160;
+        ctx.strokeStyle = '#1a1a1a';
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        canvas.addEventListener('mousedown', e => { isDrawing = true; ctx.beginPath(); const r = canvas.getBoundingClientRect(); ctx.moveTo(e.clientX - r.left, e.clientY - r.top); });
+        canvas.addEventListener('mousemove', e => { if (!isDrawing) return; const r = canvas.getBoundingClientRect(); ctx.lineTo(e.clientX - r.left, e.clientY - r.top); ctx.stroke(); });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; updateSubmitBtn(); });
+        canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); isDrawing = true; ctx.beginPath(); const r = canvas.getBoundingClientRect(); ctx.moveTo(e.touches[0].clientX - r.left, e.touches[0].clientY - r.top); });
+        canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!isDrawing) return; const r = canvas.getBoundingClientRect(); ctx.lineTo(e.touches[0].clientX - r.left, e.touches[0].clientY - r.top); ctx.stroke(); });
+        canvas.addEventListener('touchend', () => { isDrawing = false; updateSubmitBtn(); });
+    }
+
+    function clearCanvas() {
+        if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updateSubmitBtn();
+    }
+
+    function isCanvasEmpty() {
+        if (!canvas) return true;
+        const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+        for (let i = 3; i < data.length; i += 4) { if (data[i] > 0) return false; }
+        return true;
+    }
+
+    // 送信ボタン有効/無効
+    function updateSubmitBtn() {
+        const cb = document.getElementById('signConfirmCheck');
+        const btn = document.getElementById('signSubmitBtn');
+        if (!btn) return;
+
+        let hasSignature = false;
+        switch (signMethod) {
+            case 'text':
+                const ni = document.getElementById('signNameInput');
+                hasSignature = ni && ni.value.trim().length > 0;
+                break;
+            case 'draw':
+                hasSignature = !isCanvasEmpty();
+                break;
+            case 'stamp':
+                const si = document.getElementById('signSealInput');
+                hasSignature = si && si.value.trim().length > 0;
+                break;
+        }
+        btn.disabled = !(hasSignature && cb && cb.checked);
+    }
+
+    // 署名確定
+    function executeSignature() {
+        // フォームを隠して成功画面表示
+        document.getElementById('signFormView').style.display = 'none';
+        document.getElementById('signSuccessView').classList.add('active');
+
+        // confetti
+        launchConfetti(80);
+
+        // 親ウィンドウ（negotiation.html）に署名完了を通知
+        if (window.opener && !window.opener.closed) {
+            window.opener.postMessage({
+                type: 'signer_signed',
+                method: params.get('method') || 'text',
+                signerId: signerId,
+                signerName: signerName,
+                signerParty: signerParty
+            }, '*');
+        }
+    }
+
+    // 転送ダイアログ
+    function showForwardDialog() {
+        const email = prompt('転送先のメールアドレスを入力してください');
+        if (email && email.trim()) {
+            alert(`署名依頼を ${email.trim()} に転送しました（デモ）\n\n実際には転送先に署名用のリンクがメールで送信されます。`);
+        }
+    }
+
+    // confetti
+    function launchConfetti(count) {
+        const container = document.getElementById('confettiContainer');
+        if (!container) return;
+        const colors = ['#4361ee', '#f72585', '#4cc9f0', '#7209b7', '#ffd60a', '#06d6a0'];
+        for (let i = 0; i < count; i++) {
+            const el = document.createElement('div');
+            el.style.cssText = `position:absolute;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};left:${Math.random()*100}%;top:-10px;`;
+            container.appendChild(el);
+            el.animate([
+                { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                { transform: `translateY(${600+Math.random()*400}px) rotate(${360+Math.random()*720}deg)`, opacity: 0 }
+            ], { duration: 1500+Math.random()*1500, easing: 'cubic-bezier(.25,.46,.45,.94)', delay: Math.random()*500 })
+            .onfinish = () => el.remove();
+        }
+    }
+
+    function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+    </script>
+</body>
+</html>

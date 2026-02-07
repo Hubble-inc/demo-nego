@@ -95,32 +95,44 @@
     <!-- 紙吹雪コンテナ -->
     <div class="confetti-container" id="confettiContainer"></div>
 
-    <!-- グローバルステータスバナー（相手方合意待ち） -->
-    <div class="global-status-banner waiting" id="globalStatusBanner">
+    <!-- グローバルステータスバナー（相手方署名待ち） -->
+    <div class="global-status-banner signing-waiting hidden" id="globalSigningWaitBanner">
         <div class="global-status-content">
             <div class="global-status-pulse"></div>
-            <div class="global-status-icon"><span class="material-symbols-outlined">hourglass_empty</span></div>
+            <div class="global-status-icon"><span class="material-symbols-outlined">draw</span></div>
             <div class="global-status-text">
-                <div class="global-status-title">相手方の合意を待っています</div>
-                <div class="global-status-desc">株式会社XYZ（田中太郎様）が「この内容で合意」を押すと契約が成立します</div>
+                <div class="global-status-title">相手方の署名を待っています</div>
+                <div class="global-status-desc">株式会社XYZ（田中太郎様）が署名すると契約が締結されます</div>
             </div>
         </div>
         <div class="global-status-action">
-            <span class="global-status-time">あなたが合意してから: 2時間前</span>
+            <span class="global-status-time">あなたが署名してから: 2時間前</span>
         </div>
     </div>
 
-    <!-- 合意完了バナー（非表示） -->
-    <div class="global-status-banner agreed hidden" id="globalAgreedBanner">
+    <!-- 締結完了バナー（非表示） -->
+    <div class="global-status-banner concluded hidden" id="globalConcludedBanner">
         <div class="global-status-content">
-            <div class="global-status-icon"><span class="material-symbols-outlined">celebration</span></div>
+            <div class="global-status-icon"><span class="material-symbols-outlined">verified</span></div>
             <div class="global-status-text">
-                <div class="global-status-title">契約が成立しました！</div>
-                <div class="global-status-desc">両者の合意が完了しました。契約書をダウンロードできます。</div>
+                <div class="global-status-title">契約が締結されました</div>
+                <div class="global-status-desc">両者の電子署名が完了しました</div>
             </div>
         </div>
         <div class="global-status-action">
-            <button class="global-status-download-btn" onclick="downloadContract()"><span class="material-symbols-outlined icon-sm">download</span> 契約書をダウンロード</button>
+            <button class="global-status-download-btn" onclick="downloadSignedPdf()"><span class="material-symbols-outlined icon-sm">download</span> 締結済み契約書をダウンロード</button>
+            <button class="global-status-cert-btn" onclick="showSigningCertificate()"><span class="material-symbols-outlined icon-sm">verified_user</span> 署名証明書</button>
+        </div>
+    </div>
+
+    <!-- 署名者ビュー：署名可能バナー（非表示） -->
+    <div class="global-status-banner signer-ready hidden" id="globalSignerReadyBanner">
+        <div class="global-status-content">
+            <div class="global-status-icon"><span class="material-symbols-outlined">draw</span></div>
+            <div class="global-status-text">
+                <div class="global-status-title">契約書の署名をお願いします</div>
+                <div class="global-status-desc">署名ページを開いて、内容を確認のうえ署名してください　<a href="#" id="openSignPageLink" onclick="openSignPage(); return false;" class="sign-page-link"><span class="material-symbols-outlined icon-xs">open_in_new</span> 署名ページを開く</a></div>
+            </div>
         </div>
     </div>
 
@@ -153,9 +165,9 @@
                                 <div class="header-member-name">田中太郎</div>
                                 <div class="header-member-company">株式会社XYZ</div>
                             </div>
-                            <div class="header-member-permission signer">
-                                <span class="permission-icon material-symbols-outlined icon-xs">key</span>
-                                <span class="permission-label">合意権限あり</span>
+                            <div class="header-member-permission editor">
+                                <span class="permission-icon material-symbols-outlined icon-xs">edit</span>
+                                <span class="permission-label">編集者</span>
                             </div>
                         </div>
                         <div class="header-member-item me">
@@ -164,9 +176,9 @@
                                 <div class="header-member-name">佐藤一郎 <span class="header-member-you">あなた</span></div>
                                 <div class="header-member-company">株式会社ABC</div>
                             </div>
-                            <div class="header-member-permission signer">
-                                <span class="permission-icon material-symbols-outlined icon-xs">key</span>
-                                <span class="permission-label">合意権限あり</span>
+                            <div class="header-member-permission editor">
+                                <span class="permission-icon material-symbols-outlined icon-xs">edit</span>
+                                <span class="permission-label">編集者</span>
                             </div>
                         </div>
                     </div>
@@ -182,8 +194,8 @@
             <a href="hubble-ui.html" class="header-btn hubble-link">
                 <span class="material-symbols-outlined icon-sm">open_in_new</span> Hubbleで見る
             </a>
-            <button class="header-btn primary agree-btn" id="agreeBtn" onclick="agreeContract()">
-                <span class="material-symbols-outlined icon-sm">check_circle</span> この内容で合意
+            <button class="header-btn primary sign-btn" id="signBtn" onclick="handleSignButtonClick()">
+                <span class="material-symbols-outlined icon-sm">draw</span> 署名手続き・設定
             </button>
         </div>
     </div>
@@ -215,8 +227,8 @@
                     <div class="overview-status-banner negotiating" id="overviewStatusBanner">
                         <div class="status-banner-icon"><span class="material-symbols-outlined">sync</span></div>
                         <div class="status-banner-content">
-                            <div class="status-banner-title">交渉中の内容（Ver.8 時点）</div>
-                            <div class="status-banner-desc">この概要は交渉の進行に応じて自動更新されます</div>
+                            <div class="status-banner-title">契約書の概要（Ver.8 時点）</div>
+                            <div class="status-banner-desc">この概要は契約書の更新に応じて自動更新されます</div>
                         </div>
                         <div class="status-banner-meta">最終更新: 1/28 14:15</div>
                     </div>
@@ -351,20 +363,6 @@
             <!-- 契約書タブ -->
             <div class="tab-content" id="contract">
                 <div class="contract-container">
-                    <!-- ステータスバー -->
-                    <div class="contract-status-bar">
-                        <div class="status-left">
-                            <span class="status-badge" id="contractStatusBadge"><span class="material-symbols-outlined icon-xs">forum</span> 交渉中</span>
-                        </div>
-                        <div class="status-right">
-                            <button class="status-action-btn" id="editLockBtn" onclick="toggleEditLock()">
-                                <span class="material-symbols-outlined icon-sm">edit_document</span> Wordで編集
-                            </button>
-                            <button class="status-action-btn" onclick="openUploadModal()"><span class="material-symbols-outlined icon-sm">upload</span> アップロード</button>
-                            <button class="status-action-btn" onclick="downloadWord()"><span class="material-symbols-outlined icon-sm">download</span> ダウンロード</button>
-                        </div>
-                    </div>
-
                     <!-- 契約書サブタブ -->
                     <div class="contract-subtabs">
                         <button class="contract-subtab active" onclick="switchContractSubtab('basic')">
@@ -376,6 +374,14 @@
                         <button class="add-contract-subtab" onclick="addNewContract()">
                             + 新規追加
                         </button>
+                    </div>
+
+                    <!-- アクションバー -->
+                    <div class="contract-status-bar">
+                        <div class="status-right">
+                            <button class="status-action-btn" onclick="openUploadModal()"><span class="material-symbols-outlined icon-sm">upload</span> 新バージョンをアップロード</button>
+                            <button class="status-action-btn" onclick="downloadWord()"><span class="material-symbols-outlined icon-sm">download</span> ダウンロード</button>
+                        </div>
                     </div>
 
                     <!-- 契約書コンテンツ -->
@@ -720,48 +726,44 @@
                                 </div>
 
                                 <!-- 署名欄 -->
-                                <div class="signature-section">
-                                    <div class="signature-date">
+                                <div class="contract-signature-section">
+                                    <div class="contract-signature-closing">
                                         本契約締結の証として、本書2通を作成し、甲乙記名押印のうえ、各1通を保有する。
                                     </div>
-                                    <div class="signature-date-line">
+                                    <div class="contract-signature-date">
                                         2026年　　月　　日
                                     </div>
 
-                                    <div class="signature-parties">
-                                        <div class="signature-party">
-                                            <div class="party-label">【甲】</div>
-                                            <div class="party-info">
-                                                <div class="party-line">
-                                                    <span class="party-field">住所</span>
-                                                    <span class="party-value">東京都渋谷区○○1-2-3</span>
-                                                </div>
-                                                <div class="party-line">
-                                                    <span class="party-field">会社名</span>
-                                                    <span class="party-value">株式会社ABC</span>
-                                                </div>
-                                                <div class="party-line">
-                                                    <span class="party-field">代表者</span>
-                                                    <span class="party-value signature-line">代表取締役　佐藤 一郎　<span class="seal-circle">印</span></span>
-                                                </div>
+                                    <div class="contract-signature-block">
+                                        <div class="contract-signature-party">
+                                            <div class="contract-party-heading">甲</div>
+                                            <div class="contract-party-row">
+                                                <span class="contract-party-label">住　所</span>
+                                                <span class="contract-party-value">東京都渋谷区○○1-2-3</span>
+                                            </div>
+                                            <div class="contract-party-row">
+                                                <span class="contract-party-label">会社名</span>
+                                                <span class="contract-party-value">株式会社ABC</span>
+                                            </div>
+                                            <div class="contract-party-row signer-row">
+                                                <span class="contract-party-label">代表者</span>
+                                                <span class="contract-party-value">代表取締役　佐藤 一郎</span>
                                             </div>
                                         </div>
 
-                                        <div class="signature-party">
-                                            <div class="party-label">【乙】</div>
-                                            <div class="party-info">
-                                                <div class="party-line">
-                                                    <span class="party-field">住所</span>
-                                                    <span class="party-value">東京都港区△△4-5-6</span>
-                                                </div>
-                                                <div class="party-line">
-                                                    <span class="party-field">会社名</span>
-                                                    <span class="party-value">株式会社XYZ</span>
-                                                </div>
-                                                <div class="party-line">
-                                                    <span class="party-field">代表者</span>
-                                                    <span class="party-value signature-line">代表取締役　田中 太郎　<span class="seal-circle">印</span></span>
-                                                </div>
+                                        <div class="contract-signature-party">
+                                            <div class="contract-party-heading">乙</div>
+                                            <div class="contract-party-row">
+                                                <span class="contract-party-label">住　所</span>
+                                                <span class="contract-party-value">東京都港区△△4-5-6</span>
+                                            </div>
+                                            <div class="contract-party-row">
+                                                <span class="contract-party-label">会社名</span>
+                                                <span class="contract-party-value">株式会社XYZ</span>
+                                            </div>
+                                            <div class="contract-party-row signer-row">
+                                                <span class="contract-party-label">代表者</span>
+                                                <span class="contract-party-value">代表取締役　田中 太郎</span>
                                             </div>
                                         </div>
                                     </div>
@@ -864,6 +866,32 @@
                                     </div>
                                     <div class="action-item-desc">2月分 48万円の請求書を発行</div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- 電子署名・証明カード（署名後のみ表示） -->
+                        <div class="action-card signing-cert-card hidden" id="signingCertCard">
+                            <div class="action-header">
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">verified_user</span> 電子署名・証明</div>
+                            </div>
+                            <div class="signing-cert-content">
+                                <div class="signing-cert-status">
+                                    <span class="material-symbols-outlined" style="color: var(--color-success);">check_circle</span>
+                                    <span>両者署名完了</span>
+                                </div>
+                                <div class="signing-cert-parties">
+                                    <div class="cert-party">
+                                        <span class="cert-party-name">佐藤 一郎（ABC社）</span>
+                                        <span class="cert-party-date" id="certMyDate">--</span>
+                                    </div>
+                                    <div class="cert-party">
+                                        <span class="cert-party-name">田中 太郎（XYZ社）</span>
+                                        <span class="cert-party-date" id="certPartnerDate">--</span>
+                                    </div>
+                                </div>
+                                <button class="cert-view-btn" onclick="showSigningCertificate()">
+                                    証明書を表示 <span class="material-symbols-outlined icon-sm">open_in_new</span>
+                                </button>
                             </div>
                         </div>
 
@@ -1087,7 +1115,7 @@
     <div class="modal-overlay" id="uploadModal" onclick="closeUploadModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title"><span class="material-symbols-outlined icon-sm">upload</span> Wordファイルをアップロード</div>
+                <div class="modal-title"><span class="material-symbols-outlined icon-sm">upload</span> 新しいバージョンをアップロード</div>
                 <button class="modal-close" onclick="closeUploadModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -1096,12 +1124,13 @@
                      ondragleave="handleDragLeave(event)"
                      ondrop="handleDrop(event)">
                     <div class="upload-icon"><span class="material-symbols-outlined icon-lg">upload_file</span></div>
-                    <div class="upload-text">ファイルをドラッグ&ドロップ</div>
+                    <div class="upload-text">Wordファイルをドラッグ&ドロップ</div>
                     <div class="upload-subtext">または</div>
                     <label class="upload-btn">
                         ファイルを選択
                         <input type="file" accept=".docx,.doc" onchange="handleFileSelect(event)" hidden>
                     </label>
+                    <div class="upload-hint">.docx / .doc 形式 ｜ 現在: Ver.8 → アップロードで Ver.9 に</div>
                 </div>
             </div>
         </div>
@@ -1159,32 +1188,10 @@
                 <button class="modal-close" onclick="closeAddMemberModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- 権限選択 -->
                 <div class="add-member-section">
-                    <label class="add-member-label">権限を選択</label>
-                    <div class="permission-selector">
-                        <label class="permission-option selected" data-permission="signer">
-                            <input type="radio" name="memberPermission" value="signer" checked>
-                            <div class="permission-option-content">
-                                <div class="permission-option-icon"><span class="material-symbols-outlined icon-sm">key</span></div>
-                                <div class="permission-option-info">
-                                    <div class="permission-option-title">合意権限あり</div>
-                                    <div class="permission-option-desc">契約への合意が可能</div>
-                                </div>
-                            </div>
-                            <div class="permission-option-check">✓</div>
-                        </label>
-                        <label class="permission-option" data-permission="member">
-                            <input type="radio" name="memberPermission" value="member">
-                            <div class="permission-option-content">
-                                <div class="permission-option-icon"><span class="material-symbols-outlined icon-sm">person</span></div>
-                                <div class="permission-option-info">
-                                    <div class="permission-option-title">メンバー</div>
-                                    <div class="permission-option-desc">閲覧・編集・コメントのみ</div>
-                                </div>
-                            </div>
-                            <div class="permission-option-check">✓</div>
-                        </label>
+                    <div class="add-member-role-note">
+                        <span class="material-symbols-outlined icon-sm">edit</span>
+                        <span>編集者として招待（閲覧・編集・コメントが可能）</span>
                     </div>
                 </div>
 
@@ -1210,6 +1217,419 @@
             </div>
         </div>
     </div>
+
+    <!-- ================================================ -->
+
+    <!-- ================================================ -->
+    <!-- 署名フルスクリーンモーダル（左:契約書全文 / 右:署名ステップ） -->
+    <!-- ================================================ -->
+    <div class="signing-fullscreen-modal" id="signingFullscreenModal">
+        <!-- モーダルヘッダー -->
+        <div class="signing-modal-header">
+            <div class="signing-modal-header-left">
+                <button class="signing-close-btn" onclick="closeSigningModal()">&times;</button>
+                <div class="signing-modal-title">署名手続き・設定</div>
+            </div>
+            <!-- ステッパー -->
+            <div class="signing-stepper">
+                <div class="stepper-item active" data-step="1">
+                    <div class="stepper-circle">1</div>
+                    <div class="stepper-label">内容確認</div>
+                </div>
+                <div class="stepper-line"></div>
+                <div class="stepper-item" data-step="2">
+                    <div class="stepper-circle">2</div>
+                    <div class="stepper-label">署名者追加</div>
+                </div>
+                <div class="stepper-line"></div>
+                <div class="stepper-item" data-step="3">
+                    <div class="stepper-circle">3</div>
+                    <div class="stepper-label">署名設定</div>
+                </div>
+            </div>
+            <div class="signing-modal-header-right"></div>
+        </div>
+
+        <!-- モーダルボディ（2カラム） -->
+        <div class="signing-modal-body">
+            <!-- 左カラム: 契約書全文 -->
+            <div class="signing-doc-column">
+                <div class="signing-doc-wrapper">
+                    <div class="document signing-doc-view">
+                        <div class="doc-main-title">業務委託基本契約書</div>
+
+                        <div class="doc-preamble">
+                            株式会社ABC（以下「甲」という）と株式会社XYZ（以下「乙」という）は、甲が乙に委託する業務に関し、以下のとおり業務委託基本契約（以下「本契約」という）を締結する。
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第1条（目的）</div>
+                            <div class="article-content">
+                                本契約は、甲が乙に対してデジタルマーケティング支援業務（以下「本業務」という）を委託し、乙がこれを受託するにあたり、甲乙間の権利義務関係を定めることを目的とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第2条（業務内容）</div>
+                            <div class="article-content">
+                                1. 乙が甲に提供する本業務の具体的内容は、以下のとおりとする。<br>
+                                <div class="article-list">
+                                    (1) Webサイトの運用・改善提案<br>
+                                    (2) SNSマーケティング戦略の立案・実行<br>
+                                    (3) 広告運用（リスティング広告、SNS広告等）<br>
+                                    (4) 月次レポートの作成・報告<br>
+                                    (5) その他、上記に付随する業務
+                                </div>
+                                2. 業務の詳細については、別途個別契約にて定めるものとする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第3条（契約期間）</div>
+                            <div class="article-content">
+                                1. 本契約の有効期間は、2026年2月1日から6ヶ月間とする。<br>
+                                2. 本契約は、期間満了の2ヶ月前までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとし、以後も同様とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第4条（報酬）</div>
+                            <div class="article-content">
+                                1. 甲は乙に対し、本業務の対価として、月額金48万円（消費税別）を支払うものとする。<br>
+                                2. 報酬の支払いは、毎月末日締め、翌月末日払いとする。<br>
+                                3. 振込手数料は甲の負担とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第5条（経費）</div>
+                            <div class="article-content">
+                                本業務の遂行に必要な経費のうち、広告出稿費用その他甲が事前に承認した費用については、甲が実費を負担するものとする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第6条（秘密保持）</div>
+                            <div class="article-content">
+                                1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>
+                                2. 前項の義務は、本契約終了後3年間存続するものとする。<br>
+                                3. 次の各号に該当する情報は、秘密情報から除外する。<br>
+                                <div class="article-list">
+                                    (1) 開示時点で既に公知であった情報<br>
+                                    (2) 開示後、受領者の責によらず公知となった情報<br>
+                                    (3) 開示時点で受領者が既に保有していた情報<br>
+                                    (4) 正当な権限を有する第三者から秘密保持義務を負うことなく入手した情報
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第7条（知的財産権）</div>
+                            <div class="article-content">
+                                1. 本業務の遂行により生じた成果物に関する著作権その他の知的財産権は、報酬の支払い完了をもって甲に帰属するものとする。<br>
+                                2. 乙は、成果物について著作者人格権を行使しないものとする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第8条（再委託）</div>
+                            <div class="article-content">
+                                乙は、甲の事前の書面による承諾を得ることなく、本業務の全部又は一部を第三者に再委託してはならない。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第9条（契約解除）</div>
+                            <div class="article-content">
+                                1. 甲又は乙は、相手方が次の各号のいずれかに該当した場合、何らの催告なく直ちに本契約を解除することができる。<br>
+                                <div class="article-list">
+                                    (1) 本契約に違反し、相当期間を定めて催告しても是正されないとき<br>
+                                    (2) 支払停止又は支払不能となったとき<br>
+                                    (3) 破産手続開始、民事再生手続開始、会社更生手続開始の申立てがあったとき<br>
+                                    (4) 差押え、仮差押え、仮処分又は競売の申立てがあったとき<br>
+                                    (5) 解散又は営業停止となったとき
+                                </div>
+                                2. 前項により本契約が解除された場合、解除された当事者は、相手方に対し、損害賠償責任を負うものとする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第10条（損害賠償）</div>
+                            <div class="article-content">
+                                甲又は乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、損害賠償の累計額は、本契約に基づき甲が乙に支払った報酬の総額を上限とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第11条（反社会的勢力の排除）</div>
+                            <div class="article-content">
+                                1. 甲及び乙は、自己又は自己の役員が、暴力団、暴力団員、暴力団関係企業、総会屋その他の反社会的勢力（以下「反社会的勢力」という）に該当しないことを表明し、保証する。<br>
+                                2. 甲又は乙は、相手方が前項に違反した場合、何らの催告なく直ちに本契約を解除することができる。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第12条（権利義務の譲渡禁止）</div>
+                            <div class="article-content">
+                                甲及び乙は、相手方の事前の書面による承諾なく、本契約上の地位又は本契約に基づく権利義務の全部若しくは一部を第三者に譲渡し、又は担保に供してはならない。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第13条（協議事項）</div>
+                            <div class="article-content">
+                                本契約に定めのない事項又は本契約の解釈に疑義が生じた事項については、甲乙誠意をもって協議し、解決するものとする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第14条（管轄裁判所）</div>
+                            <div class="article-content">
+                                本契約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とする。
+                            </div>
+                        </div>
+
+                        <!-- 署名欄 -->
+                        <div class="contract-signature-section">
+                            <div class="contract-signature-closing">
+                                本契約締結の証として、本書2通を作成し、甲乙記名押印のうえ、各1通を保有する。
+                            </div>
+                            <div class="contract-signature-date">
+                                2026年　　月　　日
+                            </div>
+
+                            <div class="contract-signature-block">
+                                <div class="contract-signature-party">
+                                    <div class="contract-party-heading">甲</div>
+                                    <div class="contract-party-row">
+                                        <span class="contract-party-label">住　所</span>
+                                        <span class="contract-party-value">東京都渋谷区○○1-2-3</span>
+                                    </div>
+                                    <div class="contract-party-row">
+                                        <span class="contract-party-label">会社名</span>
+                                        <span class="contract-party-value">株式会社ABC</span>
+                                    </div>
+                                    <div class="contract-party-row signer-row">
+                                        <span class="contract-party-label">代表者</span>
+                                        <span class="contract-party-value">代表取締役　佐藤 一郎</span>
+                                        <span class="contract-seal-area signing-doc-seal" id="signingDocMySealArea"></span>
+                                    </div>
+                                </div>
+
+                                <div class="contract-signature-party">
+                                    <div class="contract-party-heading">乙</div>
+                                    <div class="contract-party-row">
+                                        <span class="contract-party-label">住　所</span>
+                                        <span class="contract-party-value">東京都港区△△4-5-6</span>
+                                    </div>
+                                    <div class="contract-party-row">
+                                        <span class="contract-party-label">会社名</span>
+                                        <span class="contract-party-value">株式会社XYZ</span>
+                                    </div>
+                                    <div class="contract-party-row signer-row">
+                                        <span class="contract-party-label">代表者</span>
+                                        <span class="contract-party-value">代表取締役　田中 太郎</span>
+                                        <span class="contract-seal-area signing-doc-seal" id="signingDocPartnerSealArea"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- スタンプ配置用オーバーレイ -->
+                    <div class="signing-stamp-overlay" id="signingStampOverlay"></div>
+                </div>
+            </div>
+
+            <!-- 右カラム: 署名ステップ -->
+            <div class="signing-action-column">
+                <!-- Step 1: 内容確認 -->
+                <div class="signing-step-content active" id="signingStep1">
+                    <div class="signing-step-body">
+                        <div class="signing-step-title">最終版の内容を確認してください</div>
+                        <div class="signing-version-note">Ver.8（最新）の内容で署名します</div>
+
+                        <!-- AI要約 -->
+                        <div class="signing-ai-summary">
+                            <div class="signing-ai-header">
+                                <span class="material-symbols-outlined icon-sm">smart_toy</span>
+                                <span>この契約の要点（署名前の最終確認）</span>
+                            </div>
+                            <ul class="signing-ai-points">
+                                <li><strong>期間:</strong> 6ヶ月間（自動更新あり、解約は2ヶ月前通知）</li>
+                                <li><strong>報酬:</strong> 月額48万円（税別）、毎月末締め翌月末払い</li>
+                                <li><strong>秘密保持:</strong> 契約終了後3年間</li>
+                                <li><strong>知財:</strong> 成果物の権利は支払完了後に甲に帰属</li>
+                                <li><strong>損害賠償:</strong> 累計支払報酬額が上限</li>
+                            </ul>
+                        </div>
+
+                        <div class="signing-doc-note">
+                            <span class="material-symbols-outlined icon-sm">description</span>
+                            左側に契約書の全文を表示しています。スクロールして内容をご確認ください。
+                        </div>
+
+                        <!-- 確認チェックボックス -->
+                        <label class="signing-confirm-label">
+                            <input type="checkbox" id="signingConfirmCheck" onchange="updateSigningNextBtn()">
+                            <span>契約書の内容を確認しました</span>
+                        </label>
+                    </div>
+
+                    <div class="signing-step-footer">
+                        <button class="signing-btn secondary" onclick="closeSigningModal()">キャンセル</button>
+                        <button class="signing-btn primary" id="signingNextBtn" disabled onclick="showSigningStep(2)">
+                            次へ：署名方法 <span class="material-symbols-outlined icon-sm">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: 署名者の追加・設定 -->
+                <div class="signing-step-content" id="signingStep2">
+                    <div class="signing-step-body">
+                        <div class="signing-step-title">署名者を追加・設定</div>
+                        <div class="signing-setup-desc">この契約に署名する全員を設定してください。</div>
+
+                        <!-- 署名者リスト（JS動的生成） -->
+                        <div class="signer-list" id="signerList"></div>
+
+                        <!-- 署名者追加ボタン -->
+                        <button class="add-signer-btn" onclick="addSigner()">
+                            <span class="material-symbols-outlined icon-sm">person_add</span>
+                            署名者を追加
+                        </button>
+                    </div>
+
+                    <div class="signing-step-footer">
+                        <button class="signing-btn secondary" onclick="showSigningStep(1)">戻る</button>
+                        <button class="signing-btn primary" id="step2NextBtn" onclick="showSigningStep(3)">
+                            次へ：署名設定 <span class="material-symbols-outlined icon-sm">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: 各署名者の署名方法と位置を設定 -->
+                <div class="signing-step-content" id="signingStep3">
+                    <div class="signing-step-body">
+                        <div class="signing-step-title">各署名者の署名方法と位置を設定</div>
+                        <div class="signing-setup-desc">各署名者のスタンプを左の契約書にドラッグ&ドロップしてください。</div>
+                        <div class="signer-config-list" id="signerConfigList">
+                            <!-- JS動的生成: renderSignerConfigSections() -->
+                        </div>
+                    </div>
+
+                    <div class="signing-step-footer">
+                        <button class="signing-btn secondary" onclick="showSigningStep(2)">戻る</button>
+                        <button class="signing-btn primary" id="step3ExecuteBtn" onclick="executeMultiSignerCeremony()" disabled>
+                            <span class="material-symbols-outlined icon-sm">verified</span> 署名手続きを実行
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ドラッグ中のゴースト要素 -->
+        <div class="signing-drag-ghost" id="signingDragGhost" style="display:none;">
+            <span class="seal-circle">印</span>
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- 署名確認モーダル -->
+    <!-- ================================================ -->
+    <div class="signing-confirm-overlay" id="signConfirmModal">
+        <div class="signing-confirm-modal">
+            <div class="signing-confirm-icon">
+                <span class="material-symbols-outlined">shield</span>
+            </div>
+            <div class="signing-confirm-title">署名を確定しますか？</div>
+            <div class="signing-confirm-body">
+                <p>以下の内容で電子署名を行います:</p>
+                <ul>
+                    <li>業務委託基本契約書（Ver.8）</li>
+                    <li>署名者: 佐藤 一郎（株式会社ABC）</li>
+                    <li>署名方法: <span id="confirmSignMethod">テキスト入力</span></li>
+                </ul>
+            </div>
+            <div class="signing-confirm-warning">
+                <span class="material-symbols-outlined icon-sm">warning</span>
+                署名後は契約書の編集ができなくなります
+            </div>
+            <div class="signing-confirm-actions">
+                <button class="signing-btn secondary" onclick="closeSignConfirmModal()">キャンセル</button>
+                <button class="signing-btn primary" onclick="executeSignature()">
+                    <span class="material-symbols-outlined icon-sm">verified</span> 署名を確定する
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- 署名証明書モーダル -->
+    <!-- ================================================ -->
+    <div class="modal-overlay signing-cert-overlay" id="signingCertModal" onclick="closeSigningCertificate()">
+        <div class="modal-content signing-cert-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title"><span class="material-symbols-outlined">verified_user</span> 電子署名証明書</div>
+                <button class="modal-close" onclick="closeSigningCertificate()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cert-header-section">
+                    <div class="cert-main-icon"><span class="material-symbols-outlined">verified_user</span></div>
+                    <div class="cert-main-title">契約締結証明書</div>
+                    <div class="cert-main-subtitle">Certificate of Electronic Execution</div>
+                </div>
+
+                <div class="cert-info-section">
+                    <div class="cert-info-row"><span class="cert-label">契約書名</span><span class="cert-value">業務委託基本契約書</span></div>
+                    <div class="cert-info-row"><span class="cert-label">文書ID</span><span class="cert-value">NEGO-2026-0128-ABC-XYZ</span></div>
+                    <div class="cert-info-row"><span class="cert-label">最終バージョン</span><span class="cert-value">Ver.8</span></div>
+                </div>
+
+                <div class="cert-divider">署名記録</div>
+
+                <div class="cert-signer-section">
+                    <div class="cert-signer-label">【甲】株式会社ABC</div>
+                    <div class="cert-signer-detail">
+                        <div class="cert-detail-row"><span>署名者</span><span>佐藤 一郎</span></div>
+                        <div class="cert-detail-row"><span>メール</span><span>sato@abc.co.jp</span></div>
+                        <div class="cert-detail-row"><span>署名日時</span><span id="certModalMyDate">--</span></div>
+                        <div class="cert-detail-row"><span>署名方法</span><span id="certModalMyMethod">--</span></div>
+                        <div class="cert-detail-row"><span>IPアドレス</span><span>203.0.113.xx</span></div>
+                    </div>
+                </div>
+
+                <div class="cert-signer-section">
+                    <div class="cert-signer-label">【乙】株式会社XYZ</div>
+                    <div class="cert-signer-detail">
+                        <div class="cert-detail-row"><span>署名者</span><span>田中 太郎</span></div>
+                        <div class="cert-detail-row"><span>メール</span><span>tanaka@xyz.co.jp</span></div>
+                        <div class="cert-detail-row"><span>署名日時</span><span id="certModalPartnerDate">--</span></div>
+                        <div class="cert-detail-row"><span>署名方法</span><span>印影</span></div>
+                        <div class="cert-detail-row"><span>IPアドレス</span><span>198.51.100.xx</span></div>
+                    </div>
+                </div>
+
+                <div class="cert-divider">交渉経緯</div>
+
+                <div class="cert-nego-summary">
+                    <p>この契約は<strong>8バージョン</strong>の交渉を経て締結されました</p>
+                    <div class="cert-nego-stats">
+                        <div class="cert-stat"><span class="cert-stat-value">2026/01/24</span><span class="cert-stat-label">交渉開始</span></div>
+                        <div class="cert-stat"><span class="cert-stat-value">2026/02/06</span><span class="cert-stat-label">交渉完了</span></div>
+                        <div class="cert-stat"><span class="cert-stat-value">14日間</span><span class="cert-stat-label">交渉日数</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn primary" onclick="alert('証明書PDFをダウンロードします（デモ）')">
+                    <span class="material-symbols-outlined icon-sm">download</span> 証明書をダウンロード (PDF)
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Google Fonts: 手書き風フォント -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap">
 
     <script src="script.js"></script>
     <script>

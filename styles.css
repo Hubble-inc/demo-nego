@@ -220,12 +220,7 @@ body {
     flex-shrink: 0;
 }
 
-.header-member-permission.signer {
-    background: var(--color-social-container);
-    color: var(--color-social);
-}
-
-.header-member-permission.member {
+.header-member-permission.editor {
     background: var(--bg-note);
     color: var(--text-assist);
 }
@@ -238,91 +233,21 @@ body {
     white-space: nowrap;
 }
 
-/* 権限選択UI */
-.permission-selector {
+/* 編集者ロールノート */
+.add-member-role-note {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 8px;
-}
-
-.permission-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
+    padding: 12px 16px;
     background: var(--bg-note);
-    border: 2px solid var(--border-default);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.permission-option:hover {
-    border-color: var(--border-default);
-    background: var(--bg-note);
-}
-
-.permission-option.selected {
-    border-color: var(--color-primary);
-    background: var(--color-primary-container);
-}
-
-.permission-option input[type="radio"] {
-    display: none;
-}
-
-.permission-option-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-}
-
-.permission-option-icon {
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-white);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-}
-
-.permission-option-info {
-    flex: 1;
-}
-
-.permission-option-title {
     font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--text-heading);
-    margin-bottom: 2px;
-}
-
-.permission-option-desc {
-    font-size: var(--font-size-xs);
     color: var(--text-assist);
 }
 
-.permission-option-check {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--border-default);
-    color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.permission-option.selected .permission-option-check {
-    background: var(--color-primary);
-    color: var(--color-white);
+.add-member-role-note .material-symbols-outlined {
+    font-size: 18px;
+    color: var(--text-assist);
 }
 
 .header-actions {
@@ -977,35 +902,6 @@ body {
     justify-content: space-between;
 }
 
-.status-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.status-badge {
-    padding: 6px 12px;
-    background: var(--color-social-container);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-social);
-}
-
-.status-badge.editing {
-    background: var(--color-primary-container);
-    color: var(--text-link);
-}
-
-.status-badge.locked {
-    background: var(--color-attention-container);
-    color: var(--color-attention);
-}
-
-.status-badge.agreed {
-    background: var(--color-success-container);
-    color: var(--color-success);
-}
 
 .status-right {
     display: flex;
@@ -1028,18 +924,6 @@ body {
 
 .status-action-btn:hover {
     background: var(--border-default);
-}
-
-.status-action-btn.active {
-    background: var(--color-primary-container);
-    border-color: var(--color-primary);
-    color: var(--text-link);
-}
-
-.status-action-btn.locked {
-    background: var(--color-attention-container);
-    border-color: var(--color-attention);
-    color: var(--color-attention);
 }
 
 .contract-subtabs {
@@ -1511,90 +1395,95 @@ body {
     margin-bottom: 8px;
 }
 
-/* 署名欄 */
-.signature-section {
+/* ===================================
+   契約書署名欄（通常の契約書スタイル）
+   =================================== */
+.contract-signature-section {
     margin-top: 48px;
     padding-top: 32px;
-    border-top: 1px solid var(--border-default);
 }
 
-.signature-date {
+.contract-signature-closing {
     font-size: var(--font-size-sm);
-    line-height: 1.9;
+    line-height: 2;
     color: var(--text-default);
-    text-align: center;
-    margin-bottom: 24px;
+    text-indent: 1em;
+    margin-bottom: 32px;
 }
 
-.signature-date-line {
+.contract-signature-date {
     font-size: var(--font-size-sm);
     color: var(--text-default);
-    text-align: center;
+    text-align: right;
     margin-bottom: 40px;
-    letter-spacing: 0.5em;
+    letter-spacing: 0.3em;
 }
 
-.signature-parties {
+.contract-signature-block {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 36px;
+    padding-left: 20%;
 }
 
-.signature-party {
-    padding: 20px 24px;
-    background: var(--bg-hover);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-default);
+.contract-signature-party {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-.party-label {
+.contract-party-heading {
     font-size: var(--font-size-sm);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-heading);
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+    letter-spacing: 0.2em;
 }
 
-.party-info {
+.contract-party-row {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.party-line {
-    display: flex;
-    align-items: baseline;
+    align-items: center;
     font-size: var(--font-size-sm);
+    line-height: 2;
     color: var(--text-default);
+    border-bottom: 1px solid transparent;
 }
 
-.party-field {
-    width: 60px;
+.contract-party-row.signer-row {
+    border-bottom: none;
+}
+
+.contract-party-label {
+    width: 56px;
     flex-shrink: 0;
     color: var(--text-assist);
+    font-size: 12px;
+    letter-spacing: 0.1em;
 }
 
-.party-value {
+.contract-party-value {
     flex: 1;
 }
 
-.party-value.signature-line {
-    display: flex;
+.contract-seal-area {
+    display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    margin-left: 16px;
+    vertical-align: middle;
 }
 
-.seal-circle {
+.contract-seal-circle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border: 2px solid var(--color-attention);
     border-radius: 50%;
     color: var(--color-attention);
-    font-size: var(--font-size-xs);
+    font-size: 11px;
     font-weight: 600;
-    margin-left: auto;
 }
 
 /* 管理タブのスタイル */
@@ -2216,6 +2105,12 @@ body {
 
 .upload-btn:hover {
     background: var(--text-link);
+}
+
+.upload-hint {
+    margin-top: 16px;
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
 }
 
 /* 差分表示 */
@@ -4215,6 +4110,16 @@ body {
     color: var(--color-success);
 }
 
+.negotiation-card-badge.signing {
+    background: var(--color-collabo-container);
+    color: var(--color-collabo);
+}
+
+.negotiation-card-badge.concluded {
+    background: var(--color-success-container);
+    color: var(--color-success);
+}
+
 .negotiation-card-meta {
     display: flex;
     align-items: center;
@@ -4869,28 +4774,30 @@ body {
    =================================== */
 .demo-status-toggle {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: 16px;
+    left: 16px;
     z-index: 10000;
-    padding: 14px 24px;
-    background: var(--color-collabo);
-    border: none;
+    padding: 6px 14px;
+    background: #6B5CE7;
+    border: 2px dashed rgba(255, 255, 255, 0.4);
     border-radius: var(--radius-full);
-    font-size: var(--font-size-sm);
+    font-size: 11px;
     font-weight: 600;
     color: var(--color-white);
     cursor: pointer;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
+    opacity: 0.7;
 }
 
 .demo-status-toggle:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: var(--shadow-lg);
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
 }
 
 .demo-status-toggle:active {
-    transform: translateY(-1px);
+    transform: scale(0.98);
 }
 
 /* デモボタンの状態表示 */
@@ -4912,9 +4819,2250 @@ body {
 }
 
 .demo-status-toggle.status-negotiating::after {
-    content: '現在: 交渉中';
+    content: '交渉中（交渉者）';
 }
 
 .demo-status-toggle.status-partner-editing::after {
-    content: '現在: 相手が編集中';
+    content: '相手が編集中';
+}
+
+.demo-status-toggle.status-awaiting-signer::after,
+.demo-status-toggle.status-awaiting-my-signer::after,
+.demo-status-toggle.status-signing-setup-done::after {
+    content: '送付済み（交渉者）';
+}
+
+.demo-status-toggle.status-partially-signed::after,
+.demo-status-toggle.status-my-signer-signed::after {
+    content: '相手方待ち（署名者）';
+}
+
+.demo-status-toggle.status-signer-ready::after,
+.demo-status-toggle.status-signer-view::after {
+    content: '署名可能（署名者）';
+}
+
+.demo-status-toggle.status-concluded::after {
+    content: '締結済み（署名者）';
+}
+
+/* ===================================
+   電子署名機能 スタイル
+   =================================== */
+
+/* --- ヘッダー署名ボタン --- */
+.header-btn.primary.sign-btn {
+    background: var(--color-success);
+    color: var(--color-white);
+    border: none;
+    font-weight: 600;
+}
+
+.header-btn.primary.sign-btn:hover {
+    background: #34a854;
+}
+
+.header-btn.primary.sign-btn.signed {
+    background: var(--text-assist);
+    cursor: default;
+}
+
+/* --- グローバルバナー: 署名待ち --- */
+.global-status-banner.signing-waiting {
+    background: var(--color-collabo-container);
+    color: var(--color-collabo);
+    box-shadow: var(--shadow-md);
+}
+
+.global-status-banner.signing-waiting .global-status-pulse {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* --- グローバルバナー: 締結済み --- */
+.global-status-banner.concluded {
+    background: var(--color-success-container);
+    color: var(--color-success);
+    box-shadow: var(--shadow-md);
+}
+
+.global-status-banner.concluded .global-status-pulse {
+    display: none;
+}
+
+.global-status-cert-btn {
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid var(--color-success);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-success);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    margin-left: 8px;
+}
+
+.global-status-cert-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- 概要バナー: 署名中 --- */
+.overview-status-banner.signing {
+    background: var(--color-collabo-container);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+}
+
+.overview-status-banner.signing .status-banner-icon {
+    color: var(--color-collabo);
+}
+
+.overview-status-banner.signing .status-banner-title {
+    color: var(--color-collabo);
+}
+
+/* --- 概要バナー: 締結済み --- */
+.overview-status-banner.concluded {
+    background: var(--color-success-container);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+}
+
+.overview-status-banner.concluded .status-banner-icon {
+    color: var(--color-success);
+}
+
+.overview-status-banner.concluded .status-banner-title {
+    color: var(--color-success);
+}
+
+/* ===================================
+   署名フルスクリーンモーダル
+   =================================== */
+.signing-fullscreen-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: var(--bg-white);
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.signing-fullscreen-modal.open {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* モーダルヘッダー */
+.signing-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border-default);
+    background: var(--bg-white);
+    min-height: 56px;
+}
+
+.signing-modal-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.signing-modal-header-right {
+    width: 80px; /* balance with left side */
+}
+
+.signing-modal-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-heading);
+}
+
+.signing-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-assist);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    line-height: 1;
+}
+
+.signing-close-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-heading);
+}
+
+/* モーダルボディ（2カラム） */
+.signing-modal-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 左カラム: 契約書全文 */
+.signing-doc-column {
+    flex: 6;
+    overflow-y: auto;
+    padding: 40px;
+    background: var(--bg-note);
+    border-right: 1px solid var(--border-default);
+}
+
+.signing-doc-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 12px rgba(93, 123, 168, 0.08);
+    padding: 48px 40px;
+    position: relative;
+}
+
+.signing-doc-view .doc-main-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text-heading);
+}
+
+.signing-doc-view .doc-preamble {
+    margin-bottom: 24px;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.signing-doc-view .doc-article {
+    margin-bottom: 20px;
+}
+
+.signing-doc-view .article-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-heading);
+    margin-bottom: 8px;
+}
+
+.signing-doc-view .article-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-default);
+}
+
+.signing-doc-view .article-list {
+    padding-left: 20px;
+    margin: 8px 0;
+}
+
+/* 署名モーダル内の契約書署名欄 */
+.signing-doc-view .contract-signature-section {
+    margin-top: 36px;
+    padding-top: 24px;
+}
+
+.signing-doc-view .contract-signature-closing {
+    font-size: 14px;
+}
+
+.signing-doc-view .contract-signature-date {
+    font-size: 14px;
+}
+
+.signing-doc-view .contract-party-heading {
+    font-size: 14px;
+}
+
+.signing-doc-view .contract-party-row {
+    font-size: 14px;
+}
+
+/* 署名位置ハイライト */
+.signing-doc-seal.highlight {
+    position: relative;
+    animation: sealPulse 2s ease-in-out infinite;
+}
+
+.signing-doc-seal.highlight::before {
+    content: '← ここに署名されます';
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-primary);
+    color: white;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+@keyframes sealPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(65, 105, 225, 0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(65, 105, 225, 0.1); }
+}
+
+/* ============================
+   署名スタンプ ドラッグ&ドロップ
+   ============================ */
+
+/* オーバーレイ層 */
+.signing-stamp-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.signing-stamp-overlay .placed-signature-stamp {
+    pointer-events: auto;
+}
+
+/* ドロップゾーン ハイライト */
+.signing-doc-wrapper.drag-over {
+    outline: 2px dashed var(--color-primary);
+    outline-offset: -2px;
+}
+
+.signing-doc-wrapper.drag-over-active {
+    outline-color: var(--color-primary);
+    background-color: rgba(65, 105, 225, 0.03);
+}
+
+/* 汎用 seal-circle（D&Dスタンプ用） */
+.seal-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-attention);
+    border-radius: 50%;
+    color: var(--color-attention);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+/* ドラッグゴースト */
+.signing-drag-ghost {
+    position: fixed;
+    z-index: 10001;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    pointer-events: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: none;
+}
+
+.signing-drag-ghost .seal-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+}
+
+/* ドラッグハンドルセクション */
+.signing-stamp-drag-section {
+    margin-top: 20px;
+    padding: 16px;
+    border: 2px dashed var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+}
+
+.signing-stamp-drag-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.signing-stamp-handle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.15s ease;
+}
+
+.signing-stamp-handle:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(65, 105, 225, 0.15);
+}
+
+.signing-stamp-handle:active {
+    cursor: grabbing;
+}
+
+.stamp-handle-grip {
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+}
+
+.stamp-handle-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stamp-handle-preview .seal-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+}
+
+.stamp-handle-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+/* 配置済みノート */
+.signing-stamp-placed-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: var(--color-green-50, #ecfdf5);
+    border: 1px solid var(--color-green-200, #a7f3d0);
+    border-radius: var(--radius-md);
+    color: var(--color-green-700, #047857);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.signing-stamp-placed-note .material-symbols-outlined {
+    color: var(--color-green-600, #059669);
+}
+
+.stamp-reset-btn {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--color-green-300, #6ee7b7);
+    border-radius: var(--radius-sm);
+    padding: 2px 10px;
+    font-size: 12px;
+    color: var(--color-green-700, #047857);
+    cursor: pointer;
+}
+
+.stamp-reset-btn:hover {
+    background: var(--color-green-100, #d1fae5);
+}
+
+/* 配置済みスタンプ */
+.placed-signature-stamp {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.placed-signature-stamp:active {
+    cursor: grabbing;
+}
+
+.placed-stamp-content {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    border: 2px solid var(--color-primary);
+}
+
+.placed-stamp-content .seal-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+}
+
+.placed-stamp-content .seal-signed {
+    display: block;
+}
+
+/* 配置アニメーション */
+.placed-signature-stamp.stamp-placing {
+    animation: stampPlace 0.6s ease;
+}
+
+@keyframes stampPlace {
+    0% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
+    60% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* 確定済みスタンプ */
+.placed-signature-stamp.stamp-confirmed .placed-stamp-content {
+    border-color: var(--color-green-500, #10b981);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* アクションボタン */
+.placed-stamp-actions {
+    display: none;
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-white);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 2px;
+}
+
+.placed-signature-stamp:hover .placed-stamp-actions {
+    display: flex;
+}
+
+.placed-stamp-action-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    color: var(--text-tertiary);
+    padding: 0;
+}
+
+.placed-stamp-action-btn:hover {
+    background: var(--bg-light);
+    color: var(--color-red-500, #ef4444);
+}
+
+.placed-stamp-action-btn .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* プレースメントノート更新済みスタイル */
+.signing-placement-note.placement-done {
+    color: var(--color-green-700, #047857);
+    background: var(--color-green-50, #ecfdf5);
+    border-color: var(--color-green-200, #a7f3d0);
+}
+
+.signing-placement-note.placement-done .material-symbols-outlined {
+    color: var(--color-green-600, #059669);
+}
+
+/* 右カラム: 署名ステップ */
+.signing-action-column {
+    flex: 4;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-white);
+}
+
+/* 署名ドキュメントの案内ノート */
+.signing-doc-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(65, 105, 225, 0.06);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    border: 1px solid rgba(65, 105, 225, 0.12);
+}
+
+/* 署名配置ノート */
+.signing-placement-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(76, 175, 80, 0.06);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    color: var(--color-success);
+    margin-bottom: 20px;
+    border: 1px solid rgba(76, 175, 80, 0.12);
+}
+
+/* ステッパー */
+.signing-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+}
+
+.signing-stepper .stepper-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.signing-stepper .stepper-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    border: 2px solid var(--border-default);
+    color: var(--text-assist);
+    background: var(--bg-white);
+    transition: all 0.3s;
+}
+
+.signing-stepper .stepper-item.active .stepper-circle {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.signing-stepper .stepper-item.completed .stepper-circle {
+    background: var(--color-success);
+    border-color: var(--color-success);
+    color: var(--color-white);
+}
+
+.signing-stepper .stepper-label {
+    font-size: 11px;
+    color: var(--text-assist);
+    font-weight: 500;
+}
+
+.signing-stepper .stepper-item.active .stepper-label {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.signing-stepper .stepper-item.completed .stepper-label {
+    color: var(--color-success);
+}
+
+.signing-stepper .stepper-line {
+    width: 48px;
+    height: 2px;
+    background: var(--border-default);
+    margin: 0 8px;
+    margin-bottom: 22px;
+}
+
+/* ステップコンテンツ */
+.signing-step-content {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.signing-step-content.active {
+    display: flex;
+}
+
+.signing-step-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+}
+
+.signing-step-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-heading);
+    margin-bottom: 4px;
+}
+
+.signing-version-note {
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    margin-bottom: 20px;
+}
+
+/* AI要約 */
+.signing-ai-summary {
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.signing-ai-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-assist);
+    margin-bottom: 12px;
+}
+
+.signing-ai-points {
+    margin: 0;
+    padding-left: 16px;
+    font-size: var(--font-size-sm);
+    color: var(--text-default);
+    line-height: 1.8;
+}
+
+.signing-ai-points li {
+    margin-bottom: 4px;
+}
+
+/* 確認チェックボックス */
+.signing-confirm-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-heading);
+    transition: background 0.2s;
+}
+
+.signing-confirm-label:hover {
+    background: var(--bg-hover);
+}
+
+.signing-confirm-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+}
+
+/* フッターボタン */
+.signing-step-footer {
+    padding: 16px 28px;
+    border-top: 1px solid var(--border-default);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.signing-btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    border: none;
+}
+
+.signing-btn.secondary {
+    background: var(--bg-note);
+    color: var(--text-default);
+    border: 1px solid var(--border-default);
+}
+
+.signing-btn.secondary:hover {
+    background: var(--bg-hover);
+}
+
+.signing-btn.primary {
+    background: var(--color-success);
+    color: var(--color-white);
+}
+
+.signing-btn.primary:hover {
+    background: #34a854;
+}
+
+.signing-btn.primary:disabled {
+    background: var(--text-assist);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ===================================
+   署名方法タブ & 入力
+   =================================== */
+.sign-method-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-default);
+    margin-bottom: 20px;
+}
+
+.sign-method-tab {
+    flex: 1;
+    padding: 12px 8px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: var(--font-size-sm);
+    color: var(--text-assist);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.sign-method-tab:hover {
+    color: var(--text-heading);
+    background: var(--bg-hover);
+}
+
+.sign-method-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    font-weight: 600;
+}
+
+.sign-method-content {
+    display: none;
+}
+
+.sign-method-content.active {
+    display: block;
+}
+
+.sign-input-label {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-assist);
+    margin-bottom: 8px;
+}
+
+.sign-text-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    color: var(--text-heading);
+    box-sizing: border-box;
+}
+
+.sign-text-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+}
+
+.sign-preview-label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-assist);
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+/* テキスト署名プレビュー */
+.typed-signature-preview {
+    background: var(--bg-white);
+    padding: 20px 24px;
+    text-align: center;
+    font-family: 'Klee One', cursive, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a237e;
+    border-bottom: 2px solid #1a237e;
+    border-radius: 0;
+    min-height: 40px;
+    letter-spacing: 0.05em;
+}
+
+.typed-signature-preview.placeholder {
+    color: var(--text-assist);
+    font-style: italic;
+}
+
+/* 手書きCanvas */
+.sign-canvas-label {
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    margin-bottom: 10px;
+}
+
+.sign-canvas-container {
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    overflow: hidden;
+}
+
+.sign-canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: 160px;
+    cursor: crosshair;
+}
+
+.sign-canvas-clear {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: none;
+    border: none;
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.sign-canvas-clear:hover {
+    color: var(--color-attention);
+}
+
+/* 印影プレビュー */
+.seal-generator-preview {
+    width: 80px;
+    height: 80px;
+    border: 3px solid var(--color-attention);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px auto;
+    background: rgba(209, 12, 74, 0.04);
+}
+
+.seal-generator-preview .seal-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-attention);
+}
+
+.seal-generator-preview .seal-placeholder {
+    font-size: 11px;
+    color: var(--text-assist);
+}
+
+.seal-generator-preview.empty {
+    border-style: dashed;
+    border-color: var(--text-assist);
+    background: none;
+}
+
+/* 署名者情報カード */
+.signer-info-card {
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 24px;
+}
+
+.signer-info-title {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-assist);
+    margin-bottom: 12px;
+}
+
+.signer-info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: var(--font-size-sm);
+}
+
+.signer-info-label {
+    color: var(--text-assist);
+}
+
+.signer-info-value {
+    color: var(--text-default);
+    font-weight: 500;
+}
+
+/* ===================================
+   署名成功画面 (Step 3)
+   =================================== */
+.signing-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 80px;
+}
+
+.signing-success-icon {
+    font-size: 80px;
+    color: var(--color-success);
+    margin-bottom: 24px;
+    animation: successPop 0.5s ease;
+}
+
+.signing-success-icon .material-symbols-outlined {
+    font-size: 80px;
+}
+
+.signing-success-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 8px;
+}
+
+.signing-success-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-assist);
+}
+
+@keyframes successPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ===================================
+   Step 3: アクション選択カード
+   =================================== */
+.step3-choice-cards {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.step3-choice-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.step3-choice-card:hover {
+    border-color: var(--border-default);
+    background: var(--bg-hover);
+}
+
+.step3-choice-card.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary-bg);
+}
+
+.step3-choice-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--bg-note);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.step3-choice-card.active .step3-choice-icon {
+    background: var(--color-primary);
+}
+
+.step3-choice-icon .material-symbols-outlined {
+    font-size: 22px;
+    color: var(--text-assist);
+}
+
+.step3-choice-card.active .step3-choice-icon .material-symbols-outlined {
+    color: white;
+}
+
+.step3-choice-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-heading);
+    margin-bottom: 2px;
+}
+
+.step3-choice-desc {
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+}
+
+.step3-self-sign-divider {
+    height: 1px;
+    background: var(--border-light);
+    margin: 20px 0 16px;
+}
+
+.self-sign-input {
+    margin-bottom: 8px;
+}
+
+/* ===================================
+   Step 2: 署名方法設定（説明のみ）
+   =================================== */
+.signing-setup-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-assist);
+    margin-bottom: 16px;
+}
+
+.signing-scope-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--blue-50, #eff6ff);
+    border-radius: 8px;
+    font-size: var(--font-size-xs);
+    color: var(--blue-700, #1d4ed8);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.signing-scope-note .icon-sm {
+    color: var(--blue-500, #3b82f6);
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.sign-method-desc {
+    display: none;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    margin-top: 16px;
+}
+
+.sign-method-desc.active {
+    display: flex;
+}
+
+.method-desc-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--color-primary-bg);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.method-desc-icon .material-symbols-outlined {
+    font-size: 24px;
+    color: var(--color-primary);
+}
+
+.method-desc-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-heading);
+    margin-bottom: 4px;
+}
+
+.method-desc-detail {
+    font-size: var(--font-size-sm);
+    color: var(--text-assist);
+    line-height: 1.5;
+}
+
+/* ===================================
+   署名ページリンク（バナー内）
+   =================================== */
+.sign-page-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    padding: 4px 12px;
+    background: var(--bg-white);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-primary);
+    font-size: var(--font-size-xs);
+    transition: all 0.15s;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.sign-page-link:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+.sign-page-link .material-symbols-outlined {
+    font-size: 14px;
+}
+
+/* ===================================
+   署名確認モーダル
+   =================================== */
+.signing-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.signing-confirm-overlay.open {
+    display: flex;
+}
+
+.signing-confirm-modal {
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.signing-confirm-icon {
+    margin-bottom: 16px;
+}
+
+.signing-confirm-icon .material-symbols-outlined {
+    font-size: 48px;
+    color: var(--color-primary);
+}
+
+.signing-confirm-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 16px;
+}
+
+.signing-confirm-body {
+    text-align: left;
+    font-size: var(--font-size-sm);
+    color: var(--text-default);
+    margin-bottom: 16px;
+}
+
+.signing-confirm-body ul {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.signing-confirm-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #FFF8E1;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    color: #8B6914;
+    margin-bottom: 24px;
+}
+
+.signing-confirm-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.signing-confirm-actions .signing-btn {
+    flex: 1;
+}
+
+/* ===================================
+   署名表示（契約書上）
+   =================================== */
+.contract-seal-area {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    vertical-align: middle;
+}
+
+.contract-seal-area.signed .contract-seal-circle {
+    display: none;
+}
+
+.seal-signed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.seal-signed-text {
+    font-family: 'Klee One', cursive, serif;
+    font-size: 18px;
+    color: var(--text-heading);
+    border-bottom: 1.5px solid var(--text-heading);
+    padding: 2px 4px;
+}
+
+.seal-signed-stamp {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-attention);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(209, 12, 74, 0.04);
+}
+
+.seal-signed-stamp .seal-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-attention);
+}
+
+.seal-signed .signature-image {
+    max-height: 30px;
+    object-fit: contain;
+}
+
+.seal-pending {
+    width: 40px;
+    height: 40px;
+    border: 2px dashed var(--text-assist);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: var(--text-assist);
+    background: none;
+}
+
+/* 署名プレビュー状態（左カラム内のリアルタイムプレビュー） */
+.seal-preview {
+    opacity: 0.6;
+    animation: sealPreviewPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes sealPreviewPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.9; }
+}
+
+.signed-timestamp {
+    display: block;
+    font-size: 9px;
+    color: var(--text-assist);
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+/* ===================================
+   チャット: システムメッセージ
+   =================================== */
+.system-message {
+    text-align: center;
+    margin: 12px 0;
+}
+
+.system-message-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--bg-note);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    color: var(--text-assist);
+}
+
+/* ===================================
+   署名証明書モーダル
+   =================================== */
+.signing-cert-modal {
+    max-width: 640px;
+}
+
+.cert-header-section {
+    text-align: center;
+    padding: 24px 0 16px;
+}
+
+.cert-main-icon {
+    margin-bottom: 12px;
+}
+
+.cert-main-icon .material-symbols-outlined {
+    font-size: 56px;
+    color: var(--color-success);
+}
+
+.cert-main-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 4px;
+}
+
+.cert-main-subtitle {
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    letter-spacing: 0.5px;
+}
+
+.cert-info-section {
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.cert-info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: var(--font-size-sm);
+}
+
+.cert-label {
+    color: var(--text-assist);
+}
+
+.cert-value {
+    color: var(--text-heading);
+    font-weight: 500;
+}
+
+.cert-divider {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-assist);
+    margin: 20px 0 16px;
+    position: relative;
+}
+
+.cert-divider::before,
+.cert-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 40px);
+    height: 1px;
+    background: var(--border-default);
+}
+
+.cert-divider::before { left: 0; }
+.cert-divider::after { right: 0; }
+
+.cert-signer-section {
+    margin-bottom: 16px;
+}
+
+.cert-signer-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 8px;
+}
+
+.cert-signer-detail {
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+}
+
+.cert-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-default);
+}
+
+.cert-detail-row span:first-child {
+    color: var(--text-assist);
+}
+
+.cert-nego-summary {
+    text-align: center;
+    padding: 16px;
+    font-size: var(--font-size-sm);
+    color: var(--text-default);
+}
+
+.cert-nego-stats {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.cert-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.cert-stat-value {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.cert-stat-label {
+    font-size: 11px;
+    color: var(--text-assist);
+}
+
+/* --- 管理タブ: 署名証明カード --- */
+.signing-cert-content {
+    padding: var(--space-4);
+}
+
+.signing-cert-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 12px;
+}
+
+.signing-cert-parties {
+    margin-bottom: 16px;
+}
+
+.cert-party {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: var(--font-size-sm);
+}
+
+.cert-party-name {
+    color: var(--text-default);
+}
+
+.cert-party-date {
+    color: var(--text-assist);
+    font-size: var(--font-size-xs);
+}
+
+.cert-view-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    background: var(--bg-note);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-link);
+    cursor: pointer;
+    justify-content: center;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.cert-view-btn:hover {
+    background: var(--bg-hover);
+}
+
+/* 署名者ビュー: 署名可能バナー */
+.global-status-banner.signer-ready {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    color: #2E7D32;
+    box-shadow: var(--shadow-md);
+}
+
+.global-status-banner.signer-ready .global-status-icon .material-symbols-outlined {
+    color: #2E7D32;
+}
+
+
+/* ================================================ */
+/* マルチ署名者 — Step 2: 署名者カード */
+/* ================================================ */
+
+/* ================================================ */
+/* 送付スタイル切替UI */
+/* ================================================ */
+
+.signing-flow-selector {
+    margin-bottom: 16px;
+}
+
+.signing-flow-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.signing-flow-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.signing-flow-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 10px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+}
+
+.signing-flow-card:hover {
+    border-color: #bbb;
+}
+
+.signing-flow-card.active {
+    border-color: #4361ee;
+    background: #f5f7ff;
+}
+
+.flow-card-visual {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+}
+
+.flow-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flow-arrow {
+    font-size: 12px;
+    color: #999;
+    margin: 0 1px;
+}
+
+.flow-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+.flow-card-desc {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.3;
+}
+
+/* リレー矢印コネクター */
+.signer-relay-connector {
+    display: flex;
+    justify-content: center;
+    padding: 2px 0;
+    color: #bbb;
+}
+
+.signer-relay-connector .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* リレー番号バッジ */
+.signer-order-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+.signer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 16px;
+}
+
+.signer-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid var(--signer-color, #4361ee);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+
+.signer-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.signer-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.signer-party-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--signer-color, #4361ee);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.signer-card-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    flex: 1;
+}
+
+.signer-remove-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.signer-remove-btn:hover {
+    background: #fee;
+    color: #e74c3c;
+}
+
+.signer-card-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.signer-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.signer-field-label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 500;
+}
+
+.signer-name-input,
+.signer-company-input,
+.signer-email-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.signer-name-input:focus,
+.signer-company-input:focus,
+.signer-email-input:focus {
+    border-color: var(--signer-color, #4361ee);
+}
+
+.signer-type-selector {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.signer-type-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.15s;
+    color: #555;
+    user-select: none;
+}
+
+.signer-type-option:hover {
+    border-color: #bbb;
+}
+
+.signer-type-option.active {
+    border-color: var(--signer-color, #4361ee);
+    background: color-mix(in srgb, var(--signer-color, #4361ee) 8%, #fff);
+    color: var(--signer-color, #4361ee);
+    font-weight: 600;
+}
+
+.signer-type-option .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.signer-email-row {
+    margin-top: 8px;
+}
+
+.signer-forward-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+    cursor: pointer;
+}
+
+.signer-forward-option input[type="checkbox"] {
+    accent-color: var(--signer-color, #4361ee);
+}
+
+.add-signer-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #d0d0d0;
+    border-radius: 10px;
+    background: none;
+    color: #888;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.add-signer-btn:hover {
+    border-color: #4361ee;
+    color: #4361ee;
+    background: rgba(67, 97, 238, 0.03);
+}
+
+/* ================================================ */
+/* マルチ署名者 — Step 3: アコーディオン */
+/* ================================================ */
+
+.signer-config-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.signer-config-section {
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid var(--signer-color, #4361ee);
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.signer-config-section:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.signer-config-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+}
+
+.signer-config-header:hover {
+    background: #fafafa;
+}
+
+.signer-config-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--signer-color, #4361ee);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.signer-config-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: #333;
+    flex: 1;
+}
+
+.signer-config-type-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.signer-config-type-badge.type-self {
+    background: #e8f0fe;
+    color: #4361ee;
+}
+
+.signer-config-type-badge.type-send {
+    background: #fff3e0;
+    color: #e67e22;
+}
+
+.signer-config-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #999;
+}
+
+.signer-config-status.placed {
+    color: #27ae60;
+}
+
+.signer-config-status .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.signer-config-arrow {
+    color: #999;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.signer-config-arrow .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.signer-config-section.expanded .signer-config-arrow {
+    transform: rotate(180deg);
+}
+
+.signer-config-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.signer-config-section.expanded .signer-config-body {
+    display: block;
+}
+
+/* 署名者設定 内部 — 方法タブ */
+.signer-method-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 12px 0 10px;
+}
+
+.signer-method-tab {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.15s;
+}
+
+.signer-method-tab:hover {
+    border-color: #bbb;
+}
+
+.signer-method-tab.active {
+    border-color: var(--signer-color, #4361ee);
+    background: color-mix(in srgb, var(--signer-color, #4361ee) 8%, #fff);
+    color: var(--signer-color, #4361ee);
+    font-weight: 600;
+}
+
+.signer-method-tab .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* D&Dハンドル（署名者別） */
+.signer-stamp-drag-section {
+    margin: 10px 0;
+}
+
+.signer-stamp-handle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 2px dashed color-mix(in srgb, var(--signer-color, #4361ee) 40%, #e0e0e0);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--signer-color, #4361ee) 3%, #fff);
+    cursor: grab;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.signer-stamp-handle:hover {
+    border-color: var(--signer-color, #4361ee);
+    background: color-mix(in srgb, var(--signer-color, #4361ee) 6%, #fff);
+}
+
+.signer-stamp-handle:active {
+    cursor: grabbing;
+}
+
+.signer-stamp-handle .stamp-handle-grip {
+    color: var(--signer-color, #4361ee);
+    opacity: 0.6;
+}
+
+.signer-stamp-handle .stamp-handle-text {
+    font-size: 12px;
+    color: #888;
+}
+
+.signer-stamp-placed-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #f0faf0;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #27ae60;
+    margin-top: 8px;
+}
+
+.signer-stamp-placed-note .stamp-reset-btn {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    color: #888;
+}
+
+.signer-stamp-placed-note .stamp-reset-btn:hover {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+/* 自分で署名入力エリア（アコーディオン内） */
+.signer-self-sign-area {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.signer-self-sign-area .self-sign-input {
+    margin-bottom: 8px;
+}
+
+.signer-self-sign-area .sign-text-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 13px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+
+.signer-self-sign-area .sign-text-input:focus {
+    border-color: var(--signer-color, #4361ee);
+}
+
+.signer-self-sign-area .sign-input-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.signer-self-sign-area .sign-preview-label {
+    font-size: 11px;
+    color: #999;
+    margin: 8px 0 4px;
+}
+
+.signer-self-sign-area .typed-signature-preview {
+    font-family: 'Klee One', cursive, serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a237e;
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 2px solid #1a237e;
+    border-radius: 0;
+    background: #fafafa;
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+.signer-self-sign-area .seal-generator-preview {
+    width: 56px;
+    height: 56px;
+    border: 2px solid #c0392b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c0392b;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 4px 0;
+}
+
+.signer-self-sign-area .sign-canvas-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.signer-self-sign-area .sign-canvas-container canvas {
+    width: 100%;
+    height: 120px;
+    display: block;
+}
+
+.signer-self-sign-area .sign-canvas-clear {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.signer-self-sign-area .sign-canvas-clear:hover {
+    background: #f5f5f5;
+    color: #e74c3c;
+}
+
+.signer-self-sign-area .signing-confirm-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+.signer-self-sign-area .signing-confirm-label input[type="checkbox"] {
+    accent-color: var(--signer-color, #4361ee);
+}
+
+/* ================================================ */
+/* 色分けスタンプラベル（配置済み） */
+/* ================================================ */
+
+.placed-stamp-label {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--signer-color, #4361ee);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 2;
 }

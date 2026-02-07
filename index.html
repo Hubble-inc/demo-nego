@@ -31,8 +31,8 @@
                     <select class="negotiations-filter-select">
                         <option value="all">すべて</option>
                         <option value="negotiating">交渉中</option>
-                        <option value="waiting">返答待ち</option>
-                        <option value="agreed">合意済み</option>
+                        <option value="signing">署名待ち</option>
+                        <option value="concluded">締結済み</option>
                     </select>
                     <select class="negotiations-filter-select">
                         <option value="recent">最新順</option>
@@ -93,38 +93,65 @@
                 </div>
             </div>
 
-                <!-- 合意済みセクション -->
+                <!-- 署名待ちセクション -->
                 <div class="negotiations-section">
                     <div class="negotiations-section-header">
-                        <span class="negotiations-section-icon material-symbols-outlined">check_circle</span>
-                        <span class="negotiations-section-title">合意済み</span>
-                        <span class="negotiations-section-count">2</span>
+                        <span class="negotiations-section-icon material-symbols-outlined">draw</span>
+                        <span class="negotiations-section-title">署名待ち</span>
+                        <span class="negotiations-section-count">1</span>
+                    </div>
+                    <div class="negotiations-cards">
+                        <div class="negotiation-card">
+                            <div class="negotiation-card-header">
+                                <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
+                                <div class="negotiation-card-title">販売代理店契約書</div>
+                                <div class="negotiation-card-badge signing"><span class="material-symbols-outlined icon-xs">draw</span> 署名待ち</div>
                             </div>
+                            <div class="negotiation-card-meta">
+                                <span class="negotiation-card-partner">株式会社MNO 木村様</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-date">あなたの署名待ち</span>
+                            </div>
+                            <div class="negotiation-card-activity">
+                                <div class="activity-icon"><span class="material-symbols-outlined icon-sm">draw</span></div>
+                                <div class="activity-text">木村様が署名済み。あなたの署名を待っています</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 締結済みセクション -->
+                <div class="negotiations-section">
+                    <div class="negotiations-section-header">
+                        <span class="negotiations-section-icon material-symbols-outlined">verified</span>
+                        <span class="negotiations-section-title">締結済み</span>
+                        <span class="negotiations-section-count">2</span>
+                    </div>
                     <div class="negotiations-cards">
                         <!-- カード3 -->
-                        <div class="negotiation-card agreed">
+                        <div class="negotiation-card concluded">
                             <div class="negotiation-card-header">
                                 <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
                                 <div class="negotiation-card-title">システム開発契約書</div>
-                                <div class="negotiation-card-badge agreed"><span class="material-symbols-outlined icon-xs">check_circle</span> 合意済み</div>
+                                <div class="negotiation-card-badge concluded"><span class="material-symbols-outlined icon-xs">verified</span> 締結済み</div>
                             </div>
                             <div class="negotiation-card-meta">
                                 <span class="negotiation-card-partner">株式会社GHI 鈴木様</span>
                                 <span class="negotiation-card-separator">·</span>
-                                <span class="negotiation-card-date">合意日: 2024年12月15日</span>
+                                <span class="negotiation-card-date">締結日: 2024年12月15日</span>
                             </div>
                         </div>
                         <!-- カード4 -->
-                        <div class="negotiation-card agreed">
+                        <div class="negotiation-card concluded">
                             <div class="negotiation-card-header">
                                 <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
                                 <div class="negotiation-card-title">コンサルティング契約書</div>
-                                <div class="negotiation-card-badge agreed"><span class="material-symbols-outlined icon-xs">check_circle</span> 合意済み</div>
+                                <div class="negotiation-card-badge concluded"><span class="material-symbols-outlined icon-xs">verified</span> 締結済み</div>
                             </div>
                             <div class="negotiation-card-meta">
                                 <span class="negotiation-card-partner">株式会社JKL 高橋様</span>
                                 <span class="negotiation-card-separator">·</span>
-                                <span class="negotiation-card-date">合意日: 2024年11月20日</span>
+                                <span class="negotiation-card-date">締結日: 2024年11月20日</span>
                             </div>
                         </div>
                     </div>
@@ -202,8 +229,8 @@
                             <div class="wizard-permission-content">
                                 <div class="wizard-permission-icon"><span class="material-symbols-outlined">key</span></div>
                                 <div class="wizard-permission-info">
-                                    <div class="wizard-permission-title">合意権限あり</div>
-                                    <div class="wizard-permission-desc">契約への合意が可能</div>
+                                    <div class="wizard-permission-title">署名権限あり</div>
+                                    <div class="wizard-permission-desc">契約への署名が可能</div>
                                 </div>
                             </div>
                             <div class="wizard-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
