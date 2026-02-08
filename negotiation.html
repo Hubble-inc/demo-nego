@@ -1235,6 +1235,66 @@
 
     <!-- ================================================ -->
 
+    <!-- Hubbleドキュメント連携モーダル -->
+    <div class="modal-overlay" id="linkHubbleModal" onclick="closeLinkHubbleModal(event)">
+        <div class="modal-content link-hubble-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title"><span class="material-symbols-outlined icon-sm">link</span> Hubbleドキュメントを連携</div>
+                <button class="modal-close" onclick="closeLinkHubbleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: URL入力 -->
+                <div id="linkHubbleStep1">
+                    <div class="link-hubble-section">
+                        <label class="link-hubble-label">ドキュメントURL</label>
+                        <div class="link-hubble-input-row">
+                            <input type="url" class="link-hubble-input" id="hubbleUrlInput"
+                                   placeholder="https://app.hubble.jp/docs/xxxxx" onkeydown="if(event.key==='Enter')fetchHubbleDocument()">
+                            <button class="link-hubble-fetch-btn" id="hubbleFetchBtn" onclick="fetchHubbleDocument()">
+                                取得
+                            </button>
+                        </div>
+                        <div class="link-hubble-hint">
+                            <span class="material-symbols-outlined icon-xs">info</span>
+                            HubbleのドキュメントURLを貼り付けてください。最新バージョンが連携されます。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: プレビューカード（hidden） -->
+                <div id="linkHubbleStep2" class="link-hubble-step2 hidden">
+                    <div class="link-hubble-section">
+                        <label class="link-hubble-label">連携するドキュメント</label>
+                        <div class="link-hubble-preview-card">
+                            <div class="link-hubble-preview-icon">
+                                <span class="material-symbols-outlined">description</span>
+                            </div>
+                            <div class="link-hubble-preview-info">
+                                <div class="link-hubble-preview-title" id="hubblePreviewTitle"></div>
+                                <div class="link-hubble-preview-meta">
+                                    <span class="link-hubble-preview-version">
+                                        <span class="material-symbols-outlined icon-xs">history</span>
+                                        最新: <strong id="hubblePreviewVersion"></strong>
+                                    </span>
+                                    <span class="link-hubble-preview-date" id="hubblePreviewDate"></span>
+                                </div>
+                                <div class="link-hubble-preview-badges">
+                                    <span class="link-hubble-status-badge" id="hubblePreviewStatus"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeLinkHubbleModal()">キャンセル</button>
+                <button class="modal-btn primary" id="linkHubbleConfirmBtn" onclick="confirmLinkHubble()" disabled>
+                    <span class="material-symbols-outlined icon-sm">add_link</span> 連携する
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================================================ -->
     <!-- 署名フルスクリーンモーダル（左:契約書全文 / 右:署名ステップ） -->
     <!-- ================================================ -->
@@ -1265,12 +1325,16 @@
             <div class="signing-modal-header-right"></div>
         </div>
 
+        <!-- ドキュメントタブバー（ヘッダー直下） -->
+        <div class="signing-doc-tabs" id="signingDocTabs"></div>
+
         <!-- モーダルボディ（2カラム） -->
         <div class="signing-modal-body">
-            <!-- 左カラム: 契約書全文 -->
+            <!-- 左カラム: 契約書全文（マルチドキュメント対応） -->
             <div class="signing-doc-column">
                 <div class="signing-doc-wrapper">
-                    <div class="document signing-doc-view">
+                    <div class="document signing-doc-view" id="signingDocView">
+                        <!-- JS動的生成: getDocumentHtml(activeSigningDocId) -->
                         <div class="doc-main-title">業務委託基本契約書</div>
 
                         <div class="doc-preamble">
@@ -1460,34 +1524,23 @@
                 <!-- Step 1: 内容確認 -->
                 <div class="signing-step-content active" id="signingStep1">
                     <div class="signing-step-body">
-                        <div class="signing-step-title">最終版の内容を確認してください</div>
-                        <div class="signing-version-note">Ver.8（最新）の内容で署名します</div>
+                        <div class="signing-step-title">署名パッケージの内容を確認してください</div>
+                        <div class="signing-version-note">すべての書類を確認してチェックを入れてください</div>
 
-                        <!-- AI要約 -->
-                        <div class="signing-ai-summary">
-                            <div class="signing-ai-header">
-                                <span class="material-symbols-outlined icon-sm">smart_toy</span>
-                                <span>この契約の要点（署名前の最終確認）</span>
-                            </div>
-                            <ul class="signing-ai-points">
-                                <li><strong>期間:</strong> 6ヶ月間（自動更新あり、解約は2ヶ月前通知）</li>
-                                <li><strong>報酬:</strong> 月額48万円（税別）、毎月末締め翌月末払い</li>
-                                <li><strong>秘密保持:</strong> 契約終了後3年間</li>
-                                <li><strong>知財:</strong> 成果物の権利は支払完了後に甲に帰属</li>
-                                <li><strong>損害賠償:</strong> 累計支払報酬額が上限</li>
-                            </ul>
+                        <!-- AI要約（書類切替で動的更新） -->
+                        <div class="signing-ai-summary" id="signingAiSummaryArea">
+                            <!-- JS動的生成: getDocAiSummary(activeSigningDocId) -->
                         </div>
 
                         <div class="signing-doc-note">
                             <span class="material-symbols-outlined icon-sm">description</span>
-                            左側に契約書の全文を表示しています。スクロールして内容をご確認ください。
+                            左側のタブで各書類を切り替えて内容をご確認ください。
                         </div>
 
-                        <!-- 確認チェックボックス -->
-                        <label class="signing-confirm-label">
-                            <input type="checkbox" id="signingConfirmCheck" onchange="updateSigningNextBtn()">
-                            <span>契約書の内容を確認しました</span>
-                        </label>
+                        <!-- 書類チェックリスト -->
+                        <div class="signing-doc-checklist" id="signingDocChecklist">
+                            <!-- JS動的生成: renderDocumentChecklist() -->
+                        </div>
                     </div>
 
                     <div class="signing-step-footer">
@@ -1503,6 +1556,7 @@
                     <div class="signing-step-body">
                         <div class="signing-step-title">署名者を追加・設定</div>
                         <div class="signing-setup-desc">この契約に署名する全員を設定してください。</div>
+                        <div class="signing-package-info" id="signingPackageInfo"></div>
 
                         <!-- 署名者リスト（JS動的生成） -->
                         <div class="signer-list" id="signerList"></div>
@@ -1526,7 +1580,17 @@
                 <div class="signing-step-content" id="signingStep3">
                     <div class="signing-step-body">
                         <div class="signing-step-title">各署名者の署名方法と位置を設定</div>
-                        <div class="signing-setup-desc">各署名者のスタンプを左の契約書にドラッグ&ドロップしてください。</div>
+                        <div class="signing-setup-desc">左側のタブで書類を切り替え、各書類にスタンプをドラッグ&ドロップしてください。</div>
+
+                        <!-- 現在の書類インジケータ -->
+                        <div class="signing-active-doc-indicator" id="signingActiveDocIndicator" style="display:none;"></div>
+
+                        <!-- 添付書類メッセージ（hidden初期） -->
+                        <div class="signing-attachment-msg hidden" id="signingAttachmentMsg">
+                            <span class="material-symbols-outlined">attach_file</span>
+                            この書類は添付書類です。署名位置の設定は不要です。
+                        </div>
+
                         <div class="signer-config-list" id="signerConfigList">
                             <!-- JS動的生成: renderSignerConfigSections() -->
                         </div>

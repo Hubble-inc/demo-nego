@@ -7161,3 +7161,472 @@ body {
 .signing-sent-close-btn:hover {
     background: var(--bg-hover);
 }
+
+/* ================================================ */
+/* Hubbleドキュメント連携モーダル */
+/* ================================================ */
+.link-hubble-modal {
+    max-width: 520px;
+}
+
+.link-hubble-section {
+    margin-bottom: 20px;
+}
+
+.link-hubble-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-default);
+    margin-bottom: 10px;
+}
+
+.link-hubble-input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.link-hubble-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 2px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.link-hubble-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.link-hubble-fetch-btn {
+    padding: 12px 20px;
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-white);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+}
+
+.link-hubble-fetch-btn:hover {
+    opacity: 0.9;
+}
+
+.link-hubble-fetch-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.link-hubble-hint {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+}
+
+/* プレビューカード */
+.link-hubble-preview-card {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-note);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    align-items: flex-start;
+}
+
+.link-hubble-preview-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--color-primary-container);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-primary);
+}
+
+.link-hubble-preview-icon .material-symbols-outlined {
+    font-size: 24px;
+}
+
+.link-hubble-preview-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.link-hubble-preview-title {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 6px;
+}
+
+.link-hubble-preview-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    margin-bottom: 8px;
+}
+
+.link-hubble-preview-version {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.link-hubble-status-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+}
+
+.link-hubble-status-badge.sharing {
+    background: var(--color-primary-container);
+    color: var(--color-primary);
+}
+
+.link-hubble-status-badge.from-partner {
+    background: var(--color-social-container);
+    color: var(--color-social);
+}
+
+/* Step2 アニメーション */
+.link-hubble-step2 {
+    animation: linkHubbleFadeIn 0.3s ease;
+}
+
+.link-hubble-step2.hidden {
+    display: none;
+}
+
+@keyframes linkHubbleFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ローディングスピン */
+.link-hubble-spin {
+    animation: linkHubbleSpin 1s linear infinite;
+}
+
+@keyframes linkHubbleSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Hubble連携サブタブのリンクアイコン */
+.contract-subtab .hubble-linked-icon {
+    font-size: 14px;
+    color: var(--color-primary);
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+/* ============================================ */
+/* マルチドキュメント署名 — ドキュメントタブバー */
+/* ============================================ */
+
+.signing-doc-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-default);
+    position: relative;
+    z-index: 5;
+    flex-shrink: 0;
+}
+
+.signing-doc-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-assist);
+    border: none;
+    background: transparent;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.signing-doc-tab:hover {
+    color: var(--text-heading);
+    background: var(--bg-hover);
+}
+
+.signing-doc-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.signing-doc-tab.attachment {
+    color: var(--text-tertiary);
+}
+
+.signing-doc-tab.attachment.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.signing-doc-tab .tab-type-icon {
+    font-size: 16px;
+}
+
+.signing-doc-tab .tab-completion-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+.signing-doc-tab .tab-completion-dot.complete {
+    background: #16a34a;
+}
+
+.signing-doc-tab .tab-completion-dot.partial {
+    background: #f59e0b;
+}
+
+.signing-doc-tab .tab-completion-dot.none {
+    background: #d1d5db;
+}
+
+/* ============================================ */
+/* マルチドキュメント署名 — Step 1 チェックリスト */
+/* ============================================ */
+
+.signing-doc-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.signing-doc-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.signing-doc-checklist-item:hover {
+    background: var(--bg-hover);
+}
+
+.signing-doc-checklist-item.active {
+    border-color: var(--color-primary);
+    background: rgba(65, 105, 225, 0.04);
+}
+
+.signing-doc-checklist-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.signing-doc-checklist-info {
+    flex: 1;
+    cursor: pointer;
+}
+
+.signing-doc-checklist-title {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-heading);
+}
+
+.signing-doc-checklist-meta {
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    margin-top: 2px;
+}
+
+.signing-doc-type-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.signing-doc-type-badge.contract {
+    background: #e8f0fe;
+    color: #4361ee;
+}
+
+.signing-doc-type-badge.attachment {
+    background: #f0f0f0;
+    color: #888;
+}
+
+/* ============================================ */
+/* マルチドキュメント署名 — Step 2 パッケージ情報 */
+/* ============================================ */
+
+.signing-package-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: rgba(65, 105, 225, 0.06);
+    border: 1px solid rgba(65, 105, 225, 0.12);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+}
+
+/* ============================================ */
+/* マルチドキュメント署名 — Step 3 インジケータ */
+/* ============================================ */
+
+.signing-active-doc-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(65, 105, 225, 0.06);
+    border: 1px solid rgba(65, 105, 225, 0.12);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+}
+
+.signing-active-doc-indicator .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.signing-attachment-msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 16px;
+    background: var(--bg-note);
+    border-radius: var(--radius-md);
+    color: var(--text-assist);
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.signing-attachment-msg .material-symbols-outlined {
+    font-size: 24px;
+    color: var(--text-tertiary);
+}
+
+.signing-attachment-msg.hidden {
+    display: none;
+}
+
+/* ============================================ */
+/* 見積書スタイル（署名モーダル内） */
+/* ============================================ */
+
+.estimate-header-info {
+    margin-bottom: 24px;
+}
+
+.estimate-meta {
+    font-size: 13px;
+    color: var(--text-assist);
+}
+
+.estimate-parties {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.estimate-to {
+    font-size: 15px;
+}
+
+.estimate-from {
+    text-align: right;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.estimate-subject {
+    font-size: 14px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--bg-note);
+    border-radius: var(--radius-sm);
+}
+
+.estimate-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+
+.estimate-table th,
+.estimate-table td {
+    padding: 8px 12px;
+    border: 1px solid var(--border-default);
+    text-align: left;
+}
+
+.estimate-table th {
+    background: var(--bg-note);
+    font-weight: 600;
+}
+
+.estimate-table th:nth-child(2),
+.estimate-table th:nth-child(3),
+.estimate-table th:nth-child(4),
+.estimate-table td:nth-child(2),
+.estimate-table td:nth-child(3),
+.estimate-table td:nth-child(4) {
+    text-align: right;
+}
+
+.estimate-table tfoot td {
+    text-align: right;
+    font-weight: 500;
+}
+
+.estimate-table tfoot tr.estimate-total td {
+    font-weight: 700;
+    font-size: 15px;
+    background: rgba(65, 105, 225, 0.04);
+}
+
+.estimate-note {
+    font-size: 13px;
+    color: var(--text-assist);
+}

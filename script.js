@@ -47,6 +47,418 @@ let wizardCurrentStep = 1;
 let wizardFiles = [];
 let wizardInviteEmails = []; // { email: string }[]
 
+// ============================================
+// マルチドキュメント署名パッケージ
+// ============================================
+let signingDocuments = [];
+let activeSigningDocId = 'doc_basic';
+
+function initSigningDocuments() {
+    signingDocuments = [
+        { id: 'doc_basic', title: '業務委託基本契約書', type: 'contract', typeLabel: '契約書', version: 'Ver.8', confirmed: true },
+        { id: 'doc_individual_a', title: '個別契約書（案件A）', type: 'contract', typeLabel: '契約書', version: 'Ver.3', confirmed: true },
+        { id: 'doc_estimate', title: '見積書', type: 'attachment', typeLabel: '添付書類', version: null, confirmed: false },
+        { id: 'doc_order', title: '発注書', type: 'attachment', typeLabel: '添付書類', version: null, confirmed: false },
+        { id: 'doc_invoice', title: '請求書(1月分)', type: 'attachment', typeLabel: '添付書類', version: null, confirmed: false }
+    ];
+    activeSigningDocId = 'doc_basic';
+}
+
+function getDocumentHtml(docId) {
+    switch (docId) {
+        case 'doc_basic': return getBasicContractHtml();
+        case 'doc_individual_a': return getIndividualContractHtml();
+        case 'doc_estimate': return getEstimateDocHtml();
+        case 'doc_order': return getOrderDocHtml();
+        case 'doc_invoice': return getInvoiceDocHtml();
+        default: return '<p>書類が見つかりません。</p>';
+    }
+}
+
+function getBasicContractHtml() {
+    return `
+        <div class="doc-main-title">業務委託基本契約書</div>
+        <div class="doc-preamble">
+            株式会社ABC（以下「甲」という）と株式会社XYZ（以下「乙」という）は、甲が乙に委託する業務に関し、以下のとおり業務委託基本契約（以下「本契約」という）を締結する。
+        </div>
+        <div class="doc-article"><div class="article-title">第1条（目的）</div><div class="article-content">本契約は、甲が乙に対してデジタルマーケティング支援業務（以下「本業務」という）を委託し、乙がこれを受託するにあたり、甲乙間の権利義務関係を定めることを目的とする。</div></div>
+        <div class="doc-article"><div class="article-title">第2条（業務内容）</div><div class="article-content">1. 乙が甲に提供する本業務の具体的内容は、以下のとおりとする。<br><div class="article-list">(1) Webサイトの運用・改善提案<br>(2) SNSマーケティング戦略の立案・実行<br>(3) 広告運用（リスティング広告、SNS広告等）<br>(4) 月次レポートの作成・報告<br>(5) その他、上記に付随する業務</div>2. 業務の詳細については、別途個別契約にて定めるものとする。</div></div>
+        <div class="doc-article"><div class="article-title">第3条（契約期間）</div><div class="article-content">1. 本契約の有効期間は、2026年2月1日から6ヶ月間とする。<br>2. 本契約は、期間満了の2ヶ月前までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとし、以後も同様とする。</div></div>
+        <div class="doc-article"><div class="article-title">第4条（報酬）</div><div class="article-content">1. 甲は乙に対し、本業務の対価として、月額金48万円（消費税別）を支払うものとする。<br>2. 報酬の支払いは、毎月末日締め、翌月末日払いとする。<br>3. 振込手数料は甲の負担とする。</div></div>
+        <div class="doc-article"><div class="article-title">第5条（経費）</div><div class="article-content">本業務の遂行に必要な経費のうち、広告出稿費用その他甲が事前に承認した費用については、甲が実費を負担するものとする。</div></div>
+        <div class="doc-article"><div class="article-title">第6条（秘密保持）</div><div class="article-content">1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>2. 前項の義務は、本契約終了後3年間存続するものとする。<br>3. 次の各号に該当する情報は、秘密情報から除外する。<br><div class="article-list">(1) 開示時点で既に公知であった情報<br>(2) 開示後、受領者の責によらず公知となった情報<br>(3) 開示時点で受領者が既に保有していた情報<br>(4) 正当な権限を有する第三者から秘密保持義務を負うことなく入手した情報</div></div></div>
+        <div class="doc-article"><div class="article-title">第7条（知的財産権）</div><div class="article-content">1. 本業務の遂行により生じた成果物に関する著作権その他の知的財産権は、報酬の支払い完了をもって甲に帰属するものとする。<br>2. 乙は、成果物について著作者人格権を行使しないものとする。</div></div>
+        <div class="doc-article"><div class="article-title">第8条（再委託）</div><div class="article-content">乙は、甲の事前の書面による承諾を得ることなく、本業務の全部又は一部を第三者に再委託してはならない。</div></div>
+        <div class="doc-article"><div class="article-title">第9条（契約解除）</div><div class="article-content">1. 甲又は乙は、相手方が次の各号のいずれかに該当した場合、何らの催告なく直ちに本契約を解除することができる。<br><div class="article-list">(1) 本契約に違反し、相当期間を定めて催告しても是正されないとき<br>(2) 支払停止又は支払不能となったとき<br>(3) 破産手続開始、民事再生手続開始、会社更生手続開始の申立てがあったとき<br>(4) 差押え、仮差押え、仮処分又は競売の申立てがあったとき<br>(5) 解散又は営業停止となったとき</div>2. 前項により本契約が解除された場合、解除された当事者は、相手方に対し、損害賠償責任を負うものとする。</div></div>
+        <div class="doc-article"><div class="article-title">第10条（損害賠償）</div><div class="article-content">甲又は乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、損害賠償の累計額は、本契約に基づき甲が乙に支払った報酬の総額を上限とする。</div></div>
+        <div class="doc-article"><div class="article-title">第11条（反社会的勢力の排除）</div><div class="article-content">1. 甲及び乙は、自己又は自己の役員が、暴力団、暴力団員、暴力団関係企業、総会屋その他の反社会的勢力（以下「反社会的勢力」という）に該当しないことを表明し、保証する。<br>2. 甲又は乙は、相手方が前項に違反した場合、何らの催告なく直ちに本契約を解除することができる。</div></div>
+        <div class="doc-article"><div class="article-title">第12条（権利義務の譲渡禁止）</div><div class="article-content">甲及び乙は、相手方の事前の書面による承諾なく、本契約上の地位又は本契約に基づく権利義務の全部若しくは一部を第三者に譲渡し、又は担保に供してはならない。</div></div>
+        <div class="doc-article"><div class="article-title">第13条（協議事項）</div><div class="article-content">本契約に定めのない事項又は本契約の解釈に疑義が生じた事項については、甲乙誠意をもって協議し、解決するものとする。</div></div>
+        <div class="doc-article"><div class="article-title">第14条（管轄裁判所）</div><div class="article-content">本契約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とする。</div></div>
+        <div class="contract-signature-section">
+            <div class="contract-signature-closing">本契約締結の証として、本書2通を作成し、甲乙記名押印のうえ、各1通を保有する。</div>
+            <div class="contract-signature-date">2026年　　月　　日</div>
+            <div class="contract-signature-block">
+                <div class="contract-signature-party">
+                    <div class="contract-party-heading">甲</div>
+                    <div class="contract-party-row"><span class="contract-party-label">住　所</span><span class="contract-party-value">東京都渋谷区○○1-2-3</span></div>
+                    <div class="contract-party-row"><span class="contract-party-label">会社名</span><span class="contract-party-value">株式会社ABC</span></div>
+                    <div class="contract-party-row signer-row"><span class="contract-party-label">代表者</span><span class="contract-party-value">代表取締役　佐藤 一郎</span><span class="contract-seal-area signing-doc-seal"></span></div>
+                </div>
+                <div class="contract-signature-party">
+                    <div class="contract-party-heading">乙</div>
+                    <div class="contract-party-row"><span class="contract-party-label">住　所</span><span class="contract-party-value">東京都港区△△4-5-6</span></div>
+                    <div class="contract-party-row"><span class="contract-party-label">会社名</span><span class="contract-party-value">株式会社XYZ</span></div>
+                    <div class="contract-party-row signer-row"><span class="contract-party-label">代表者</span><span class="contract-party-value">代表取締役　田中 太郎</span><span class="contract-seal-area signing-doc-seal"></span></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function getIndividualContractHtml() {
+    return `
+        <div class="doc-main-title">個別契約書（案件A）</div>
+        <div class="doc-preamble">
+            株式会社ABC（以下「甲」という）と株式会社XYZ（以下「乙」という）は、業務委託基本契約書（以下「基本契約」という）第2条に基づき、以下のとおり個別契約を締結する。
+        </div>
+        <div class="doc-article"><div class="article-title">第1条（業務名称）</div><div class="article-content">本個別契約における業務名称は「2026年度 春季キャンペーン デジタルマーケティング施策」とする。</div></div>
+        <div class="doc-article"><div class="article-title">第2条（業務内容）</div><div class="article-content">1. LP（ランディングページ）制作: 3ページ<br>2. SNS広告運用（Instagram・X）: 3ヶ月間<br>3. Google広告運用（リスティング・ディスプレイ）: 3ヶ月間<br>4. 効果測定レポート: 月次</div></div>
+        <div class="doc-article"><div class="article-title">第3条（契約期間）</div><div class="article-content">2026年3月1日から2026年5月31日まで（3ヶ月間）</div></div>
+        <div class="doc-article"><div class="article-title">第4条（報酬）</div><div class="article-content">本業務の報酬は、合計金180万円（消費税別）とする。<br>支払条件は基本契約第4条に準ずる。</div></div>
+        <div class="doc-article"><div class="article-title">第5条（納品物）</div><div class="article-content">1. LP制作データ一式（HTML/CSS/画像）<br>2. 広告運用レポート（月次・最終）<br>3. 広告クリエイティブ素材一式</div></div>
+        <div class="contract-signature-section">
+            <div class="contract-signature-closing">本個別契約の証として、本書2通を作成し、甲乙記名押印のうえ、各1通を保有する。</div>
+            <div class="contract-signature-date">2026年　　月　　日</div>
+            <div class="contract-signature-block">
+                <div class="contract-signature-party">
+                    <div class="contract-party-heading">甲</div>
+                    <div class="contract-party-row"><span class="contract-party-label">会社名</span><span class="contract-party-value">株式会社ABC</span></div>
+                    <div class="contract-party-row signer-row"><span class="contract-party-label">代表者</span><span class="contract-party-value">代表取締役　佐藤 一郎</span><span class="contract-seal-area signing-doc-seal"></span></div>
+                </div>
+                <div class="contract-signature-party">
+                    <div class="contract-party-heading">乙</div>
+                    <div class="contract-party-row"><span class="contract-party-label">会社名</span><span class="contract-party-value">株式会社XYZ</span></div>
+                    <div class="contract-party-row signer-row"><span class="contract-party-label">代表者</span><span class="contract-party-value">代表取締役　田中 太郎</span><span class="contract-seal-area signing-doc-seal"></span></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function getEstimateDocHtml() {
+    return `
+        <div class="doc-main-title">御見積書</div>
+        <div class="estimate-header-info">
+            <div class="estimate-meta">見積番号: EST-2026-0215　|　発行日: 2026年2月7日　|　有効期限: 2026年3月7日</div>
+        </div>
+        <div class="estimate-parties">
+            <div class="estimate-to"><strong>株式会社ABC 御中</strong></div>
+            <div class="estimate-from">株式会社XYZ<br>東京都港区△△4-5-6<br>TEL: 03-XXXX-XXXX</div>
+        </div>
+        <div class="estimate-subject"><strong>件名: 2026年度 春季キャンペーン デジタルマーケティング施策</strong></div>
+        <table class="estimate-table">
+            <thead><tr><th>項目</th><th>数量</th><th>単価</th><th>金額</th></tr></thead>
+            <tbody>
+                <tr><td>LP制作</td><td>3ページ</td><td>¥200,000</td><td>¥600,000</td></tr>
+                <tr><td>SNS広告運用（Instagram・X）</td><td>3ヶ月</td><td>¥200,000</td><td>¥600,000</td></tr>
+                <tr><td>Google広告運用（リスティング・ディスプレイ）</td><td>3ヶ月</td><td>¥200,000</td><td>¥600,000</td></tr>
+            </tbody>
+            <tfoot>
+                <tr><td colspan="3">小計</td><td>¥1,800,000</td></tr>
+                <tr><td colspan="3">消費税（10%）</td><td>¥180,000</td></tr>
+                <tr class="estimate-total"><td colspan="3">合計</td><td>¥1,980,000</td></tr>
+            </tfoot>
+        </table>
+        <div class="estimate-note">備考: 広告出稿費用は別途実費となります。</div>
+    `;
+}
+
+function getOrderDocHtml() {
+    return `
+        <div class="doc-main-title">発注書</div>
+        <div class="estimate-header-info">
+            <div class="estimate-meta">発注番号: PO-2026-0118　|　発注日: 2026年1月20日</div>
+        </div>
+        <div class="estimate-parties">
+            <div class="estimate-to"><strong>株式会社XYZ 御中</strong></div>
+            <div class="estimate-from">株式会社ABC<br>東京都渋谷区○○1-2-3<br>TEL: 03-XXXX-XXXX</div>
+        </div>
+        <div class="estimate-subject"><strong>件名: 春季キャンペーン デジタルマーケティング施策</strong></div>
+        <table class="estimate-table">
+            <thead><tr><th>項目</th><th>数量</th><th>単価</th><th>金額</th></tr></thead>
+            <tbody>
+                <tr><td>LP制作</td><td>3ページ</td><td>¥200,000</td><td>¥600,000</td></tr>
+                <tr><td>SNS広告運用（Instagram・X）</td><td>3ヶ月</td><td>¥200,000</td><td>¥600,000</td></tr>
+                <tr><td>Google広告運用（リスティング・ディスプレイ）</td><td>3ヶ月</td><td>¥200,000</td><td>¥600,000</td></tr>
+            </tbody>
+            <tfoot>
+                <tr><td colspan="3">小計</td><td>¥1,800,000</td></tr>
+                <tr><td colspan="3">消費税（10%）</td><td>¥180,000</td></tr>
+                <tr class="estimate-total"><td colspan="3">合計</td><td>¥1,980,000</td></tr>
+            </tfoot>
+        </table>
+        <div class="estimate-note">納品期限: 2026年5月31日<br>支払条件: 納品月末締め翌月末払い</div>
+    `;
+}
+
+function getInvoiceDocHtml() {
+    return `
+        <div class="doc-main-title">請求書</div>
+        <div class="estimate-header-info">
+            <div class="estimate-meta">請求番号: INV-2026-0131　|　請求日: 2026年1月31日　|　お支払期限: 2026年2月28日</div>
+        </div>
+        <div class="estimate-parties">
+            <div class="estimate-to"><strong>株式会社ABC 御中</strong></div>
+            <div class="estimate-from">株式会社XYZ<br>東京都港区△△4-5-6<br>TEL: 03-XXXX-XXXX</div>
+        </div>
+        <div class="estimate-subject"><strong>件名: デジタルマーケティング支援業務 1月分</strong></div>
+        <table class="estimate-table">
+            <thead><tr><th>項目</th><th>数量</th><th>単価</th><th>金額</th></tr></thead>
+            <tbody>
+                <tr><td>デジタルマーケティング支援業務（1月分）</td><td>1式</td><td>¥480,000</td><td>¥480,000</td></tr>
+            </tbody>
+            <tfoot>
+                <tr><td colspan="3">小計</td><td>¥480,000</td></tr>
+                <tr><td colspan="3">消費税（10%）</td><td>¥48,000</td></tr>
+                <tr class="estimate-total"><td colspan="3">合計</td><td>¥528,000</td></tr>
+            </tfoot>
+        </table>
+        <div class="estimate-note">振込先: みずほ銀行 港支店 普通 1234567 カ）エックスワイゼット<br>※振込手数料はご負担をお願いいたします。</div>
+    `;
+}
+
+function getDocAiSummary(docId) {
+    switch (docId) {
+        case 'doc_basic':
+            return `
+                <div class="signing-ai-header">
+                    <span class="material-symbols-outlined icon-sm">smart_toy</span>
+                    <span>この契約の要点（署名前の最終確認）</span>
+                </div>
+                <ul class="signing-ai-points">
+                    <li><strong>期間:</strong> 6ヶ月間（自動更新あり、解約は2ヶ月前通知）</li>
+                    <li><strong>報酬:</strong> 月額48万円（税別）、毎月末締め翌月末払い</li>
+                    <li><strong>秘密保持:</strong> 契約終了後3年間</li>
+                    <li><strong>知財:</strong> 成果物の権利は支払完了後に甲に帰属</li>
+                    <li><strong>損害賠償:</strong> 累計支払報酬額が上限</li>
+                </ul>
+            `;
+        case 'doc_individual_a':
+            return `
+                <div class="signing-ai-header">
+                    <span class="material-symbols-outlined icon-sm">smart_toy</span>
+                    <span>この契約の要点（署名前の最終確認）</span>
+                </div>
+                <ul class="signing-ai-points">
+                    <li><strong>業務:</strong> 春季キャンペーン デジタルマーケティング施策</li>
+                    <li><strong>内容:</strong> LP制作3ページ、SNS広告運用、Google広告運用</li>
+                    <li><strong>期間:</strong> 2026年3月1日 〜 5月31日（3ヶ月間）</li>
+                    <li><strong>報酬:</strong> 合計180万円（税別）</li>
+                </ul>
+            `;
+        case 'doc_estimate':
+            return `
+                <div class="signing-ai-header">
+                    <span class="material-symbols-outlined icon-sm">smart_toy</span>
+                    <span>見積書の概要</span>
+                </div>
+                <ul class="signing-ai-points">
+                    <li><strong>見積番号:</strong> EST-2026-0215</li>
+                    <li><strong>合計金額:</strong> 1,980,000円（税込）</li>
+                    <li><strong>内訳:</strong> LP制作3ページ + 広告運用6ヶ月分</li>
+                    <li><strong>備考:</strong> 広告出稿費用は別途</li>
+                </ul>
+            `;
+        case 'doc_order':
+            return `
+                <div class="signing-ai-header">
+                    <span class="material-symbols-outlined icon-sm">smart_toy</span>
+                    <span>発注書の概要</span>
+                </div>
+                <ul class="signing-ai-points">
+                    <li><strong>発注番号:</strong> PO-2026-0118</li>
+                    <li><strong>発注日:</strong> 2026年1月20日</li>
+                    <li><strong>件名:</strong> 春季キャンペーン デジタルマーケティング施策</li>
+                    <li><strong>発注金額:</strong> 1,980,000円（税込）</li>
+                    <li><strong>納品期限:</strong> 2026年5月31日</li>
+                </ul>
+            `;
+        case 'doc_invoice':
+            return `
+                <div class="signing-ai-header">
+                    <span class="material-symbols-outlined icon-sm">smart_toy</span>
+                    <span>請求書の概要</span>
+                </div>
+                <ul class="signing-ai-points">
+                    <li><strong>請求番号:</strong> INV-2026-0131</li>
+                    <li><strong>請求日:</strong> 2026年1月31日</li>
+                    <li><strong>件名:</strong> デジタルマーケティング支援業務 1月分</li>
+                    <li><strong>請求金額:</strong> 528,000円（税込）</li>
+                    <li><strong>支払期限:</strong> 2026年2月28日</li>
+                </ul>
+            `;
+        default:
+            return '';
+    }
+}
+
+// ============================================
+// ドキュメントタブバー & 書類切替
+// ============================================
+
+function renderSigningDocTabs() {
+    const container = document.getElementById('signingDocTabs');
+    if (!container) return;
+    container.innerHTML = '';
+
+    signingDocuments.forEach(doc => {
+        const tab = document.createElement('button');
+        tab.className = 'signing-doc-tab' + (doc.id === activeSigningDocId ? ' active' : '') + (doc.type === 'attachment' ? ' attachment' : '');
+        tab.onclick = () => switchSigningDoc(doc.id);
+
+        const icon = doc.type === 'contract' ? 'description' : 'attach_file';
+
+        // 完了インジケータ（Step 3のみ表示）
+        let completionHtml = '';
+        if (currentSigningStep === 3 && doc.type === 'contract') {
+            const status = getDocStampCompletionStatus(doc.id);
+            completionHtml = `<span class="tab-completion-dot ${status}"></span>`;
+        }
+
+        tab.innerHTML = `<span class="material-symbols-outlined tab-type-icon">${icon}</span> ${escapeHtml(doc.title)} ${completionHtml}`;
+        container.appendChild(tab);
+    });
+}
+
+function switchSigningDoc(docId) {
+    activeSigningDocId = docId;
+
+    // 左カラムの書類内容を切替
+    const docView = document.getElementById('signingDocView');
+    if (docView) docView.innerHTML = getDocumentHtml(docId);
+
+    // スタンプオーバーレイを再描画
+    renderStampsForCurrentDoc();
+
+    // タブバー更新
+    renderSigningDocTabs();
+
+    // Step 1: AI要約を切替 + チェックリストのアクティブ状態更新
+    if (currentSigningStep === 1) {
+        const aiArea = document.getElementById('signingAiSummaryArea');
+        if (aiArea) aiArea.innerHTML = getDocAiSummary(docId);
+        // チェックリスト項目のアクティブ状態
+        document.querySelectorAll('.signing-doc-checklist-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.docId === docId);
+        });
+    }
+
+    // Step 3: 署名者コンフィグを再描画 + D&D再初期化
+    if (currentSigningStep === 3) {
+        renderSignerConfigSections();
+        setTimeout(() => initAllStampDragAndDrop(), 100);
+        updateStep3ExecuteBtn();
+    }
+
+    // 左カラムを先頭にスクロール
+    const docColumn = document.querySelector('.signing-doc-column');
+    if (docColumn) docColumn.scrollTop = 0;
+}
+
+function renderStampsForCurrentDoc() {
+    const overlay = document.getElementById('signingStampOverlay');
+    if (!overlay) return;
+    overlay.innerHTML = '';
+
+    signers.forEach(signer => {
+        const placement = signer.stampPlacements ? signer.stampPlacements[activeSigningDocId] : null;
+        if (!placement) {
+            // この書類にスタンプがなければplacedStampElsもクリア
+            if (signer.placedStampEls) signer.placedStampEls[activeSigningDocId] = null;
+            return;
+        }
+
+        const stamp = document.createElement('div');
+        stamp.className = 'placed-signature-stamp';
+        stamp.dataset.signerId = signer.id;
+        stamp.style.left = (placement.x * 100) + '%';
+        stamp.style.top = (placement.y * 100) + '%';
+        stamp.innerHTML = `
+            <div class="placed-stamp-label" style="background: ${signer.color};">${signer.party}</div>
+            <div class="placed-stamp-content" style="border-color: ${signer.color};">${getStampPreviewHtmlForSigner(signer)}</div>
+            <div class="placed-stamp-actions">
+                <button class="placed-stamp-action-btn" onclick="removeSignerStamp('${signer.id}')" title="削除">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+        `;
+        overlay.appendChild(stamp);
+        if (!signer.placedStampEls) signer.placedStampEls = {};
+        signer.placedStampEls[activeSigningDocId] = stamp;
+
+        // 再ドラッグ
+        stamp.addEventListener('mousedown', (ev) => startStampReposition(ev, signer.id));
+        stamp.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            startStampReposition({ clientX: touch.clientX, clientY: touch.clientY, preventDefault: () => {}, stopPropagation: () => {} }, signer.id);
+            const onTouchMove = (ev) => { ev.preventDefault(); const t = ev.touches[0]; moveStampReposition({ clientX: t.clientX, clientY: t.clientY }); };
+            const onTouchEnd = (ev) => { const t = ev.changedTouches[0]; endStampReposition({ clientX: t.clientX, clientY: t.clientY }); document.removeEventListener('touchmove', onTouchMove); document.removeEventListener('touchend', onTouchEnd); };
+            document.addEventListener('touchmove', onTouchMove, { passive: false });
+            document.addEventListener('touchend', onTouchEnd);
+        }, { passive: false });
+    });
+}
+
+function getDocStampCompletionStatus(docId) {
+    if (!signers.length) return 'none';
+    const placed = signers.filter(s => s.stampPlacements && s.stampPlacements[docId] != null).length;
+    if (placed === signers.length) return 'complete';
+    if (placed > 0) return 'partial';
+    return 'none';
+}
+
+// Step 1: 書類チェックリスト
+function renderDocumentChecklist() {
+    const container = document.getElementById('signingDocChecklist');
+    if (!container) return;
+    container.innerHTML = '';
+
+    signingDocuments.forEach(doc => {
+        const item = document.createElement('div');
+        item.className = 'signing-doc-checklist-item' + (doc.id === activeSigningDocId ? ' active' : '');
+        item.dataset.docId = doc.id;
+
+        const badgeClass = doc.type === 'contract' ? 'contract' : 'attachment';
+        const versionText = doc.version ? `（${doc.version}）` : '';
+
+        item.innerHTML = `
+            <input type="checkbox" ${doc.confirmed ? 'checked' : ''} onchange="toggleDocConfirm('${doc.id}', this.checked)">
+            <div class="signing-doc-checklist-info" onclick="switchSigningDoc('${doc.id}')">
+                <div class="signing-doc-checklist-title">${escapeHtml(doc.title)}${versionText}</div>
+                <div class="signing-doc-checklist-meta">左のプレビューで内容を確認</div>
+            </div>
+            <span class="signing-doc-type-badge ${badgeClass}">${doc.typeLabel}</span>
+        `;
+        container.appendChild(item);
+    });
+}
+
+function toggleDocConfirm(docId, checked) {
+    const doc = signingDocuments.find(d => d.id === docId);
+    if (doc) doc.confirmed = checked;
+    updateSigningConfirmBtn();
+}
+
+function updateSigningConfirmBtn() {
+    const btn = document.getElementById('signingNextBtn');
+    if (!btn) return;
+    // 契約書が最低1つチェックされていればOK（添付書類はオプション）
+    const hasContractConfirmed = signingDocuments.some(d => d.type === 'contract' && d.confirmed);
+    btn.disabled = !hasContractConfirmed;
+}
+
 // 署名スタンプ ドラッグ&ドロップ（マルチ署名者: 個別配置はsigners[]内で管理）
 let isDraggingStamp = false;
 let isRepositioning = false;
@@ -99,21 +511,129 @@ function switchContractSubtab(subtabId) {
     }
 }
 
-// 新しい契約を追加
+// 新しい契約を追加（Hubble連携モーダルを開く）
 function addNewContract() {
-    const contractName = prompt('新しい契約の名前を入力してください\n(例: 個別契約(案件C)、保守契約 など)');
-    if (contractName) {
-        const subtabs = document.querySelector('.contract-subtabs');
-        const addBtn = document.querySelector('.add-contract-subtab');
+    openLinkHubbleModal();
+}
 
-        const newTab = document.createElement('button');
-        newTab.className = 'contract-subtab';
-        newTab.innerHTML = `<span class="material-symbols-outlined icon-xs">description</span> ${contractName}`;
-        newTab.onclick = function() { switchContractSubtab('new'); };
+// ============================================
+// Hubbleドキュメント連携
+// ============================================
 
-        subtabs.insertBefore(newTab, addBtn);
-        alert(`「${contractName}」を作成しました!`);
+// デモ用フェイクデータ
+const hubbleDemoDocuments = {
+    default: {
+        title: '個別契約書（案件B）',
+        version: 'Ver.3',
+        date: '2026/02/05 14:30',
+        status: 'sharing',
+        statusLabel: '共有中'
+    },
+    nda: {
+        title: '秘密保持契約書（NDA）',
+        version: 'Ver.2',
+        date: '2026/02/03 10:00',
+        status: 'from-partner',
+        statusLabel: '先方から受領'
+    },
+    advisory: {
+        title: 'アドバイザリー契約書',
+        version: 'Ver.5',
+        date: '2026/01/28 09:15',
+        status: 'sharing',
+        statusLabel: '共有中'
     }
+};
+
+let linkedHubbleDoc = null;
+
+function openLinkHubbleModal() {
+    document.getElementById('hubbleUrlInput').value = '';
+    document.getElementById('linkHubbleStep2').classList.add('hidden');
+    document.getElementById('linkHubbleConfirmBtn').disabled = true;
+    const fetchBtn = document.getElementById('hubbleFetchBtn');
+    fetchBtn.disabled = false;
+    fetchBtn.textContent = '取得';
+    linkedHubbleDoc = null;
+
+    document.getElementById('linkHubbleModal').classList.add('active');
+    setTimeout(() => document.getElementById('hubbleUrlInput').focus(), 100);
+}
+
+function closeLinkHubbleModal(event) {
+    if (!event || event.target === event.currentTarget) {
+        document.getElementById('linkHubbleModal').classList.remove('active');
+        linkedHubbleDoc = null;
+    }
+}
+
+function fetchHubbleDocument() {
+    const url = document.getElementById('hubbleUrlInput').value.trim();
+    if (!url) {
+        alert('URLを入力してください。');
+        return;
+    }
+    if (!url.startsWith('http')) {
+        alert('有効なURLを入力してください。');
+        return;
+    }
+
+    // ローディング表示
+    const fetchBtn = document.getElementById('hubbleFetchBtn');
+    fetchBtn.disabled = true;
+    fetchBtn.innerHTML = '<span class="material-symbols-outlined icon-xs link-hubble-spin">progress_activity</span>';
+
+    setTimeout(() => {
+        // URLに基づいてデモデータを選択
+        let docData;
+        if (url.toLowerCase().includes('nda') || url.toLowerCase().includes('secret')) {
+            docData = hubbleDemoDocuments.nda;
+        } else if (url.toLowerCase().includes('advisory') || url.toLowerCase().includes('consult')) {
+            docData = hubbleDemoDocuments.advisory;
+        } else {
+            docData = hubbleDemoDocuments.default;
+        }
+
+        linkedHubbleDoc = { ...docData, url };
+
+        // プレビューカードに反映
+        document.getElementById('hubblePreviewTitle').textContent = docData.title;
+        document.getElementById('hubblePreviewVersion').textContent = docData.version;
+        document.getElementById('hubblePreviewDate').textContent = docData.date;
+        const statusBadge = document.getElementById('hubblePreviewStatus');
+        statusBadge.className = 'link-hubble-status-badge ' + docData.status;
+        statusBadge.textContent = docData.statusLabel;
+
+        // Step2表示、確定ボタン有効化
+        document.getElementById('linkHubbleStep2').classList.remove('hidden');
+        document.getElementById('linkHubbleConfirmBtn').disabled = false;
+
+        // フェッチボタン復元
+        fetchBtn.disabled = false;
+        fetchBtn.textContent = '取得';
+    }, 800);
+}
+
+function confirmLinkHubble() {
+    if (!linkedHubbleDoc) return;
+
+    const subtabs = document.querySelector('.contract-subtabs');
+    const addBtn = document.querySelector('.add-contract-subtab');
+    const docTitle = linkedHubbleDoc.title;
+    const docVersion = linkedHubbleDoc.version;
+    const docUrl = linkedHubbleDoc.url;
+
+    const newTab = document.createElement('button');
+    newTab.className = 'contract-subtab';
+    newTab.innerHTML = `<span class="material-symbols-outlined icon-xs">description</span> ${docTitle} <span class="material-symbols-outlined hubble-linked-icon" title="Hubble連携 (${docVersion})">link</span>`;
+    newTab.onclick = function() {
+        document.querySelectorAll('.contract-subtab').forEach(t => t.classList.remove('active'));
+        newTab.classList.add('active');
+        alert(`「${docTitle}」（${docVersion}）を表示します。\n\nHubble URL: ${docUrl}`);
+    };
+
+    subtabs.insertBefore(newTab, addBtn);
+    closeLinkHubbleModal();
 }
 
 // アップロードモーダル
@@ -334,8 +854,8 @@ function addSigner() {
         email: '',
         method: 'text',
         allowForward: true,
-        stampPlacement: null,
-        placedStampEl: null,
+        stampPlacements: {},
+        placedStampEls: {},
         color: getSignerColor(index),
         signatureData: null,
         signedAt: null
@@ -351,9 +871,9 @@ function addSigner() {
 function removeSigner(id) {
     if (signers.length <= 1) return;
     const signer = getSignerById(id);
-    // 配置済みスタンプも削除
-    if (signer && signer.placedStampEl) {
-        signer.placedStampEl.remove();
+    // 配置済みスタンプも削除（全ドキュメント分）
+    if (signer && signer.placedStampEls) {
+        Object.values(signer.placedStampEls).forEach(el => { if (el) el.remove(); });
     }
     signers = signers.filter(s => s.id !== id);
     // パーティラベルと色を再割り当て
@@ -399,6 +919,24 @@ function renderSignerConfigSections() {
     if (!container) return;
     container.innerHTML = '';
 
+    // 添付書類が選択されている場合はメッセージのみ表示
+    const activeDoc = signingDocuments.find(d => d.id === activeSigningDocId);
+    const attachmentMsg = document.getElementById('signingAttachmentMsg');
+    if (activeDoc && activeDoc.type === 'attachment') {
+        container.style.display = 'none';
+        if (attachmentMsg) attachmentMsg.classList.remove('hidden');
+        return;
+    }
+    container.style.display = '';
+    if (attachmentMsg) attachmentMsg.classList.add('hidden');
+
+    // 現在の書類名を表示するインジケータ
+    const indicator = document.getElementById('signingActiveDocIndicator');
+    if (indicator && activeDoc) {
+        indicator.innerHTML = `<span class="material-symbols-outlined icon-sm">description</span> ${escapeHtml(activeDoc.title)} の署名位置を設定中`;
+        indicator.style.display = 'flex';
+    }
+
     signers.forEach((signer, index) => {
         const section = document.createElement('div');
         section.className = 'signer-config-section' + (index === 0 ? ' expanded' : '');
@@ -407,7 +945,7 @@ function renderSignerConfigSections() {
 
         const typeBadgeClass = signer.type === 'self' ? 'self' : 'send';
         const typeLabel = signer.type === 'self' ? '自分で署名' : '送付';
-        const isPlaced = signer.stampPlacement !== null;
+        const isPlaced = signer.stampPlacements && signer.stampPlacements[activeSigningDocId] != null;
         const statusHtml = isPlaced
             ? '<span class="material-symbols-outlined" style="color: #16a34a;">check_circle</span>'
             : '<span class="material-symbols-outlined" style="color: #d1d5db;">radio_button_unchecked</span>';
@@ -604,10 +1142,9 @@ function updateStep3ExecuteBtn() {
     const btn = document.getElementById('step3ExecuteBtn');
     if (!btn) return;
 
+    // スタンプ配置はオプション（合意があれば契約は有効）
     const allReady = signers.every(signer => {
-        // 全署名者: スタンプ配置必須
-        if (!signer.stampPlacement) return false;
-        // self署名者: 署名入力 + チェックボックス
+        // self署名者: 署名入力 + チェックボックスのみ必須
         if (signer.type === 'self') {
             const cb = document.getElementById('selfSignConfirm_' + signer.id);
             if (!cb || !cb.checked) return false;
@@ -626,15 +1163,19 @@ function updateStep3ExecuteBtn() {
     });
     btn.disabled = !allReady;
 
-    // 各署名者のステータスアイコンを更新
+    // 各署名者のステータスアイコンを更新（現在の書類の配置状況）
     signers.forEach(signer => {
         const statusEl = document.getElementById('signerStatus_' + signer.id);
         if (statusEl) {
-            statusEl.innerHTML = signer.stampPlacement
+            const currentDocPlaced = signer.stampPlacements && signer.stampPlacements[activeSigningDocId] != null;
+            statusEl.innerHTML = currentDocPlaced
                 ? '<span class="material-symbols-outlined" style="color: #16a34a;">check_circle</span>'
                 : '<span class="material-symbols-outlined" style="color: #d1d5db;">radio_button_unchecked</span>';
         }
     });
+
+    // ドキュメントタブの完了インジケータを更新
+    renderSigningDocTabs();
 }
 
 // 署名手続き実行（マルチ署名者）
@@ -662,11 +1203,15 @@ function executeMultiSignerCeremony() {
         signingData.mySignature = { type: signer.method, data: signatureImageData, name: signer.name };
         signingData.mySignedAt = signer.signedAt;
 
-        // 配置済みスタンプを確定状態に
-        if (signer.placedStampEl) {
-            signer.placedStampEl.classList.add('stamp-confirmed');
-            const actions = signer.placedStampEl.querySelector('.placed-stamp-actions');
-            if (actions) actions.style.display = 'none';
+        // 配置済みスタンプを確定状態に（全書類分）
+        if (signer.placedStampEls) {
+            Object.values(signer.placedStampEls).forEach(el => {
+                if (el) {
+                    el.classList.add('stamp-confirmed');
+                    const actions = el.querySelector('.placed-stamp-actions');
+                    if (actions) actions.style.display = 'none';
+                }
+            });
         }
     });
 
@@ -681,13 +1226,15 @@ function executeMultiSignerCeremony() {
     demoStatus = 'signing_setup_done';
     updateDemoStatus('signing_setup_done');
 
-    // チャットメッセージ
+    // チャットメッセージ（書類数を含む）
+    const contractCount = signingDocuments.filter(d => d.type === 'contract').length;
+    const docSummary = contractCount > 1 ? `（${contractCount}件の契約書）` : '';
     if (selfSigners.length > 0) {
-        addSystemMessage(`${selfSigners.map(s => s.name).join('、')}が電子署名しました。`);
+        addSystemMessage(`${selfSigners.map(s => s.name).join('、')}が電子署名しました。${docSummary}`);
     }
     if (pendingSigners.length > 0) {
         const names = pendingSigners.map(s => s.name).join('、');
-        addSystemMessage(`${names}に署名依頼を送信しました。署名を待っています。`);
+        addSystemMessage(`${names}に署名依頼を送信しました${docSummary}。署名を待っています。`);
     }
 
     updateSignatureDisplay();
@@ -853,14 +1400,16 @@ function endStampDrag(e) {
 function placeStampOnDocument(x, y, signerId) {
     const signer = getSignerById(signerId);
     if (!signer) return;
-    signer.stampPlacement = { x, y };
+    if (!signer.stampPlacements) signer.stampPlacements = {};
+    if (!signer.placedStampEls) signer.placedStampEls = {};
+    signer.stampPlacements[activeSigningDocId] = { x, y };
 
     const overlay = document.getElementById('signingStampOverlay');
     if (!overlay) return;
 
-    // 既存スタンプを削除
-    if (signer.placedStampEl) {
-        signer.placedStampEl.remove();
+    // 既存スタンプを削除（この書類上のこの署名者のスタンプ）
+    if (signer.placedStampEls[activeSigningDocId]) {
+        signer.placedStampEls[activeSigningDocId].remove();
     }
 
     const stamp = document.createElement('div');
@@ -878,7 +1427,7 @@ function placeStampOnDocument(x, y, signerId) {
         </div>
     `;
     overlay.appendChild(stamp);
-    signer.placedStampEl = stamp;
+    signer.placedStampEls[activeSigningDocId] = stamp;
 
     // 再ドラッグ
     stamp.addEventListener('mousedown', (ev) => startStampReposition(ev, signerId));
@@ -920,7 +1469,7 @@ function startStampReposition(e, signerId) {
         ghost.style.top = (e.clientY - 30) + 'px';
     }
 
-    if (signer && signer.placedStampEl) signer.placedStampEl.style.opacity = '0.3';
+    if (signer && signer.placedStampEls && signer.placedStampEls[activeSigningDocId]) signer.placedStampEls[activeSigningDocId].style.opacity = '0.3';
 
     document.addEventListener('mousemove', moveStampReposition);
     document.addEventListener('mouseup', endStampReposition);
@@ -954,7 +1503,7 @@ function endStampReposition(e) {
             placeStampOnDocument(x, y, activeDragSignerId);
         } else {
             const signer = getSignerById(activeDragSignerId);
-            if (signer && signer.placedStampEl) signer.placedStampEl.style.opacity = '1';
+            if (signer && signer.placedStampEls && signer.placedStampEls[activeSigningDocId]) signer.placedStampEls[activeSigningDocId].style.opacity = '1';
         }
     }
     activeDragSignerId = null;
@@ -963,10 +1512,10 @@ function endStampReposition(e) {
 function removeSignerStamp(signerId) {
     const signer = getSignerById(signerId);
     if (!signer) return;
-    signer.stampPlacement = null;
-    if (signer.placedStampEl) {
-        signer.placedStampEl.remove();
-        signer.placedStampEl = null;
+    if (signer.stampPlacements) signer.stampPlacements[activeSigningDocId] = null;
+    if (signer.placedStampEls && signer.placedStampEls[activeSigningDocId]) {
+        signer.placedStampEls[activeSigningDocId].remove();
+        signer.placedStampEls[activeSigningDocId] = null;
     }
 
     const handleEl = document.getElementById('stampHandle_' + signerId);
@@ -987,15 +1536,18 @@ function openSigningCeremony() {
         modal.classList.add('open');
     });
 
-    // 署名者をデフォルトにリセット
+    // マルチドキュメント初期化
+    initSigningDocuments();
+
+    // 署名者をデフォルトにリセット（stampPlacements/placedStampEls はドキュメント別マップ）
     signers = [
         { id: 'signer_1', party: '甲', name: '佐藤 一郎', company: '株式会社ABC',
           type: 'self', email: '', method: 'text', allowForward: true,
-          stampPlacement: null, placedStampEl: null, color: '#4361ee',
+          stampPlacements: {}, placedStampEls: {}, color: '#4361ee',
           signatureData: null, signedAt: null },
         { id: 'signer_2', party: '乙', name: '田中 太郎', company: '株式会社XYZ',
           type: 'send', email: 'tanaka@xyz.co.jp', method: 'text', allowForward: true,
-          stampPlacement: null, placedStampEl: null, color: '#e74c3c',
+          stampPlacements: {}, placedStampEls: {}, color: '#e74c3c',
           signatureData: null, signedAt: null }
     ];
     nextSignerId = 3;
@@ -1008,19 +1560,15 @@ function openSigningCeremony() {
     const overlay = document.getElementById('signingStampOverlay');
     if (overlay) overlay.innerHTML = '';
 
-    // 印エリアリセット
-    const mySeal = document.getElementById('signingDocMySealArea');
-    if (mySeal) { mySeal.classList.remove('highlight', 'signed'); mySeal.innerHTML = ''; }
-    const partnerSeal = document.getElementById('signingDocPartnerSealArea');
-    if (partnerSeal) { partnerSeal.classList.remove('highlight', 'signed'); partnerSeal.innerHTML = ''; }
+    // 左カラムに最初の書類を表示
+    const docView = document.getElementById('signingDocView');
+    if (docView) docView.innerHTML = getDocumentHtml('doc_basic');
+
+    // ドキュメントタブバーを描画
+    renderSigningDocTabs();
 
     // Step 1にリセット
     showSigningStep(1);
-
-    // チェックボックスリセット
-    const cb = document.getElementById('signingConfirmCheck');
-    if (cb) cb.checked = false;
-    updateSigningNextBtn();
 }
 
 // 署名フルスクリーンモーダルを閉じる
@@ -1060,8 +1608,15 @@ function showSigningStep(step) {
         if (i + 1 === step) el.classList.add('active');
     });
 
-    // Step 1: 左カラムを先頭にスクロール
+    // ドキュメントタブバーを更新（Step 3では完了インジケータ付き）
+    renderSigningDocTabs();
+
+    // Step 1: チェックリスト + AI要約
     if (step === 1) {
+        renderDocumentChecklist();
+        const aiArea = document.getElementById('signingAiSummaryArea');
+        if (aiArea) aiArea.innerHTML = getDocAiSummary(activeSigningDocId);
+        updateSigningConfirmBtn();
         const docColumn = document.querySelector('.signing-doc-column');
         if (docColumn) docColumn.scrollTop = 0;
     }
@@ -1069,31 +1624,45 @@ function showSigningStep(step) {
     // Step 2: 署名者リスト表示
     if (step === 2) {
         renderSignerCards();
+        // パッケージ情報メッセージ
+        const contractCount = signingDocuments.filter(d => d.type === 'contract').length;
+        const attachmentCount = signingDocuments.filter(d => d.type === 'attachment').length;
+        const packageInfo = document.getElementById('signingPackageInfo');
+        if (packageInfo) {
+            let msg = `この署名パッケージには${signingDocuments.length}件の書類が含まれます（契約書${contractCount}件`;
+            if (attachmentCount > 0) msg += `、添付書類${attachmentCount}件`;
+            msg += '）';
+            packageInfo.textContent = msg;
+            packageInfo.style.display = '';
+        }
     }
 
     // Step 3: 署名者設定アコーディオン + D&D初期化
     if (step === 3) {
-        renderSignerConfigSections();
-        setTimeout(() => initAllStampDragAndDrop(), 100);
-        updateStep3ExecuteBtn();
+        // 最初の契約書を選択
+        const firstContract = signingDocuments.find(d => d.type === 'contract');
+        if (firstContract && activeSigningDocId !== firstContract.id) {
+            switchSigningDoc(firstContract.id);
+        } else {
+            renderSignerConfigSections();
+            renderStampsForCurrentDoc();
+            setTimeout(() => initAllStampDragAndDrop(), 100);
+            updateStep3ExecuteBtn();
+        }
 
         // 左カラムの署名欄までスクロール
-        const signSection = document.querySelector('.signing-doc-view .signature-section');
-        if (signSection) {
-            setTimeout(() => {
+        setTimeout(() => {
+            const signSection = document.querySelector('.signing-doc-view .contract-signature-section');
+            if (signSection) {
                 signSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 200);
-        }
+            }
+        }, 200);
     }
 }
 
-// Step 1: チェックボックスで「次へ」有効化
+// Step 1: 全書類確認で「次へ」有効化（updateSigningConfirmBtn() に委任）
 function updateSigningNextBtn() {
-    const cb = document.getElementById('signingConfirmCheck');
-    const btn = document.getElementById('signingNextBtn');
-    if (cb && btn) {
-        btn.disabled = !cb.checked;
-    }
+    updateSigningConfirmBtn();
 }
 
 // 旧switchSignMethodSetup — 削除済み。switchSignerMethod(signerId, method) を使用
@@ -2586,6 +3155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeSigningModal();
             closeSignConfirmModal();
             closeSigningCertificate();
+            closeLinkHubbleModal();
         }
     });
 
