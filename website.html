@@ -3,102 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>契約がわかると、信頼される。 - ContractNego</title>
+    <title>Nego - 契約書、読めてますか。</title>
     <link rel="icon" href="favicon-32.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* Hubble Design System - Design Tokens */
+        /* ===== Design Tokens ===== */
         :root {
-            /* Text Colors */
             --text-default: #3b3b3b;
             --text-heading: #1f1f1f;
             --text-assist: #999999;
             --text-link: #0047b5;
+            --text-subtle: #6b6b6b;
 
-            /* Background Colors */
             --bg-inverse: #3b3b3b;
             --bg-input: #f2f4f5;
             --bg-hover: #f6f6f6;
-            --bg-note: #f4f4f4;
+            --bg-note: #f7f7f7;
             --bg-white: #ffffff;
 
-            /* Border Colors */
-            --border-default: #d8d8d8;
-            --border-assist: #999999;
+            --border-default: #e0e0e0;
 
-            /* Product Colors */
             --color-white: #ffffff;
             --color-black: #000000;
             --color-primary: #3c78c8;
             --color-primary-container: #e8eefa;
             --color-secondary: #1f1f1f;
-            --color-attention: #d10c4a;
-            --color-attention-container: #faeaeb;
-            --color-neutral: #626262;
             --color-success: #18776b;
             --color-success-container: #eaf2ed;
-            --color-clear: #c7bb0f;
             --color-social: #da5d10;
             --color-social-container: #f7ebe4;
             --color-collabo: #7358cc;
             --color-collabo-container: #efeaf5;
-            --color-disabled: #c0c0c0;
-            --color-inverse-primary: #509eff;
-            --color-inverse-success: #08b7a1;
-            --color-inverse-attention: #f7135b;
+            --color-neutral: #626262;
 
-            /* Legacy mappings for compatibility */
-            --blue-primary: var(--color-primary);
-            --blue-dark: var(--text-link);
-            --blue-light: var(--color-primary-container);
-            --black: var(--text-heading);
-            --gray-dark: var(--color-neutral);
-            --gray-light: var(--bg-note);
-            --white: var(--color-white);
-            --yellow: #c7bb0f;
-            --coral: var(--color-social);
-            --mint: var(--color-success-container);
-            --lavender: var(--color-collabo-container);
+            --font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
-            /* Typography */
-            --font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-size-xs: 12px;
-            --font-size-sm: 14px;
-            --font-size-md: 16px;
-            --font-size-lg: 18px;
-
-            /* Border Radius */
-            --radius-xs: 4px;
             --radius-sm: 5px;
             --radius-md: 8px;
             --radius-lg: 12px;
+            --radius-xl: 16px;
 
-            /* Shadows */
             --shadow-sm: 0 1px 2px rgba(93, 123, 168, 0.08);
-            --shadow-md: 0 4px 12px rgba(93, 123, 168, 0.20);
-            --shadow-lg: 0 8px 24px rgba(93, 123, 168, 0.25);
+            --shadow-md: 0 4px 12px rgba(93, 123, 168, 0.15);
+            --shadow-lg: 0 8px 24px rgba(93, 123, 168, 0.20);
 
-            /* Transitions */
             --transition-fast: 0.15s ease;
-            --transition-normal: 0.2s ease;
+            --transition-normal: 0.25s ease;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: var(--font-family);
             color: var(--text-default);
-            line-height: 1.6;
+            line-height: 1.7;
             background: var(--color-white);
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* ===== Header ===== */
@@ -107,65 +69,75 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 72px;
-            background: var(--color-white);
+            height: 64px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 48px;
-            border-bottom: 1px solid var(--border-default);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
         }
 
         .header-logo {
-            height: 28px;
+            height: 24px;
         }
 
         .header-nav {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 32px;
         }
 
         .header-nav a {
-            color: var(--text-heading);
+            color: var(--text-subtle);
             text-decoration: none;
-            font-size: var(--font-size-sm);
+            font-size: 14px;
             font-weight: 500;
-            transition: opacity var(--transition-normal);
+            transition: color var(--transition-normal);
         }
 
         .header-nav a:hover {
-            color: var(--color-primary);
+            color: var(--text-heading);
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
+        /* ===== Buttons ===== */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 20px;
+            padding: 10px 20px;
             border-radius: var(--radius-md);
-            font-size: var(--font-size-sm);
+            font-size: 14px;
             font-weight: 600;
             text-decoration: none;
             transition: all var(--transition-fast);
             cursor: pointer;
             border: none;
+            font-family: var(--font-family);
         }
 
         .btn-text {
             background: transparent;
-            color: var(--text-heading);
+            color: var(--text-subtle);
         }
 
         .btn-text:hover {
-            background: var(--bg-hover);
+            color: var(--text-heading);
         }
 
         .btn-primary {
@@ -174,36 +146,61 @@
         }
 
         .btn-primary:hover {
-            background: var(--text-link);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-heading);
-            border: 1.5px solid var(--text-heading);
-        }
-
-        .btn-outline:hover {
-            background: var(--text-heading);
-            color: var(--color-white);
+            background: #3069b3;
         }
 
         .btn-large {
-            padding: 16px 32px;
+            padding: 16px 40px;
             font-size: 16px;
+            border-radius: var(--radius-lg);
+        }
+
+        .btn-white {
+            background: var(--color-white);
+            color: var(--color-primary);
+        }
+
+        .btn-white:hover {
+            background: #f0f0f0;
+        }
+
+        /* ===== Section Common ===== */
+        .section-label {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-bottom: 20px;
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+        }
+
+        .section-label.blue {
+            background: var(--color-primary-container);
+            color: var(--color-primary);
+        }
+
+        .section-label.coral {
+            background: var(--color-social-container);
+            color: var(--color-social);
+        }
+
+        .section-label.mint {
+            background: var(--color-success-container);
+            color: var(--color-success);
         }
 
         /* ===== Hero ===== */
         .hero {
-            padding: 140px 48px 80px;
-            background: var(--bg-note);
+            padding: 160px 48px 120px;
+            background: var(--color-white);
             min-height: 100vh;
             display: flex;
             align-items: center;
         }
 
         .hero-inner {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1.2fr;
@@ -211,61 +208,40 @@
             align-items: center;
         }
 
-        .hero-content {
-            max-width: 560px;
-        }
-
         .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-white);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: var(--font-size-sm);
+            font-size: 14px;
             font-weight: 600;
-            color: var(--color-neutral);
-            margin-bottom: 24px;
+            color: var(--color-primary);
+            letter-spacing: 0.02em;
+            margin-bottom: 20px;
         }
 
-        .hero-eyebrow-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--color-social);
-            border-radius: 50%;
+        .hero-content {
+            max-width: 520px;
         }
 
         .hero-title {
-            font-size: 64px;
+            font-size: 52px;
             font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
             margin-bottom: 24px;
             color: var(--text-heading);
         }
 
-        .hero-title .highlight {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-inverse-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
         .hero-desc {
-            font-size: 20px;
-            color: var(--color-neutral);
+            font-size: 17px;
+            color: var(--text-subtle);
             margin-bottom: 40px;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .hero-cta {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 32px;
+            margin-bottom: 16px;
         }
 
         .hero-note {
-            font-size: var(--font-size-sm);
+            font-size: 13px;
             color: var(--text-assist);
         }
 
@@ -274,11 +250,11 @@
         }
 
         .hero-image-container {
-            position: relative;
             background: var(--color-white);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             box-shadow: var(--shadow-lg);
             overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
         .hero-image-container img {
@@ -286,113 +262,55 @@
             display: block;
         }
 
-        /* 画像プレースホルダー */
-        .image-placeholder {
-            background: linear-gradient(135deg, var(--bg-input) 0%, var(--border-default) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-neutral);
-            font-size: var(--font-size-sm);
-            text-align: center;
-            padding: 20px;
-        }
-
-        .image-placeholder-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-            opacity: 0.5;
-        }
-
-        .image-placeholder-text {
-            font-weight: 500;
-        }
-
-        .image-placeholder-hint {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-
-        .hero-image-placeholder {
-            aspect-ratio: 16/10;
-        }
-
-        .hero-floating-card {
-            position: absolute;
-            bottom: -30px;
-            left: -40px;
+        /* ===== Pain Points ===== */
+        .pain {
+            padding: 120px 48px;
             background: var(--color-white);
-            padding: 20px 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            gap: 16px;
         }
 
-        .hero-floating-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-success-container);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .hero-floating-text {
-            font-size: var(--font-size-sm);
-        }
-
-        .hero-floating-title {
-            font-weight: 700;
-            margin-bottom: 2px;
-            color: var(--text-heading);
-        }
-
-        .hero-floating-desc {
-            color: var(--text-assist);
-            font-size: var(--font-size-sm);
-        }
-
-        /* ===== Logos ===== */
-        .logos {
-            padding: 60px 48px;
-            background: var(--color-white);
-            border-bottom: 1px solid var(--border-default);
-        }
-
-        .logos-inner {
-            max-width: 1200px;
+        .pain-inner {
+            max-width: 960px;
             margin: 0 auto;
+        }
+
+        .pain-header {
             text-align: center;
+            margin-bottom: 80px;
         }
 
-        .logos-title {
-            font-size: var(--font-size-sm);
+        .pain-header-title {
+            font-size: 15px;
+            font-weight: 600;
             color: var(--text-assist);
-            margin-bottom: 32px;
+            letter-spacing: 0.04em;
         }
 
-        .logos-grid {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
-            opacity: 0.6;
+        .pain-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
         }
 
-        .logos-grid span {
+        .pain-card {
+            text-align: center;
+            padding: 0 8px;
+        }
+
+        .pain-card-quote {
             font-size: 20px;
             font-weight: 700;
-            color: var(--color-neutral);
+            color: var(--text-heading);
+            line-height: 1.5;
+            margin-bottom: 16px;
         }
 
-        /* ===== Feature Section ===== */
+        .pain-card-desc {
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.8;
+        }
+
+        /* ===== Feature Sections ===== */
         .feature-section {
             padding: 120px 48px;
         }
@@ -402,11 +320,11 @@
         }
 
         .feature-inner {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 100px;
+            gap: 80px;
             align-items: center;
         }
 
@@ -419,97 +337,50 @@
         }
 
         .feature-content {
-            max-width: 500px;
-        }
-
-        .feature-label {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: var(--radius-sm);
-            font-size: var(--font-size-xs);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 20px;
-        }
-
-        .feature-label.blue {
-            background: var(--color-primary-container);
-            color: var(--color-primary);
-        }
-
-        .feature-label.coral {
-            background: var(--color-social-container);
-            color: var(--color-social);
-        }
-
-        .feature-label.mint {
-            background: var(--color-success-container);
-            color: var(--color-success);
-        }
-
-        .feature-label.lavender {
-            background: var(--color-collabo-container);
-            color: var(--color-collabo);
+            max-width: 480px;
         }
 
         .feature-title {
-            font-size: 44px;
+            font-size: 36px;
             font-weight: 800;
-            line-height: 1.15;
+            line-height: 1.25;
             letter-spacing: -0.02em;
             margin-bottom: 20px;
             color: var(--text-heading);
         }
 
         .feature-desc {
-            font-size: var(--font-size-lg);
-            color: var(--color-neutral);
+            font-size: 16px;
+            color: var(--text-subtle);
             line-height: 1.8;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .feature-list {
             list-style: none;
-            margin-bottom: 32px;
         }
 
         .feature-list li {
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 16px;
-            font-size: var(--font-size-md);
+            margin-bottom: 14px;
+            font-size: 15px;
             color: var(--text-default);
         }
 
         .feature-list-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             background: var(--color-secondary);
             color: var(--color-white);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: var(--font-size-sm);
+            font-size: 12px;
             flex-shrink: 0;
             margin-top: 2px;
-        }
-
-        .feature-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--color-primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: var(--font-size-md);
-            transition: gap var(--transition-normal);
-        }
-
-        .feature-link:hover {
-            gap: 12px;
         }
 
         .feature-visual {
@@ -518,9 +389,10 @@
 
         .feature-image-container {
             background: var(--color-white);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             box-shadow: var(--shadow-lg);
             overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
         .feature-image-container img {
@@ -528,254 +400,425 @@
             display: block;
         }
 
-        .feature-image-placeholder {
-            aspect-ratio: 4/3;
-        }
-
-        /* ===== Stats ===== */
-        .stats {
-            padding: 100px 48px;
-            background: var(--bg-inverse);
-            color: var(--color-white);
-        }
-
-        .stats-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .stats-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .stats-title {
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .stats-desc {
-            font-size: 20px;
-            color: rgba(255,255,255,0.7);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 60px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 72px;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--color-clear), var(--color-social));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: var(--font-size-lg);
-            color: rgba(255,255,255,0.8);
-        }
-
-        /* ===== How It Works ===== */
-        .how-it-works {
+        /* ===== Seamless (一気通貫) ===== */
+        .seamless {
             padding: 120px 48px;
             background: var(--color-white);
         }
 
+        .seamless-inner {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .seamless-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .seamless-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--text-heading);
+            margin-bottom: 20px;
+        }
+
+        .seamless-subtitle {
+            font-size: 16px;
+            color: var(--text-subtle);
+            line-height: 1.8;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* Flow */
+        .seamless-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .seamless-flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+        }
+
+        .seamless-flow-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-primary-container);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .seamless-flow-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-heading);
+            white-space: nowrap;
+        }
+
+        .seamless-flow-arrow {
+            font-size: 20px;
+            color: var(--text-assist);
+            margin-top: -20px;
+        }
+
+        .seamless-flow-bar {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .seamless-flow-bar-line {
+            display: inline-block;
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 8px 28px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Points */
+        .seamless-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .seamless-point {
+            text-align: center;
+            padding: 32px 20px;
+            background: var(--bg-note);
+            border-radius: var(--radius-xl);
+        }
+
+        .seamless-point-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .seamless-point-desc {
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.8;
+        }
+
+        /* ===== Antithesis ===== */
+        .antithesis {
+            padding: 120px 48px;
+            background: var(--text-heading);
+            color: var(--color-white);
+        }
+
+        .antithesis-inner {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        .antithesis-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .antithesis-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+
+        .antithesis-desc {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .antithesis-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin-bottom: 64px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .antithesis-col {
+            padding: 48px 40px;
+        }
+
+        .antithesis-col.old {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .antithesis-col.new {
+            background: rgba(60, 120, 200, 0.15);
+        }
+
+        .antithesis-col-label {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-bottom: 32px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .antithesis-col.new .antithesis-col-label {
+            color: var(--color-primary);
+            opacity: 1;
+        }
+
+        .antithesis-col-item {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .antithesis-col-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .antithesis-col.new .antithesis-col-item {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+        }
+
+        .antithesis-closing {
+            text-align: center;
+        }
+
+        .antithesis-closing-text {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.5;
+            color: var(--color-white);
+        }
+
+        /* ===== How It Works ===== */
+        .how {
+            padding: 120px 48px;
+            background: var(--bg-note);
+        }
+
         .how-inner {
-            max-width: 1200px;
+            max-width: 960px;
             margin: 0 auto;
         }
 
         .how-header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 64px;
         }
 
         .how-title {
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 800;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             color: var(--text-heading);
         }
 
         .how-desc {
-            font-size: 20px;
-            color: var(--color-neutral);
+            font-size: 16px;
+            color: var(--text-subtle);
         }
 
         .how-steps {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 48px;
+            gap: 32px;
         }
 
         .how-step {
             text-align: center;
-            padding: 48px 32px;
-            background: var(--bg-note);
-            border-radius: 20px;
-            transition: transform var(--transition-slow), box-shadow var(--transition-slow);
-        }
-
-        .how-step:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+            padding: 40px 28px;
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         .how-step-number {
-            width: 56px;
-            height: 56px;
-            background: var(--color-secondary);
-            color: var(--color-white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 800;
-            margin: 0 auto 24px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-assist);
+            margin-bottom: 16px;
         }
 
         .how-step-icon {
-            font-size: 56px;
-            margin-bottom: 24px;
+            font-size: 40px;
+            margin-bottom: 20px;
         }
 
         .how-step-title {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             color: var(--text-heading);
         }
 
         .how-step-desc {
-            font-size: var(--font-size-md);
-            color: var(--color-neutral);
+            font-size: 14px;
+            color: var(--text-subtle);
             line-height: 1.7;
         }
 
-        /* ===== Trust Cycle ===== */
-        .trust {
+        /* ===== Pricing ===== */
+        .pricing {
             padding: 120px 48px;
-            background: linear-gradient(135deg, var(--text-heading) 0%, var(--bg-inverse) 100%);
-            color: var(--color-white);
+            background: var(--color-white);
         }
 
-        .trust-inner {
-            max-width: 1000px;
+        .pricing-inner {
+            max-width: 480px;
             margin: 0 auto;
             text-align: center;
         }
 
-        .trust-quote {
-            font-size: 56px;
+        .pricing-title {
+            font-size: 36px;
             font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 24px;
+            margin-bottom: 48px;
+            color: var(--text-heading);
         }
 
-        .trust-quote-highlight {
-            background: linear-gradient(135deg, var(--color-clear), var(--color-social));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .trust-subquote {
-            font-size: 24px;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 60px;
-        }
-
-        .trust-cycle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
-        .trust-cycle-item {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px 32px;
-            border-radius: var(--radius-lg);
-            font-size: var(--font-size-md);
-            font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .trust-cycle-arrow {
-            font-size: 24px;
-            color: var(--color-clear);
-        }
-
-        /* ===== CTA ===== */
-        .cta {
-            padding: 120px 48px;
-            background: var(--color-primary);
-            color: var(--color-white);
+        .pricing-card {
+            background: var(--color-white);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            padding: 48px 40px;
             text-align: center;
         }
 
-        .cta-inner {
-            max-width: 800px;
-            margin: 0 auto;
+        .pricing-plan-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 8px;
         }
 
-        .cta-title {
+        .pricing-price {
             font-size: 48px;
             font-weight: 800;
-            margin-bottom: 20px;
+            color: var(--text-heading);
+            margin-bottom: 32px;
         }
 
-        .cta-desc {
-            font-size: 20px;
-            opacity: 0.9;
+        .pricing-price span {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-subtle);
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 15px;
+            color: var(--text-default);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-check {
+            color: var(--color-success);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .pricing-cta-wrapper {
+            margin-bottom: 12px;
+        }
+
+        .pricing-cta-wrapper .btn {
+            width: 100%;
+        }
+
+        .pricing-note {
+            font-size: 13px;
+            color: var(--text-assist);
+        }
+
+        .pricing-hubble {
+            margin-top: 32px;
+            font-size: 14px;
+            color: var(--text-assist);
+            line-height: 1.7;
+        }
+
+        .pricing-hubble a {
+            color: var(--text-subtle);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-default);
+            transition: color var(--transition-normal);
+        }
+
+        .pricing-hubble a:hover {
+            color: var(--text-heading);
+        }
+
+        /* ===== Final CTA ===== */
+        .final-cta {
+            padding: 120px 48px;
+            background: var(--bg-note);
+            text-align: center;
+        }
+
+        .final-cta-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .final-cta-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-heading);
+            line-height: 1.3;
+        }
+
+        .final-cta-desc {
+            font-size: 16px;
+            color: var(--text-subtle);
             margin-bottom: 40px;
         }
 
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .cta .btn-primary {
-            background: var(--color-white);
-            color: var(--color-primary);
-        }
-
-        .cta .btn-primary:hover {
-            background: var(--bg-note);
-        }
-
-        .cta .btn-outline {
-            border-color: var(--color-white);
-            color: var(--color-white);
-        }
-
-        .cta .btn-outline:hover {
-            background: var(--color-white);
-            color: var(--color-primary);
+        .final-cta-note {
+            font-size: 13px;
+            color: var(--text-assist);
+            margin-top: 16px;
         }
 
         /* ===== Footer ===== */
         .footer {
             background: var(--text-heading);
-            color: rgba(255,255,255,0.7);
-            padding: 80px 48px 40px;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 64px 48px 32px;
         }
 
         .footer-inner {
@@ -787,36 +830,36 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 60px;
-            padding-bottom: 60px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 48px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .footer-brand {
-            max-width: 300px;
+            max-width: 280px;
         }
 
         .footer-logo {
-            height: 28px;
+            height: 22px;
             filter: brightness(0) invert(1);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .footer-tagline {
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.7;
         }
 
         .footer-links {
             display: flex;
-            gap: 80px;
+            gap: 64px;
         }
 
         .footer-column h4 {
-            color: var(--color-white);
-            font-size: var(--font-size-sm);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .footer-column ul {
@@ -824,13 +867,13 @@
         }
 
         .footer-column li {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .footer-column a {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.5);
             text-decoration: none;
-            font-size: var(--font-size-sm);
+            font-size: 13px;
             transition: color var(--transition-normal);
         }
 
@@ -842,46 +885,47 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
         }
 
         .footer-legal {
             display: flex;
-            gap: 24px;
+            gap: 20px;
         }
 
         .footer-legal a {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.35);
             text-decoration: none;
         }
 
         .footer-legal a:hover {
-            color: var(--color-white);
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        /* ===== Demo Button ===== */
+        /* ===== Demo Float Button ===== */
         .demo-float-btn {
             position: fixed;
-            bottom: 32px;
-            right: 32px;
-            background: var(--black);
-            color: var(--white);
-            padding: 16px 28px;
+            bottom: 28px;
+            right: 28px;
+            background: var(--color-secondary);
+            color: var(--color-white);
+            padding: 14px 24px;
             border-radius: 100px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            font-size: 13px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
             transition: all 0.2s;
             z-index: 1000;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .demo-float-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
         }
 
         /* ===== Responsive ===== */
@@ -889,226 +933,215 @@
             .hero-inner,
             .feature-inner {
                 grid-template-columns: 1fr;
-                gap: 60px;
+                gap: 48px;
             }
 
             .feature-inner.reverse {
                 direction: ltr;
             }
 
-            .hero-title {
-                font-size: 48px;
-            }
+            .hero-title { font-size: 40px; }
+            .feature-title { font-size: 30px; }
 
-            .feature-title {
-                font-size: 36px;
-            }
-
-            .stats-grid {
+            .pain-cards {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px;
+                max-width: 480px;
+                margin: 0 auto;
             }
 
-            .how-steps {
-                grid-template-columns: 1fr;
-            }
+            .seamless-points { grid-template-columns: 1fr; }
+            .seamless-flow { flex-wrap: wrap; }
+
+            .antithesis-table { grid-template-columns: 1fr; }
+            .how-steps { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
         }
 
         @media (max-width: 768px) {
             .header {
-                padding: 0 24px;
+                padding: 0 20px;
             }
 
-            .header-nav {
-                display: none;
-            }
+            .header-nav { display: none; }
 
             .hero,
+            .pain,
             .feature-section,
-            .stats,
-            .how-it-works,
-            .trust,
-            .cta {
-                padding-left: 24px;
-                padding-right: 24px;
+            .seamless,
+            .antithesis,
+            .how,
+            .pricing,
+            .final-cta {
+                padding-left: 20px;
+                padding-right: 20px;
             }
 
-            .hero {
-                padding-top: 120px;
-            }
+            .hero { padding-top: 120px; padding-bottom: 80px; min-height: auto; }
+            .hero-title { font-size: 32px; }
+            .hero-desc { font-size: 15px; }
 
-            .hero-title {
-                font-size: 36px;
-            }
-
-            .hero-desc {
-                font-size: 17px;
-            }
-
-            .hero-cta {
-                flex-direction: column;
-            }
-
-            .hero-floating-card {
-                display: none;
-            }
+            .pain-card-quote { font-size: 18px; }
 
             .feature-title,
-            .stats-title,
+            .seamless-title,
+            .antithesis-title,
             .how-title,
-            .trust-quote,
-            .cta-title {
-                font-size: 32px;
+            .pricing-title,
+            .final-cta-title {
+                font-size: 28px;
             }
 
-            .trust-cycle {
-                flex-direction: column;
-            }
-
-            .trust-cycle-arrow {
-                transform: rotate(90deg);
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
+            .antithesis-col { padding: 32px 24px; }
+            .antithesis-closing-text { font-size: 20px; }
 
             .footer-top {
                 flex-direction: column;
-                gap: 40px;
+                gap: 32px;
             }
 
             .footer-links {
                 flex-wrap: wrap;
-                gap: 40px;
+                gap: 32px;
             }
 
             .footer-bottom {
                 flex-direction: column;
-                gap: 16px;
+                gap: 12px;
                 text-align: center;
             }
 
-            .logos-grid {
-                gap: 30px;
-            }
+            .footer { padding-left: 20px; padding-right: 20px; }
+        }
+
+        /* ===== Fade-in animation ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
-        <img src="hubble-logo.svg" alt="ContractNego" class="header-logo">
-        <nav class="header-nav">
-            <a href="#features">機能</a>
-            <a href="#how">使い方</a>
-            <a href="#pricing">料金</a>
-            <a href="#enterprise">法人向け</a>
-        </nav>
+        <div class="header-left">
+            <img src="hubble-logo.svg" alt="Nego" class="header-logo">
+            <nav class="header-nav">
+                <a href="#features">機能</a>
+                <a href="#how">使い方</a>
+                <a href="#pricing">料金</a>
+            </nav>
+        </div>
         <div class="header-actions">
             <a href="#" class="btn btn-text">ログイン</a>
-            <a href="index.html" class="btn btn-outline">デモを見る</a>
             <a href="#" class="btn btn-primary">無料で始める</a>
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- ========================================
+         Section 1: Hero
+         感情: ドキッ → 「読めてない...かも」
+    ========================================= -->
     <section class="hero">
         <div class="hero-inner">
             <div class="hero-content">
-                <div class="hero-eyebrow">
-                    <span class="hero-eyebrow-dot"></span>
-                    契約交渉の新しいかたち
-                </div>
-                <h1 class="hero-title">
-                    契約がわかると、<br>
-                    <span class="highlight">信頼される。</span>
-                </h1>
+                <p class="hero-eyebrow">契約交渉を、メールから解放するプラットフォーム</p>
+                <h1 class="hero-title">契約書、<br>読めてますか。</h1>
                 <p class="hero-desc">
                     AIが契約書をあなたの言葉に翻訳。<br>
-                    理解して交渉し、守れる約束を結ぶ。<br>
-                    それが、次のビジネスを生む。
+                    交渉から締結まで、ひとつの場所で。
                 </p>
                 <div class="hero-cta">
                     <a href="#" class="btn btn-primary btn-large">無料で始める</a>
-                    <a href="index.html" class="btn btn-outline btn-large">デモを体験</a>
                 </div>
-                <p class="hero-note">クレジットカード不要・3分で開始</p>
+                <p class="hero-note">クレジットカード不要</p>
             </div>
             <div class="hero-visual">
                 <div class="hero-image-container">
-                    <img src="hero-main.png" alt="ContractNego 交渉画面">
-                </div>
-                <div class="hero-floating-card">
-                    <div class="hero-floating-icon">🤖</div>
-                    <div class="hero-floating-text">
-                        <div class="hero-floating-title">AIが契約書を翻訳</div>
-                        <div class="hero-floating-desc">難しい条文もすぐ理解</div>
-                    </div>
+                    <img src="hero-main.png" alt="Nego 交渉画面">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Logos -->
-    <section class="logos">
-        <div class="logos-inner">
-            <p class="logos-title">多くの企業に選ばれています</p>
-            <div class="logos-grid">
-                <span>Company A</span>
-                <span>Company B</span>
-                <span>Company C</span>
-                <span>Company D</span>
-                <span>Company E</span>
+    <!-- ========================================
+         Section 2: Pain Points（痛みの共感）
+         感情: あるある... → 共感
+    ========================================= -->
+    <section class="pain fade-in">
+        <div class="pain-inner">
+            <div class="pain-header">
+                <p class="pain-header-title">こんな経験、ありませんか</p>
+            </div>
+            <div class="pain-cards">
+                <div class="pain-card">
+                    <p class="pain-card-quote">「法務に聞くほどじゃないけど、不安」</p>
+                    <p class="pain-card-desc">契約書の専門用語、<br>なんとなくで進めていませんか。</p>
+                </div>
+                <div class="pain-card">
+                    <p class="pain-card-quote">「メールで3往復、1週間。」</p>
+                    <p class="pain-card-desc">条項の確認だけで交渉が止まる。<br>その間に、案件が冷める。</p>
+                </div>
+                <div class="pain-card">
+                    <p class="pain-card-quote">「更新日、覚えてますか？」</p>
+                    <p class="pain-card-desc">気づいたら自動更新。<br>静かにコストが積み上がる。</p>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- ========================================
+         Section 3: Solutions（解決策 x3）
+         感情: なるほど → 体験の変化が見える
+    ========================================= -->
 
     <!-- Feature 1: AI Translation -->
-    <section class="feature-section" id="features">
+    <section class="feature-section fade-in" id="features">
         <div class="feature-inner">
             <div class="feature-content">
-                <span class="feature-label blue">AI翻訳</span>
-                <h2 class="feature-title">契約書が、<br>あなたの言葉になる</h2>
+                <span class="section-label blue">AI翻訳</span>
+                <h2 class="feature-title">契約書が、<br>読めるようになる</h2>
                 <p class="feature-desc">
-                    法律用語だらけの契約書も、AIが日本語に翻訳。
-                    「つまり何を約束しているのか」が一瞬でわかります。
+                    AIが専門用語を平易な日本語に翻訳。<br>
+                    重要な条項を自動でハイライト。3行で要約。
                 </p>
                 <ul class="feature-list">
                     <li>
                         <span class="feature-list-icon">✓</span>
-                        <span>難解な条文を平易な表現に自動変換</span>
+                        <span>難解な条文を、あなたの言葉に自動変換</span>
                     </li>
                     <li>
                         <span class="feature-list-icon">✓</span>
-                        <span>金額・期間・責任範囲を自動でハイライト</span>
+                        <span>金額・期間・責任範囲を自動ハイライト</span>
                     </li>
                     <li>
                         <span class="feature-list-icon">✓</span>
-                        <span>契約の要点を3行で自動サマリー</span>
+                        <span>契約の要点を3行でサマリー</span>
                     </li>
                 </ul>
-                <a href="index.html" class="feature-link">
-                    デモで体験する <span>→</span>
-                </a>
             </div>
             <div class="feature-visual">
                 <div class="feature-image-container">
-                    <img src="feature-ai.png" alt="AI解説機能">
+                    <img src="feature-ai.png" alt="AI翻訳機能">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Feature 2: Real-time Negotiation -->
-    <section class="feature-section">
+    <section class="feature-section fade-in">
         <div class="feature-inner reverse">
             <div class="feature-content">
-                <span class="feature-label coral">リアルタイム交渉</span>
-                <h2 class="feature-title">その場で交渉、<br>その場で解決</h2>
+                <span class="section-label coral">リアルタイム交渉</span>
+                <h2 class="feature-title">交渉が、<br>その場で終わる</h2>
                 <p class="feature-desc">
-                    メールの往復は不要。条項ごとにコメントを残し、
-                    チャットしながら契約を仕上げます。
+                    契約書の上で直接コメント。チャットで即確認。<br>
+                    メールの往復は、もういらない。
                 </p>
                 <ul class="feature-list">
                     <li>
@@ -1117,16 +1150,13 @@
                     </li>
                     <li>
                         <span class="feature-list-icon">✓</span>
-                        <span>チャット機能で認識のズレを防止</span>
+                        <span>チャットで認識のズレをその場で解消</span>
                     </li>
                     <li>
                         <span class="feature-list-icon">✓</span>
-                        <span>全てのやりとりが自動で記録</span>
+                        <span>すべてのやりとりが自動で記録</span>
                     </li>
                 </ul>
-                <a href="index.html" class="feature-link">
-                    デモで体験する <span>→</span>
-                </a>
             </div>
             <div class="feature-visual">
                 <div class="feature-image-container">
@@ -1137,19 +1167,19 @@
     </section>
 
     <!-- Feature 3: Timeline -->
-    <section class="feature-section">
+    <section class="feature-section fade-in">
         <div class="feature-inner">
             <div class="feature-content">
-                <span class="feature-label mint">期日管理</span>
-                <h2 class="feature-title">大事な約束を、<br>絶対に忘れない</h2>
+                <span class="section-label mint">期日管理</span>
+                <h2 class="feature-title">大事な日を、<br>忘れない</h2>
                 <p class="feature-desc">
-                    契約開始から満了まで、重要な日付をタイムラインで可視化。
-                    更新判断期限も見逃しません。
+                    契約開始から満了まで、タイムラインで一覧。<br>
+                    更新期限が近づけば、自動で通知。
                 </p>
                 <ul class="feature-list">
                     <li>
                         <span class="feature-list-icon">✓</span>
-                        <span>重要日付をタイムラインで一覧表示</span>
+                        <span>重要日付をタイムラインで可視化</span>
                     </li>
                     <li>
                         <span class="feature-list-icon">✓</span>
@@ -1160,9 +1190,6 @@
                         <span>「次に何をすべきか」が常にわかる</span>
                     </li>
                 </ul>
-                <a href="index.html" class="feature-link">
-                    デモで体験する <span>→</span>
-                </a>
             </div>
             <div class="feature-visual">
                 <div class="feature-image-container">
@@ -1172,68 +1199,113 @@
         </div>
     </section>
 
-    <!-- Feature 4: Version Control -->
-    <section class="feature-section">
-        <div class="feature-inner reverse">
-            <div class="feature-content">
-                <span class="feature-label lavender">バージョン管理</span>
-                <h2 class="feature-title">誰が何を変えたか、<br>完全に把握</h2>
-                <p class="feature-desc">
-                    全ての変更履歴を自動記録。「どのバージョンが最新？」
-                    という混乱はもうありません。
+    <!-- ========================================
+         Section 4: Seamless（一気通貫）
+         感情: 締結で終わりじゃない → 約束を守る先まで
+    ========================================= -->
+    <section class="seamless fade-in">
+        <div class="seamless-inner">
+            <div class="seamless-header">
+                <h2 class="seamless-title">交渉して、締結して、その先へ。<br>ぜんぶ、ここで。</h2>
+                <p class="seamless-subtitle">
+                    契約は締結がゴールじゃない。そこから取引が始まる。<br>
+                    交渉の経緯も、守るべき約束も、すべてが1つの場所に残ります。
                 </p>
-                <ul class="feature-list">
-                    <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>変更のたびに自動でバージョン作成</span>
-                    </li>
-                    <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>2つのバージョンを並べて差分比較</span>
-                    </li>
-                    <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>監査対応も万全の履歴管理</span>
-                    </li>
-                </ul>
-                <a href="index.html" class="feature-link">
-                    デモで体験する <span>→</span>
-                </a>
             </div>
-            <div class="feature-visual">
-                <div class="feature-image-container">
-                    <img src="feature-version.png" alt="バージョン管理機能">
+
+            <div class="seamless-flow">
+                <div class="seamless-flow-step">
+                    <div class="seamless-flow-icon">📄</div>
+                    <span class="seamless-flow-label">アップロード</span>
+                </div>
+                <span class="seamless-flow-arrow">→</span>
+                <div class="seamless-flow-step">
+                    <div class="seamless-flow-icon">🤖</div>
+                    <span class="seamless-flow-label">AI翻訳・確認</span>
+                </div>
+                <span class="seamless-flow-arrow">→</span>
+                <div class="seamless-flow-step">
+                    <div class="seamless-flow-icon">💬</div>
+                    <span class="seamless-flow-label">交渉</span>
+                </div>
+                <span class="seamless-flow-arrow">→</span>
+                <div class="seamless-flow-step">
+                    <div class="seamless-flow-icon">✍️</div>
+                    <span class="seamless-flow-label">合意・署名</span>
+                </div>
+                <span class="seamless-flow-arrow">→</span>
+                <div class="seamless-flow-step">
+                    <div class="seamless-flow-icon">✅</div>
+                    <span class="seamless-flow-label">締結</span>
+                </div>
+                <span class="seamless-flow-arrow">→</span>
+                <div class="seamless-flow-step">
+                    <div class="seamless-flow-icon">📅</div>
+                    <span class="seamless-flow-label">履行・管理</span>
+                </div>
+            </div>
+            <div class="seamless-flow-bar">
+                <span class="seamless-flow-bar-line">交渉の過程も、その先の約束も、すべて記録される</span>
+            </div>
+
+            <div class="seamless-points">
+                <div class="seamless-point">
+                    <h3 class="seamless-point-title">交渉の文脈が、<br>契約に残る</h3>
+                    <p class="seamless-point-desc">「なぜこの条件にしたのか」がコメントとチャットで記録される。半年後に見返しても、わかる。</p>
+                </div>
+                <div class="seamless-point">
+                    <h3 class="seamless-point-title">締結したら、<br>取引が始まる</h3>
+                    <p class="seamless-point-desc">支払期日、納品日、更新判断。締結後に守るべき約束を、タイムラインが教えてくれる。</p>
+                </div>
+                <div class="seamless-point">
+                    <h3 class="seamless-point-title">約束を守る人が、<br>信頼される</h3>
+                    <p class="seamless-point-desc">期日を忘れない。条件を見落とさない。それが次の取引につながる。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats -->
-    <section class="stats">
-        <div class="stats-inner">
-            <div class="stats-header">
-                <h2 class="stats-title">契約交渉を、もっとシンプルに</h2>
-                <p class="stats-desc">導入企業からの声</p>
+    <!-- ========================================
+         Section 5: Antithesis（アンチテーゼ）
+         感情: 確かに署名だけだった → 気づき
+    ========================================= -->
+    <section class="antithesis fade-in">
+        <div class="antithesis-inner">
+            <div class="antithesis-header">
+                <h2 class="antithesis-title">署名は、契約のゴールじゃない。</h2>
+                <p class="antithesis-desc">
+                    電子契約サービスが普及して、ハンコを押す手間はなくなりました。<br>
+                    でも、契約で本当に大事なのは「署名する前」の時間です。<br><br>
+                    相手と条件をすり合わせ、互いに納得して、はじめて署名に意味が生まれる。
+                </p>
             </div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">70%</div>
-                    <div class="stat-label">契約締結までの時間を短縮</div>
+
+            <div class="antithesis-table">
+                <div class="antithesis-col old">
+                    <p class="antithesis-col-label">これまでの電子契約</p>
+                    <p class="antithesis-col-item">署名して、終わり。</p>
+                    <p class="antithesis-col-item">契約書を「処理」する。</p>
+                    <p class="antithesis-col-item">結果だけが残る。</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">85%</div>
-                    <div class="stat-label">法務への問い合わせが減少</div>
+                <div class="antithesis-col new">
+                    <p class="antithesis-col-label">Nego</p>
+                    <p class="antithesis-col-item">交渉して、合意して、署名する。</p>
+                    <p class="antithesis-col-item">契約を「理解」する。</p>
+                    <p class="antithesis-col-item">過程と結果が残る。</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">95%</div>
-                    <div class="stat-label">ユーザーが「わかりやすい」と回答</div>
-                </div>
+            </div>
+
+            <div class="antithesis-closing">
+                <p class="antithesis-closing-text">契約は、交わすものじゃない。<br>つくるものだ。</p>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works" id="how">
+    <!-- ========================================
+         Section 6: How It Works（使い方）
+         感情: 簡単そう → 安心
+    ========================================= -->
+    <section class="how fade-in" id="how">
         <div class="how-inner">
             <div class="how-header">
                 <h2 class="how-title">3ステップで、今すぐ始める</h2>
@@ -1241,58 +1313,63 @@
             </div>
             <div class="how-steps">
                 <div class="how-step">
-                    <div class="how-step-number">1</div>
+                    <p class="how-step-number">Step 1</p>
                     <div class="how-step-icon">📄</div>
                     <h3 class="how-step-title">アップロード</h3>
-                    <p class="how-step-desc">契約書ファイルをドラッグ＆ドロップ。Word・PDFに対応。</p>
+                    <p class="how-step-desc">契約書をドラッグ&ドロップ。<br>Word・PDFに対応。</p>
                 </div>
                 <div class="how-step">
-                    <div class="how-step-number">2</div>
+                    <p class="how-step-number">Step 2</p>
                     <div class="how-step-icon">📨</div>
                     <h3 class="how-step-title">招待</h3>
-                    <p class="how-step-desc">相手のメールアドレスを入力、またはリンクを共有。</p>
+                    <p class="how-step-desc">メールアドレスを入力、<br>またはリンクを共有。</p>
                 </div>
                 <div class="how-step">
-                    <div class="how-step-number">3</div>
+                    <p class="how-step-number">Step 3</p>
                     <div class="how-step-icon">🤝</div>
-                    <h3 class="how-step-title">交渉開始</h3>
-                    <p class="how-step-desc">同じ画面で契約を仕上げる。AIに聞きながら、チャットしながら。</p>
+                    <h3 class="how-step-title">交渉</h3>
+                    <p class="how-step-desc">AIとチャットで、<br>契約をまとめる。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Trust -->
-    <section class="trust">
-        <div class="trust-inner">
-            <h2 class="trust-quote">
-                「この人は<span class="trust-quote-highlight">約束を守る</span>」<br>
-                そう思われる人になる
-            </h2>
-            <p class="trust-subquote">それが、次のビジネスにつながる</p>
-            <div class="trust-cycle">
-                <div class="trust-cycle-item">契約を理解する</div>
-                <span class="trust-cycle-arrow">→</span>
-                <div class="trust-cycle-item">守れる約束だけ結ぶ</div>
-                <span class="trust-cycle-arrow">→</span>
-                <div class="trust-cycle-item">確実に履行する</div>
-                <span class="trust-cycle-arrow">→</span>
-                <div class="trust-cycle-item">信頼を獲得</div>
-                <span class="trust-cycle-arrow">→</span>
-                <div class="trust-cycle-item">次のビジネスへ</div>
+    <!-- ========================================
+         Section 7: Pricing（料金）
+         感情: タダなら → ハードル消滅
+    ========================================= -->
+    <section class="pricing fade-in" id="pricing">
+        <div class="pricing-inner">
+            <h2 class="pricing-title">まずは、無料で。</h2>
+            <div class="pricing-card">
+                <p class="pricing-plan-name">Free</p>
+                <p class="pricing-price">¥0 <span>/ 月</span></p>
+                <ul class="pricing-features">
+                    <li><span class="pricing-check">✓</span> 月3件の交渉</li>
+                    <li><span class="pricing-check">✓</span> AI翻訳（月10回）</li>
+                    <li><span class="pricing-check">✓</span> チャット・コメント</li>
+                    <li><span class="pricing-check">✓</span> タイムライン管理</li>
+                    <li><span class="pricing-check">✓</span> バージョン管理（最新3版）</li>
+                </ul>
+                <div class="pricing-cta-wrapper">
+                    <a href="#" class="btn btn-primary btn-large">無料で始める</a>
+                </div>
+                <p class="pricing-note">クレジットカード不要</p>
             </div>
+            <p class="pricing-hubble">チームでの契約業務を効率化したい方には、<a href="#">Hubble</a>をご案内しています。</p>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta">
-        <div class="cta-inner">
-            <h2 class="cta-title">契約がわかる自分へ、今日から</h2>
-            <p class="cta-desc">まずは無料で、契約交渉の新しい体験を</p>
-            <div class="cta-buttons">
-                <a href="#" class="btn btn-primary btn-large">無料で始める</a>
-                <a href="index.html" class="btn btn-outline btn-large">デモを体験</a>
-            </div>
+    <!-- ========================================
+         Section 8: Final CTA
+         感情: やってみるか → 行動
+    ========================================= -->
+    <section class="final-cta fade-in">
+        <div class="final-cta-inner">
+            <h2 class="final-cta-title">契約書が読める自分に、<br>今日からなる。</h2>
+            <p class="final-cta-desc">まずは無料で、契約交渉の新しい体験を。</p>
+            <a href="#" class="btn btn-primary btn-large">無料で始める</a>
+            <p class="final-cta-note">クレジットカード不要 · 3分で開始</p>
         </div>
     </section>
 
@@ -1301,44 +1378,31 @@
         <div class="footer-inner">
             <div class="footer-top">
                 <div class="footer-brand">
-                    <img src="hubble-logo.svg" alt="ContractNego" class="footer-logo">
-                    <p class="footer-tagline">契約がわかると、信頼される。ContractNegoは契約交渉をシンプルにし、ビジネスの信頼関係を深めます。</p>
+                    <img src="hubble-logo.svg" alt="Nego" class="footer-logo">
+                    <p class="footer-tagline">契約書が読める自分に。Negoは契約交渉をシンプルにするプラットフォームです。</p>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
                         <h4>プロダクト</h4>
                         <ul>
-                            <li><a href="#">機能</a></li>
-                            <li><a href="#">料金</a></li>
-                            <li><a href="#">法人向け</a></li>
-                            <li><a href="#">セキュリティ</a></li>
+                            <li><a href="#features">機能</a></li>
+                            <li><a href="#pricing">料金</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
-                        <h4>リソース</h4>
+                        <h4>会社</h4>
                         <ul>
-                            <li><a href="#">ヘルプセンター</a></li>
-                            <li><a href="#">導入事例</a></li>
-                            <li><a href="#">ブログ</a></li>
-                            <li><a href="#">API</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>会社情報</h4>
-                        <ul>
-                            <li><a href="#">会社概要</a></li>
-                            <li><a href="#">採用情報</a></li>
+                            <li><a href="#">運営会社</a></li>
                             <li><a href="#">お問い合わせ</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 Hubble Inc. All rights reserved.</p>
+                <p>&copy; 2025 Hubble Inc.</p>
                 <div class="footer-legal">
                     <a href="#">プライバシーポリシー</a>
                     <a href="#">利用規約</a>
-                    <a href="#">特定商取引法に基づく表記</a>
                 </div>
             </div>
         </div>
@@ -1346,7 +1410,26 @@
 
     <!-- Demo Float Button -->
     <a href="index.html" class="demo-float-btn">
-        ✨ デモを体験
+        デモを体験 →
     </a>
+
+    <!-- Scroll Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var targets = document.querySelectorAll('.fade-in');
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.15 });
+                targets.forEach(function (el) { observer.observe(el); });
+            } else {
+                targets.forEach(function (el) { el.classList.add('visible'); });
+            }
+        });
+    </script>
 </body>
 </html>
