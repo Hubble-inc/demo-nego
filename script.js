@@ -8,15 +8,14 @@ let currentUserRole = 'member'; // 'member' (交渉者) | 'signer' (署名者)
 // ============================================
 // マルチ署名者データモデル
 // ============================================
-const PARTY_LABELS = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛'];
 const SIGNER_COLORS = ['#4361ee', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
 
 let signers = [
-    { id: 'signer_1', party: '甲', name: '佐藤 一郎', company: '株式会社ABC',
+    { id: 'signer_1', name: '佐藤 一郎', company: '株式会社ABC',
       type: 'self', email: '', method: 'text', allowForward: true,
       stampPlacement: null, placedStampEl: null, color: '#4361ee',
       signatureData: null, signedAt: null },
-    { id: 'signer_2', party: '乙', name: '田中 太郎', company: '株式会社XYZ',
+    { id: 'signer_2', name: '田中 太郎', company: '株式会社XYZ',
       type: 'send', email: 'tanaka@xyz.co.jp', method: 'text', allowForward: true,
       stampPlacement: null, placedStampEl: null, color: '#e74c3c',
       signatureData: null, signedAt: null }
@@ -30,7 +29,7 @@ let signingFlow = 'relay'; // 'relay' (順次署名) | 'parallel' (一括送信)
 // 署名者ヘルパー関数
 function getSignerById(id) { return signers.find(s => s.id === id); }
 function getSignerIndex(id) { return signers.findIndex(s => s.id === id); }
-function getNextPartyLabel() { return PARTY_LABELS[signers.length] || '第' + (signers.length + 1); }
+function getSignerInitial(name) { return name ? name.charAt(0) : '?'; }
 function getSignerColor(index) { return SIGNER_COLORS[index % SIGNER_COLORS.length]; }
 function generateSignerId() { return 'signer_' + (nextSignerId++); }
 
@@ -385,7 +384,7 @@ function renderStampsForCurrentDoc() {
         stamp.style.left = (placement.x * 100) + '%';
         stamp.style.top = (placement.y * 100) + '%';
         stamp.innerHTML = `
-            <div class="placed-stamp-label" style="background: ${signer.color};">${signer.party}</div>
+            <div class="placed-stamp-label" style="background: ${signer.color};">${getSignerInitial(signer.name)}</div>
             <div class="placed-stamp-content" style="border-color: ${signer.color};">${getStampPreviewHtmlForSigner(signer)}</div>
             <div class="placed-stamp-actions">
                 <button class="placed-stamp-action-btn" onclick="removeSignerStamp('${signer.id}')" title="削除">
@@ -754,20 +753,20 @@ function renderSignerCards() {
         <div class="signing-flow-options">
             <button class="signing-flow-card ${signingFlow === 'relay' ? 'active' : ''}" onclick="switchSigningFlow('relay')">
                 <div class="flow-card-visual">
-                    <span class="flow-dot" style="background:#4361ee;">甲</span>
+                    <span class="flow-dot" style="background:#4361ee;"></span>
                     <span class="flow-arrow">→</span>
-                    <span class="flow-dot" style="background:#e74c3c;">乙</span>
+                    <span class="flow-dot" style="background:#e74c3c;"></span>
                     <span class="flow-arrow">→</span>
-                    <span class="flow-dot" style="background:#2ecc71;">丙</span>
+                    <span class="flow-dot" style="background:#2ecc71;"></span>
                 </div>
                 <div class="flow-card-title">順番に署名</div>
                 <div class="flow-card-desc">前の人が署名してから次の人へ</div>
             </button>
             <button class="signing-flow-card ${signingFlow === 'parallel' ? 'active' : ''}" onclick="switchSigningFlow('parallel')">
                 <div class="flow-card-visual">
-                    <span class="flow-dot" style="background:#4361ee;">甲</span>
-                    <span class="flow-dot" style="background:#e74c3c;">乙</span>
-                    <span class="flow-dot" style="background:#2ecc71;">丙</span>
+                    <span class="flow-dot" style="background:#4361ee;"></span>
+                    <span class="flow-dot" style="background:#e74c3c;"></span>
+                    <span class="flow-dot" style="background:#2ecc71;"></span>
                 </div>
                 <div class="flow-card-title">一斉に署名</div>
                 <div class="flow-card-desc">全員に同時に送付</div>
@@ -793,7 +792,7 @@ function renderSignerCards() {
         card.innerHTML = `
             <div class="signer-card-header">
                 ${orderBadge}
-                <div class="signer-party-badge" style="background: ${signer.color};">${signer.party}</div>
+                <div class="signer-party-badge" style="background: ${signer.color};">${getSignerInitial(signer.name)}</div>
                 <div class="signer-card-info">
                     <input type="text" class="signer-name-input" value="${escapeHtml(signer.name)}"
                            onchange="updateSignerField('${signer.id}', 'name', this.value)">
@@ -847,7 +846,6 @@ function addSigner() {
     const index = signers.length;
     signers.push({
         id: id,
-        party: getNextPartyLabel(),
         name: '',
         company: '',
         type: 'send',
@@ -876,9 +874,8 @@ function removeSigner(id) {
         Object.values(signer.placedStampEls).forEach(el => { if (el) el.remove(); });
     }
     signers = signers.filter(s => s.id !== id);
-    // パーティラベルと色を再割り当て
+    // 色を再割り当て
     signers.forEach((s, i) => {
-        s.party = PARTY_LABELS[i] || '第' + (i + 1);
         s.color = getSignerColor(i);
     });
     renderSignerCards();
@@ -981,7 +978,7 @@ function renderSignerConfigSections() {
 
         section.innerHTML = `
             <div class="signer-config-header" onclick="toggleSignerConfig('${signer.id}')">
-                <div class="signer-config-badge" style="background: ${signer.color};">${signer.party}</div>
+                <div class="signer-config-badge" style="background: ${signer.color};">${getSignerInitial(signer.name)}</div>
                 <div class="signer-config-name">${escapeHtml(signer.name)}</div>
                 <div class="signer-config-type-badge ${typeBadgeClass}">${typeLabel}</div>
                 <div class="signer-config-status" id="signerStatus_${signer.id}">${statusHtml}</div>
@@ -1418,7 +1415,7 @@ function placeStampOnDocument(x, y, signerId) {
     stamp.style.left = (x * 100) + '%';
     stamp.style.top = (y * 100) + '%';
     stamp.innerHTML = `
-        <div class="placed-stamp-label" style="background: ${signer.color};">${signer.party}</div>
+        <div class="placed-stamp-label" style="background: ${signer.color};">${getSignerInitial(signer.name)}</div>
         <div class="placed-stamp-content" style="border-color: ${signer.color};">${getStampPreviewHtmlForSigner(signer)}</div>
         <div class="placed-stamp-actions">
             <button class="placed-stamp-action-btn" onclick="removeSignerStamp('${signerId}')" title="削除">
@@ -1541,11 +1538,11 @@ function openSigningCeremony() {
 
     // 署名者をデフォルトにリセット（stampPlacements/placedStampEls はドキュメント別マップ）
     signers = [
-        { id: 'signer_1', party: '甲', name: '佐藤 一郎', company: '株式会社ABC',
+        { id: 'signer_1', name: '佐藤 一郎', company: '株式会社ABC',
           type: 'self', email: '', method: 'text', allowForward: true,
           stampPlacements: {}, placedStampEls: {}, color: '#4361ee',
           signatureData: null, signedAt: null },
-        { id: 'signer_2', party: '乙', name: '田中 太郎', company: '株式会社XYZ',
+        { id: 'signer_2', name: '田中 太郎', company: '株式会社XYZ',
           type: 'send', email: 'tanaka@xyz.co.jp', method: 'text', allowForward: true,
           stampPlacements: {}, placedStampEls: {}, color: '#e74c3c',
           signatureData: null, signedAt: null }
@@ -1992,7 +1989,7 @@ function openSignPage(signerId) {
     const method = signer ? signer.method : (forwardingData.signMethod || currentSignMethod || 'text');
     const from = encodeURIComponent('佐藤一郎');
     const message = encodeURIComponent(forwardingData.message || '交渉が完了しましたので、契約書の署名をお願いいたします。');
-    const signerParam = signer ? `&signer=${encodeURIComponent(signer.name)}&party=${encodeURIComponent(signer.party)}&color=${encodeURIComponent(signer.color)}&id=${encodeURIComponent(signer.id)}&forward=${signer.allowForward ? '1' : '0'}` : '';
+    const signerParam = signer ? `&signer=${encodeURIComponent(signer.name)}&color=${encodeURIComponent(signer.color)}&id=${encodeURIComponent(signer.id)}&forward=${signer.allowForward ? '1' : '0'}` : '';
     window.open(`sign.html?method=${method}&from=${from}&message=${message}${signerParam}`, '_blank');
 }
 
@@ -2124,7 +2121,7 @@ function applyConcludedSeals(docView) {
         sealArea.classList.add('signed');
 
         if (index === 0) {
-            // 甲（自分）の署名
+            // 自分の署名
             let sealHtml = '';
             if (signingData.mySignature && signingData.mySignature.data) {
                 switch (signingData.mySignature.type) {
@@ -2145,7 +2142,7 @@ function applyConcludedSeals(docView) {
             }
             sealArea.innerHTML = sealHtml;
         } else {
-            // 乙（相手方）の署名
+            // 相手方の署名
             const sealHtml = `<span class="seal-signed seal-signed-stamp"><span class="seal-text">\u7530\u4E2D</span></span>
                 <span class="signed-timestamp">${signingData.partnerSignedAt || '2026/2/8 15:00'} \u7F72\u540D\u6E08\u307F</span>`;
             sealArea.innerHTML = sealHtml;

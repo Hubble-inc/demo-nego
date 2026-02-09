@@ -913,7 +913,7 @@
     const signMethod = params.get('method') || 'text';
     const requester = params.get('from') || '佐藤一郎';
     const signerId = params.get('id') || '';
-    const signerParty = params.get('party') || '';
+    // party パラメータは廃止（署名者は名前・色で識別）
     const signerColor = params.get('color') || '#4361ee';
     const signerName = params.get('signer') || '';
     const allowForward = params.get('forward') !== '0';
@@ -1050,8 +1050,7 @@
                 type: 'signer_signed',
                 method: params.get('method') || 'text',
                 signerId: signerId,
-                signerName: signerName,
-                signerParty: signerParty
+                signerName: signerName
             }, '*');
         }
     }
