@@ -37,7 +37,7 @@ HubbleNegoは2つの利用パターンがあり、PRDを分割して管理して
 - Hubble側の画面変化（hubble-ui-first-share.html, hubble-ui.html）
 - 交渉バナー（「交渉中 | Ver.Xを共有中」）
 - コメントの区別（社内 vs 交渉）
-- バージョンの双方向同期
+- バージョン同期（Nego→Hubble自動、Hubble→Nego手動共有）
 
 ---
 

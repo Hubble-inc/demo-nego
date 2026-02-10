@@ -2874,17 +2874,20 @@ body {
 }
 
 /* 招待セクション */
-/* 編集者ロールノート */
-.wizard-role-note {
+/* 招待説明文 */
+.wizard-capability-note {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    background: var(--bg-note);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
+    align-items: flex-start;
+    gap: 6px;
+    font-size: var(--font-size-xs);
     color: var(--text-assist);
+    line-height: 1.5;
     margin-bottom: 24px;
+}
+
+.wizard-capability-note .material-symbols-outlined {
+    flex-shrink: 0;
+    margin-top: 1px;
 }
 
 .wizard-invite-section {
