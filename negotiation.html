@@ -8,88 +8,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="hubble-design-tokens.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* 通知設定カード */
-        .notification-card {
-            grid-column: span 1;
-        }
-
-        .notification-setting-content {
-            padding: var(--space-4);
-        }
-
-        /* 重要マークトグル */
-        .important-toggle {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px 14px;
-            background: var(--bg-note);
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .important-toggle:hover {
-            background: var(--bg-hover);
-        }
-
-        .important-toggle.checked {
-            background: #FFF8E1;
-        }
-
-        .important-checkbox {
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--border-default);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 2px;
-            transition: all 0.2s;
-        }
-
-        .important-toggle.checked .important-checkbox {
-            background: var(--color-warning);
-            border-color: var(--color-warning);
-        }
-
-        .important-checkbox .material-symbols-outlined {
-            font-size: 16px;
-            color: white;
-            opacity: 0;
-        }
-
-        .important-toggle.checked .important-checkbox .material-symbols-outlined {
-            opacity: 1;
-        }
-
-        .important-content {
-            flex: 1;
-        }
-
-        .important-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-semibold);
-            color: var(--text-heading);
-        }
-
-        .important-label .material-symbols-outlined {
-            color: var(--color-warning);
-        }
-
-        .important-desc {
-            font-size: var(--font-size-xs);
-            color: var(--text-assist);
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-    </style>
 </head>
 <body class="page-negotiation">
     <!-- 紙吹雪コンテナ -->
@@ -230,8 +148,8 @@
                     <span>契約書</span>
                 </button>
                 <button class="main-tab" onclick="switchMainTab('management')">
-                    <span class="material-symbols-outlined icon-sm">settings</span>
-                    <span>管理</span>
+                    <span class="material-symbols-outlined icon-sm">attach_file</span>
+                    <span>関連書類</span>
                 </button>
             </div>
 
@@ -789,215 +707,35 @@
                 </div>
             </div>
 
-            <!-- 管理タブ -->
+            <!-- 関連書類タブ -->
             <div class="tab-content" id="management">
                 <div class="management-container">
-                    <div class="management-grid">
-                        <!-- 重要な日付カード（左上に配置・最重要） -->
-                        <div class="action-card important-dates-card">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">calendar_month</span> 重要な日付</div>
-                                <div class="contract-status-badge active"><span class="material-symbols-outlined icon-xs">check_circle</span> 契約進行中</div>
-                            </div>
-                            <div class="important-dates-list">
-                                <div class="important-date-item">
-                                    <div class="date-icon start"><span class="material-symbols-outlined icon-sm">rocket_launch</span></div>
-                                    <div class="date-info">
-                                        <div class="date-label">契約開始日</div>
-                                        <div class="date-value">2026年2月1日</div>
-                                    </div>
-                                    <div class="date-status completed">完了</div>
-                                </div>
-                                <div class="important-date-item highlight">
-                                    <div class="date-icon warning"><span class="material-symbols-outlined">warning</span></div>
-                                    <div class="date-info">
-                                        <div class="date-label">更新判断期限</div>
-                                        <div class="date-value">2026年5月31日</div>
-                                        <div class="date-note">この日までに連絡しないと自動更新</div>
-                                    </div>
-                                    <div class="date-countdown">あと93日</div>
-                                </div>
-                                <div class="important-date-item">
-                                    <div class="date-icon end"><span class="material-symbols-outlined icon-sm">flag</span></div>
-                                    <div class="date-info">
-                                        <div class="date-label">契約満了日</div>
-                                        <div class="date-value">2026年7月31日</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="action-card">
+                        <div class="action-header">
+                            <div class="action-title"><span class="material-symbols-outlined icon-sm">attach_file</span> 関連書類</div>
+                            <button class="add-document-btn">+ 追加</button>
                         </div>
-
-                        <!-- 金額サマリーカード -->
-                        <div class="action-card amount-summary-card">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">payments</span> 金額サマリー</div>
-                            </div>
-                            <div class="amount-summary">
-                                <div class="amount-main">
-                                    <div class="amount-label">月額報酬</div>
-                                    <div class="amount-value">¥480,000<span class="amount-tax">（税別）</span></div>
-                                </div>
-                                <div class="amount-details">
-                                    <div class="amount-detail-item">
-                                        <span class="detail-label">契約期間合計（6ヶ月）</span>
-                                        <span class="detail-value">¥2,880,000</span>
-                                    </div>
-                                    <div class="amount-detail-item">
-                                        <span class="detail-label">支払い条件</span>
-                                        <span class="detail-value">毎月末締め / 翌月末払い</span>
-                                    </div>
-                                    <div class="amount-detail-item">
-                                        <span class="detail-label">振込手数料</span>
-                                        <span class="detail-value">株式会社ABC 負担</span>
-                                    </div>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <div class="document-icon"><span class="material-symbols-outlined">description</span></div>
+                                <div class="document-info">
+                                    <div class="document-name">見積書</div>
+                                    <div class="document-date">2026/01/15</div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- 次のアクションカード -->
-                        <div class="action-card">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">push_pin</span> 次のアクション</div>
-                            </div>
-                            <div class="action-list">
-                                <div class="action-item urgent">
-                                    <div class="action-item-header">
-                                        <div class="action-item-title">契約更新の判断</div>
-                                        <div class="action-item-date">あと93日</div>
-                                    </div>
-                                    <div class="action-item-desc">5/31までに更新可否を決定</div>
-                                </div>
-                                <div class="action-item">
-                                    <div class="action-item-header">
-                                        <div class="action-item-title">月次レポート提出</div>
-                                        <div class="action-item-date">2/28</div>
-                                    </div>
-                                    <div class="action-item-desc">1月分の実績レポートを提出</div>
-                                </div>
-                                <div class="action-item">
-                                    <div class="action-item-header">
-                                        <div class="action-item-title">請求書発行</div>
-                                        <div class="action-item-date">2/28</div>
-                                    </div>
-                                    <div class="action-item-desc">2月分 48万円の請求書を発行</div>
+                            <div class="document-item">
+                                <div class="document-icon"><span class="material-symbols-outlined">article</span></div>
+                                <div class="document-info">
+                                    <div class="document-name">発注書</div>
+                                    <div class="document-date">2026/01/20</div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- 電子署名・証明カード（署名後のみ表示） -->
-                        <div class="action-card signing-cert-card hidden" id="signingCertCard">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">verified_user</span> 電子署名・証明</div>
-                            </div>
-                            <div class="signing-cert-content">
-                                <div class="signing-cert-status">
-                                    <span class="material-symbols-outlined" style="color: var(--color-success);">check_circle</span>
-                                    <span>両者署名完了</span>
+                            <div class="document-item">
+                                <div class="document-icon"><span class="material-symbols-outlined">payments</span></div>
+                                <div class="document-info">
+                                    <div class="document-name">請求書(1月分)</div>
+                                    <div class="document-date">2026/01/31</div>
                                 </div>
-                                <div class="signing-cert-parties">
-                                    <div class="cert-party">
-                                        <span class="cert-party-name">佐藤 一郎（ABC社）</span>
-                                        <span class="cert-party-date" id="certMyDate">--</span>
-                                    </div>
-                                    <div class="cert-party">
-                                        <span class="cert-party-name">田中 太郎（XYZ社）</span>
-                                        <span class="cert-party-date" id="certPartnerDate">--</span>
-                                    </div>
-                                </div>
-                                <button class="cert-view-btn" onclick="showSigningCertificate()">
-                                    証明書を表示 <span class="material-symbols-outlined icon-sm">open_in_new</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- アクティビティログカード -->
-                        <div class="action-card activity-log-card">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">history</span> アクティビティ</div>
-                            </div>
-                            <div class="activity-log-list">
-                                <div class="activity-log-item">
-                                    <div class="activity-log-avatar avatar-them">田</div>
-                                    <div class="activity-log-content">
-                                        <div class="activity-log-text"><strong>田中太郎</strong>が契約期間を6ヶ月に変更</div>
-                                        <div class="activity-log-time">1月28日 14:15</div>
-                                    </div>
-                                </div>
-                                <div class="activity-log-item">
-                                    <div class="activity-log-avatar avatar-me">佐</div>
-                                    <div class="activity-log-content">
-                                        <div class="activity-log-text"><strong>佐藤一郎</strong>が報酬を48万円に修正</div>
-                                        <div class="activity-log-time">1月28日 11:35</div>
-                                    </div>
-                                </div>
-                                <div class="activity-log-item">
-                                    <div class="activity-log-avatar avatar-them">田</div>
-                                    <div class="activity-log-content">
-                                        <div class="activity-log-text"><strong>田中太郎</strong>が初回ドラフトを送付</div>
-                                        <div class="activity-log-time">1月28日 10:20</div>
-                                    </div>
-                                </div>
-                                <div class="activity-log-item">
-                                    <div class="activity-log-avatar avatar-me">佐</div>
-                                    <div class="activity-log-content">
-                                        <div class="activity-log-text"><strong>佐藤一郎</strong>が秘密保持条項を追加</div>
-                                        <div class="activity-log-time">1月27日 16:40</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="activity-log-more">すべてのアクティビティを見る <span class="material-symbols-outlined icon-sm">arrow_forward</span></button>
-                        </div>
-
-                        <!-- 関連ドキュメントカード -->
-                        <div class="action-card">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">attach_file</span> 関連ドキュメント</div>
-                                <button class="add-document-btn">+ 追加</button>
-                            </div>
-                            <div class="document-list">
-                                <div class="document-item">
-                                    <div class="document-icon"><span class="material-symbols-outlined">description</span></div>
-                                    <div class="document-info">
-                                        <div class="document-name">見積書</div>
-                                        <div class="document-date">2026/01/15</div>
-                                    </div>
-                                </div>
-                                <div class="document-item">
-                                    <div class="document-icon"><span class="material-symbols-outlined">article</span></div>
-                                    <div class="document-info">
-                                        <div class="document-name">発注書</div>
-                                        <div class="document-date">2026/01/20</div>
-                                    </div>
-                                </div>
-                                <div class="document-item">
-                                    <div class="document-icon"><span class="material-symbols-outlined">payments</span></div>
-                                    <div class="document-info">
-                                        <div class="document-name">請求書(1月分)</div>
-                                        <div class="document-date">2026/01/31</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 通知設定カード -->
-                        <div class="action-card notification-card">
-                            <div class="action-header">
-                                <div class="action-title"><span class="material-symbols-outlined icon-sm">notifications</span> この交渉の通知</div>
-                            </div>
-                            <div class="notification-setting-content">
-                                <!-- 重要マーク -->
-                                <label class="important-toggle" onclick="toggleImportant(this)">
-                                    <div class="important-checkbox">
-                                        <span class="material-symbols-outlined icon-sm">check</span>
-                                    </div>
-                                    <div class="important-content">
-                                        <div class="important-label">
-                                            <span class="material-symbols-outlined icon-sm">star</span>
-                                            重要な交渉としてマーク
-                                        </div>
-                                        <div class="important-desc">通知メールの件名に [重要] が付きます</div>
-                                    </div>
-                                </label>
                             </div>
                         </div>
                     </div>
