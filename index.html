@@ -10,12 +10,60 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-list">
+    <!-- グローバルヘッダー -->
+    <header class="global-header">
+        <div class="global-header-left">
+            <a href="index.html">
+                <img src="hubble-logo.svg" alt="Hubble" class="global-header-logo">
+            </a>
+        </div>
+        <div class="global-header-right">
+            <div class="global-header-icon">
+                <span class="material-symbols-outlined">search</span>
+            </div>
+            <div class="global-header-icon">
+                <span class="material-symbols-outlined">apps</span>
+            </div>
+            <div class="global-header-icon">
+                <span class="material-symbols-outlined">notifications</span>
+            </div>
+            <div class="global-header-icon">
+                <span class="material-symbols-outlined">help_outline</span>
+            </div>
+            <div class="global-header-avatar-wrapper">
+                <div class="global-header-avatar" onclick="toggleUserMenu(event)">
+                    <img src="https://i.pravatar.cc/100?img=3" alt="User">
+                </div>
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-profile">
+                        <div class="user-menu-avatar">
+                            <img src="https://i.pravatar.cc/100?img=3" alt="User">
+                        </div>
+                        <div class="user-menu-info">
+                            <div class="user-menu-name">佐藤 一郎</div>
+                            <div class="user-menu-company">株式会社ABC</div>
+                        </div>
+                    </div>
+                    <div class="user-menu-divider"></div>
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="material-symbols-outlined">settings</span>
+                        アカウント設定
+                    </a>
+                    <button class="user-menu-item" onclick="alert('ログアウトしました（デモ）')">
+                        <span class="material-symbols-outlined">logout</span>
+                        ログアウト
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <!-- 交渉一覧画面 -->
     <div class="negotiations-list-page">
         <div class="negotiations-list-container">
-    <!-- ヘッダー -->
+    <!-- ツールバー -->
             <div class="negotiations-header">
-                <img src="hubble-logo.svg" alt="Hubble" class="negotiations-logo">
+                <div class="negotiations-header-title">交渉一覧</div>
                 <button class="negotiations-new-btn" onclick="showWizard()">
                     <span class="material-symbols-outlined icon-sm">add</span> 新しい交渉を始める
                 </button>
@@ -33,6 +81,7 @@
                         <option value="negotiating">交渉中</option>
                         <option value="signing">署名待ち</option>
                         <option value="concluded">締結済み</option>
+                        <option value="suspended">中断</option>
                     </select>
                     <select class="negotiations-filter-select">
                         <option value="recent">最新順</option>
@@ -152,6 +201,34 @@
                                 <span class="negotiation-card-partner">株式会社JKL 高橋様</span>
                                 <span class="negotiation-card-separator">·</span>
                                 <span class="negotiation-card-date">締結日: 2024年11月20日</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 中断セクション（デフォルト折りたたみ） -->
+                <div class="negotiations-section suspended-section">
+                    <div class="negotiations-section-header collapsible" onclick="toggleSuspendedSection()">
+                        <span class="negotiations-section-icon material-symbols-outlined">pause_circle</span>
+                        <span class="negotiations-section-title">中断</span>
+                        <span class="negotiations-section-count">1</span>
+                        <span class="negotiations-section-toggle material-symbols-outlined" id="suspendedToggleIcon">expand_more</span>
+                    </div>
+                    <div class="negotiations-cards suspended-cards" id="suspendedCards" style="display:none;">
+                        <div class="negotiation-card suspended">
+                            <div class="negotiation-card-header">
+                                <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
+                                <div class="negotiation-card-title">ライセンス契約書</div>
+                                <div class="negotiation-card-badge suspended"><span class="material-symbols-outlined icon-xs">pause_circle</span> 中断</div>
+                            </div>
+                            <div class="negotiation-card-meta">
+                                <span class="negotiation-card-partner">株式会社PQR 中村様</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-date">中断日: 2026年1月15日</span>
+                            </div>
+                            <div class="negotiation-card-activity">
+                                <div class="activity-icon"><span class="material-symbols-outlined icon-sm">info</span></div>
+                                <div class="activity-text">先方の社内稟議待ちのため中断</div>
                             </div>
                         </div>
                     </div>
@@ -313,5 +390,31 @@
     </a>
 
     <script src="script.js"></script>
+    <script>
+    function toggleUserMenu(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('userMenuDropdown');
+        dropdown.classList.toggle('active');
+        const close = (ev) => {
+            if (!ev.target.closest('.global-header-avatar-wrapper')) {
+                dropdown.classList.remove('active');
+                document.removeEventListener('click', close);
+            }
+        };
+        document.addEventListener('click', close);
+    }
+
+    function toggleSuspendedSection() {
+        const cards = document.getElementById('suspendedCards');
+        const icon = document.getElementById('suspendedToggleIcon');
+        if (cards.style.display === 'none') {
+            cards.style.display = '';
+            icon.textContent = 'expand_less';
+        } else {
+            cards.style.display = 'none';
+            icon.textContent = 'expand_more';
+        }
+    }
+    </script>
 </body>
 </html>

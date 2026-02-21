@@ -688,6 +688,209 @@
             color: #4361ee;
             background: #f8f9ff;
         }
+
+        .sign-secondary-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sign-decline-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: #dc2626;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .sign-decline-link:hover {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+
+        /* 辞退完了画面 */
+        .sign-declined-icon {
+            width: 80px;
+            height: 80px;
+            background: #fef2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: successPop 0.5s ease-out;
+        }
+
+        .sign-declined-icon .material-symbols-outlined {
+            font-size: 40px;
+            color: #dc2626;
+        }
+
+        /* 辞退モーダル */
+        .sign-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign-modal-overlay.active {
+            display: flex;
+        }
+
+        .sign-modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 480px;
+            width: calc(100% - 48px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .sign-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sign-modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .sign-modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .sign-modal-body {
+            padding: 20px 24px;
+        }
+
+        .decline-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 12px 14px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #92400e;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .decline-reason-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .decline-reason-options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .decline-reason-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .decline-reason-option:hover {
+            background: #f9fafb;
+        }
+
+        .decline-reason-option input[type="radio"] {
+            accent-color: #dc2626;
+        }
+
+        .decline-reason-text {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.15s;
+        }
+
+        .decline-reason-text:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .sign-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 16px 24px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .sign-modal-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+        }
+
+        .sign-modal-btn.cancel {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .sign-modal-btn.cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .sign-modal-btn.danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .sign-modal-btn.danger:hover:not(:disabled) {
+            background: #b91c1c;
+        }
+
+        .sign-modal-btn.danger:disabled {
+            background: #fca5a5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -912,15 +1115,34 @@
                         署名を確定する
                     </button>
 
-                    <!-- 転送リンク（許可時のみ表示） -->
-                    <div class="sign-forward-section" id="signForwardSection" style="display:none;">
+                    <!-- 転送・辞退リンク -->
+                    <div class="sign-forward-section" id="signForwardSection">
                         <div class="sign-forward-divider"></div>
-                        <button class="sign-forward-link" onclick="showForwardDialog()">
-                            <span class="material-symbols-outlined" style="font-size:18px;">forward_to_inbox</span>
-                            この署名を別の方に転送する
-                        </button>
+                        <div class="sign-secondary-actions">
+                            <button class="sign-forward-link" id="signForwardLink" onclick="showForwardDialog()" style="display:none;">
+                                <span class="material-symbols-outlined" style="font-size:18px;">forward_to_inbox</span>
+                                この署名を別の方に転送する
+                            </button>
+                            <button class="sign-decline-link" onclick="openDeclineModal()">
+                                <span class="material-symbols-outlined" style="font-size:18px;">do_not_disturb</span>
+                                署名を辞退する
+                            </button>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- 辞退完了画面 -->
+            <div class="sign-success-screen sign-declined-screen" id="signDeclinedView">
+                <div class="sign-declined-icon">
+                    <span class="material-symbols-outlined">do_not_disturb</span>
+                </div>
+                <div class="sign-success-title">署名を辞退しました</div>
+                <div class="sign-success-desc">署名依頼の送信者に辞退の通知が送信されました。</div>
+                <a href="negotiation.html" class="sign-success-link">
+                    <span class="material-symbols-outlined" style="font-size:18px;">arrow_back</span>
+                    交渉画面に戻る（デモ用）
+                </a>
             </div>
 
             <!-- 成功画面（署名後） -->
@@ -934,6 +1156,48 @@
                     <span class="material-symbols-outlined" style="font-size:18px;">arrow_back</span>
                     交渉画面に戻る（デモ用）
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 辞退確認モーダル -->
+    <div class="sign-modal-overlay" id="declineModal">
+        <div class="sign-modal">
+            <div class="sign-modal-header">
+                <div class="sign-modal-title">署名を辞退する</div>
+                <button class="sign-modal-close" onclick="closeDeclineModal()">&times;</button>
+            </div>
+            <div class="sign-modal-body">
+                <div class="decline-warning">
+                    <span class="material-symbols-outlined" style="font-size:18px; color:#f59e0b;">warning</span>
+                    辞退すると署名依頼の送信者に通知されます。交渉は「交渉中」に戻ります。
+                </div>
+                <label class="decline-reason-label">辞退の理由（必須）</label>
+                <div class="decline-reason-options">
+                    <label class="decline-reason-option">
+                        <input type="radio" name="declineReason" value="契約内容に修正が必要" onchange="updateDeclineBtn()">
+                        <span>契約内容に修正が必要</span>
+                    </label>
+                    <label class="decline-reason-option">
+                        <input type="radio" name="declineReason" value="社内承認が得られなかった" onchange="updateDeclineBtn()">
+                        <span>社内承認が得られなかった</span>
+                    </label>
+                    <label class="decline-reason-option">
+                        <input type="radio" name="declineReason" value="担当者が変更になった" onchange="updateDeclineBtn()">
+                        <span>担当者が変更になった</span>
+                    </label>
+                    <label class="decline-reason-option">
+                        <input type="radio" name="declineReason" value="other" onchange="updateDeclineBtn()">
+                        <span>その他</span>
+                    </label>
+                </div>
+                <textarea class="decline-reason-text" id="declineReasonText" placeholder="詳細を入力してください..." rows="3" oninput="updateDeclineBtn()"></textarea>
+            </div>
+            <div class="sign-modal-footer">
+                <button class="sign-modal-btn cancel" onclick="closeDeclineModal()">キャンセル</button>
+                <button class="sign-modal-btn danger" id="declineConfirmBtn" disabled onclick="executeDecline()">
+                    辞退する
+                </button>
             </div>
         </div>
     </div>
@@ -973,8 +1237,8 @@
 
         // 転送リンク表示
         if (allowForward) {
-            const fwdSection = document.getElementById('signForwardSection');
-            if (fwdSection) fwdSection.style.display = 'block';
+            const fwdLink = document.getElementById('signForwardLink');
+            if (fwdLink) fwdLink.style.display = 'inline-flex';
         }
     });
 
@@ -1087,6 +1351,51 @@
                 method: params.get('method') || 'text',
                 signerId: signerId,
                 signerName: signerName
+            }, '*');
+        }
+    }
+
+    // 辞退モーダル
+    function openDeclineModal() {
+        document.getElementById('declineModal').classList.add('active');
+    }
+
+    function closeDeclineModal() {
+        document.getElementById('declineModal').classList.remove('active');
+    }
+
+    function updateDeclineBtn() {
+        const btn = document.getElementById('declineConfirmBtn');
+        const selected = document.querySelector('input[name="declineReason"]:checked');
+        if (!selected) { btn.disabled = true; return; }
+        if (selected.value === 'other') {
+            const text = document.getElementById('declineReasonText').value.trim();
+            btn.disabled = text.length === 0;
+        } else {
+            btn.disabled = false;
+        }
+    }
+
+    function executeDecline() {
+        const selected = document.querySelector('input[name="declineReason"]:checked');
+        if (!selected) return;
+        let reason = selected.value;
+        if (reason === 'other') {
+            reason = document.getElementById('declineReasonText').value.trim();
+        }
+        const detail = document.getElementById('declineReasonText').value.trim();
+        closeDeclineModal();
+
+        document.getElementById('signFormView').style.display = 'none';
+        document.getElementById('signDeclinedView').classList.add('active');
+
+        if (window.opener && !window.opener.closed) {
+            window.opener.postMessage({
+                type: 'signer_declined',
+                signerId: signerId,
+                signerName: signerName,
+                reason: reason,
+                detail: detail
             }, '*');
         }
     }

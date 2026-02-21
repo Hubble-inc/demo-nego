@@ -37,7 +37,6 @@ function generateSignerId() { return 'signer_' + (nextSignerId++); }
 let signingData = { mySignature: null, partnerSignature: null, mySignedAt: null, partnerSignedAt: null };
 let forwardingData = { mySignerName: null, mySignerEmail: null, mySignerCompany: null, myForwardedAt: null, message: null, signMethod: null };
 let selectedText = '';
-let currentCommentThread = null;
 let compareMode = false;
 let selectedVersions = [];
 
@@ -461,29 +460,6 @@ function updateSigningConfirmBtn() {
 // 署名スタンプ ドラッグ&ドロップ（マルチ署名者: 個別配置はsigners[]内で管理）
 let isDraggingStamp = false;
 let isRepositioning = false;
-
-// デモ用コメントデータ
-const commentThreads = {
-    1: {
-        reference: '金48万円',
-        comments: [
-            { name: '田中太郎', avatar: '田', avatarClass: 'avatar-them', time: '1月28日 10:30', text: '当初45万円でご提案いただいていましたが、48万円への増額は可能でしょうか？' },
-            { name: 'あなた', avatar: '佐', avatarClass: 'avatar-me', time: '1月28日 11:20', text: '承知しました。48万円で問題ございません。修正いたします。' }
-        ]
-    },
-    2: {
-        reference: '毎月末日締め、翌月末日払い',
-        comments: [
-            { name: '田中太郎', avatar: '田', avatarClass: 'avatar-them', time: '1月28日 14:00', text: '弊社の経理処理の都合上、この支払いサイクルでお願いできると助かります。' }
-        ]
-    },
-    3: {
-        reference: '本契約終了後3年間',
-        comments: [
-            { name: 'あなた', avatar: '佐', avatarClass: 'avatar-me', time: '1月29日 09:15', text: '秘密保持期間は3年間で設定しております。業界標準的な期間ですが、ご要望があれば調整可能です。' }
-        ]
-    }
-};
 
 // メインタブ切り替え
 function switchMainTab(tabId) {
@@ -2228,7 +2204,7 @@ function toggleSwitch(element) {
     element.classList.toggle('active');
 }
 
-// メッセージ送信
+// メッセージ送信（引用ブロック対応）
 function sendMessage() {
     const input = document.getElementById('messageInput');
     const text = input.value.trim();
@@ -2237,19 +2213,29 @@ function sendMessage() {
     const messages = document.getElementById('messages');
     const newMessage = document.createElement('div');
     newMessage.className = 'message';
+
+    // 引用ブロックが表示中か確認
+    const quoteBlock = document.getElementById('inputQuoteBlock');
+    const quoteText = document.getElementById('inputQuoteText');
+    let quoteHtml = '';
+    if (quoteBlock && quoteBlock.style.display !== 'none' && quoteText.textContent.trim()) {
+        quoteHtml = `<div class="message-quote">${escapeHtml(quoteText.textContent)}</div>`;
+    }
+
     newMessage.innerHTML = `
         <div class="message-header">
             <div class="message-avatar avatar-me">佐</div>
             <span class="message-sender">あなた</span>
             <span class="message-time">今</span>
         </div>
-        <div class="message-bubble">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+        <div class="message-bubble">${quoteHtml}${escapeHtml(text).replace(/\n/g, '<br>')}</div>
     `;
     messages.appendChild(newMessage);
     messages.scrollTop = messages.scrollHeight;
 
     input.value = '';
     input.style.height = 'auto';
+    clearQuoteBlock();
 }
 
 // HTMLエスケープ
@@ -2366,22 +2352,24 @@ function hideSelectionPopup() {
     }, 200);
 }
 
-// AI解説機能
+// AI解説機能 → AIタブにインライン表示
 function aiExplain() {
     const popup = document.getElementById('selectionPopup');
     popup.classList.remove('active');
-    
-    document.getElementById('aiSelectedText').textContent = selectedText;
-    document.getElementById('aiLoading').style.display = 'flex';
-    document.getElementById('aiResult').classList.remove('active');
-    document.getElementById('aiExplainModal').classList.add('active');
-    
-    // AI解説をシミュレート（デモ用）
+
+    // AIタブに切り替え
+    switchSidebarTab('ai');
+    hideAiWelcome();
+
+    // 選択テキストをユーザーメッセージとして追加
+    addAiUserMessage('「' + selectedText + '」について解説して');
+
+    // AI応答をシミュレート
+    const loadingMsg = addAiLoadingMessage();
     setTimeout(() => {
-        document.getElementById('aiLoading').style.display = 'none';
-        const result = document.getElementById('aiResult');
-        result.innerHTML = generateAiExplanation(selectedText);
-        result.classList.add('active');
+        loadingMsg.remove();
+        const explanation = generateAiExplanation(selectedText);
+        addAiAssistantMessage(explanation);
     }, 1500);
 }
 
@@ -2396,115 +2384,16 @@ function generateAiExplanation(text) {
     return explanations[text] || `<strong><span class="material-symbols-outlined icon-sm">article</span> 選択テキストの解説</strong><br><br>「${text}」<br><br>この条項は契約上の重要な規定です。具体的な法的効果や実務上の影響については、必要に応じて法務担当者にご確認ください。`;
 }
 
-function closeAiExplainModal(event) {
-    if (!event || event.target === event.currentTarget) {
-        document.getElementById('aiExplainModal').classList.remove('active');
-    }
-}
-
-function toggleAiExplainCard() {
-    document.getElementById('aiExplainCard').classList.toggle('collapsed');
-}
-
-// コメント機能
+// コメント機能 → 引用ブロック付きメッセージに統合
 function openCommentInput() {
     const popup = document.getElementById('selectionPopup');
     popup.classList.remove('active');
-    
-    document.getElementById('commentSelectedText').textContent = selectedText;
-    document.getElementById('commentTextarea').value = '';
-    document.getElementById('commentModal').classList.add('active');
-}
 
-function closeCommentModal(event) {
-    if (!event || event.target === event.currentTarget) {
-        document.getElementById('commentModal').classList.remove('active');
-    }
-}
+    // メッセージタブに切り替え
+    switchSidebarTab('chat');
 
-function submitComment() {
-    const textarea = document.getElementById('commentTextarea');
-    const text = textarea.value.trim();
-    
-    if (text) {
-        closeCommentModal();
-        
-        // メッセージエリアにも通知を追加
-        const messages = document.getElementById('messages');
-        const newMessage = document.createElement('div');
-        newMessage.className = 'message';
-        newMessage.innerHTML = `
-            <div class="message-header">
-                <div class="message-avatar avatar-me">佐</div>
-                <span class="message-sender">あなた</span>
-                <span class="message-time">今</span>
-            </div>
-            <div class="message-bubble">
-                <div style="font-size: 12px; color: var(--text-assist); margin-bottom: 8px;"><span class="material-symbols-outlined icon-xs">location_on</span> 「${escapeHtml(selectedText)}」へのコメント:</div>
-                ${escapeHtml(text)}
-            </div>
-        `;
-        messages.appendChild(newMessage);
-        messages.scrollTop = messages.scrollHeight;
-        
-        alert('コメントを送信しました！');
-    }
-}
-
-// コメントスレッド表示
-function showCommentThread(threadId) {
-    const panel = document.getElementById('commentThreadPanel');
-    const thread = commentThreads[threadId];
-    
-    if (!thread) return;
-    
-    currentCommentThread = threadId;
-    
-    // 参照テキストを設定
-    document.getElementById('threadReference').textContent = thread.reference;
-    
-    // コメントを表示
-    const commentsContainer = document.getElementById('threadComments');
-    commentsContainer.innerHTML = thread.comments.map(comment => `
-        <div class="thread-comment">
-            <div class="thread-avatar ${comment.avatarClass}">${comment.avatar}</div>
-            <div class="thread-comment-content">
-                <div class="thread-comment-header">
-                    <span class="thread-comment-name">${comment.name}</span>
-                    <span class="thread-comment-time">${comment.time}</span>
-                </div>
-                <div class="thread-comment-text">${comment.text}</div>
-            </div>
-        </div>
-    `).join('');
-    
-    panel.classList.add('active');
-}
-
-function closeCommentThread() {
-    document.getElementById('commentThreadPanel').classList.remove('active');
-    currentCommentThread = null;
-}
-
-function sendThreadReply() {
-    const textarea = document.getElementById('threadTextarea');
-    const text = textarea.value.trim();
-    
-    if (text && currentCommentThread) {
-        // コメントを追加
-        const thread = commentThreads[currentCommentThread];
-        thread.comments.push({
-            name: 'あなた',
-            avatar: '佐',
-            avatarClass: 'avatar-me',
-            time: '今',
-            text: text
-        });
-        
-        // 表示を更新
-        showCommentThread(currentCommentThread);
-        textarea.value = '';
-    }
+    // 引用ブロックをセット
+    setQuoteBlock(selectedText);
 }
 
 // DOMContentLoaded後に初期化
@@ -2515,6 +2404,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (textarea) {
         // バージョンツリーの初期化
         initVersionTree();
+
+        // サイドバータブ・リサイズハンドル・AIチャットの初期化
+        initSidebarTabs();
+        initResizeHandle();
+        initAiChat();
 
         // テキストエリア自動リサイズ
         textarea.addEventListener('input', function() {
@@ -2558,8 +2452,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // その他のモーダルを閉じる
             if (typeof closeUploadModal === 'function') closeUploadModal();
             if (typeof closeDiffModal === 'function') closeDiffModal();
-            if (typeof closeCommentModal === 'function') closeCommentModal();
-            if (typeof closeAiExplainModal === 'function') closeAiExplainModal();
+            // AIコマンドパレットを閉じる
+            const cmdPalette = document.getElementById('aiCommandPalette');
+            if (cmdPalette) cmdPalette.style.display = 'none';
         }
     });
 
@@ -3030,6 +2925,7 @@ function closeNegotiationsList() {
 
 // ステータス: 'negotiating' → 'awaiting_my_signer' → 'my_signer_signed' → 'concluded' → 'partner_editing' → 'negotiating' ...
 let demoStatus = 'negotiating';
+let suspendReason = '';
 
 function initDemoStatusBanner() {
     const body = document.body;
@@ -3100,11 +2996,16 @@ function toggleDemoStatus() {
         signingData.partnerSignature = { type: 'stamp', data: '田中', name: '田中 太郎' };
         signingData.partnerSignedAt = new Date().toLocaleString('ja-JP');
     } else if (demoStatus === 'concluded') {
-        demoStatus = 'partner_editing';
+        demoStatus = 'suspended';
         currentUserRole = 'member';
+        suspendReason = '先方の社内稟議待ちのため中断';
         // 署名データリセット
         signingData = { mySignature: null, partnerSignature: null, mySignedAt: null, partnerSignedAt: null };
         forwardingData = { mySignerName: null, mySignerEmail: null, mySignerCompany: null, myForwardedAt: null, partnerSignerName: null, partnerSignerEmail: null, partnerSignerCompany: null, partnerForwardedAt: null, message: null, signMethod: null };
+    } else if (demoStatus === 'suspended') {
+        demoStatus = 'partner_editing';
+        currentUserRole = 'member';
+        suspendReason = '';
     } else {
         demoStatus = 'negotiating';
         currentUserRole = 'member';
@@ -3125,7 +3026,7 @@ function updateDemoStatus(status) {
     if (!toggleBtn) return;
 
     // トグルボタンのクラスをリセット
-    toggleBtn.classList.remove('status-waiting', 'status-agreed', 'status-negotiating', 'status-partner-editing', 'status-partially-signed', 'status-concluded', 'status-awaiting-signer', 'status-awaiting-my-signer', 'status-signer-ready', 'status-my-signer-signed', 'status-signing-setup-done', 'status-signer-view');
+    toggleBtn.classList.remove('status-waiting', 'status-agreed', 'status-negotiating', 'status-partner-editing', 'status-partially-signed', 'status-concluded', 'status-awaiting-signer', 'status-awaiting-my-signer', 'status-signer-ready', 'status-my-signer-signed', 'status-signing-setup-done', 'status-signer-view', 'status-suspended');
 
     // バナーの表示状態をすべて隠す
     if (signingWaitBanner) signingWaitBanner.classList.add('hidden');
@@ -3134,6 +3035,10 @@ function updateDemoStatus(status) {
     if (signerReadyBannerEl) signerReadyBannerEl.classList.add('hidden');
     const signingSetupBanner = document.getElementById('globalSigningSetupBanner');
     if (signingSetupBanner) signingSetupBanner.classList.add('hidden');
+    const suspBanner = document.getElementById('globalSuspendedBanner');
+    if (suspBanner) suspBanner.classList.add('hidden');
+    const declinedBanner = document.getElementById('globalSigningDeclinedBanner');
+    if (declinedBanner) declinedBanner.classList.add('hidden');
 
     // 概要バナーも更新
     const overviewBanner = document.getElementById('overviewStatusBanner');
@@ -3297,9 +3202,48 @@ function updateDemoStatus(status) {
                 }
             }
 
+            break;
 
+        case 'suspended':
+            // 交渉中断
+            const suspendedBanner = document.getElementById('globalSuspendedBanner');
+            if (suspendedBanner) {
+                suspendedBanner.classList.remove('hidden');
+                const reasonEl = document.getElementById('suspendedBannerReason');
+                if (reasonEl) {
+                    reasonEl.textContent = suspendReason || '理由の記載はありません';
+                }
+            }
+            body.classList.add('has-status-banner');
+            toggleBtn.classList.add('status-suspended');
+
+            if (signBtn) {
+                signBtn.style.display = 'none';
+            }
+
+            const resumeBtn = document.getElementById('resumeBtn');
+            if (resumeBtn) resumeBtn.classList.remove('hidden');
+
+            const moreMenu = document.getElementById('headerMoreMenu');
+            if (moreMenu) moreMenu.style.display = 'none';
+
+            if (overviewBanner) {
+                overviewBanner.className = 'overview-status-banner suspended';
+                overviewBanner.querySelector('.status-banner-icon').innerHTML = '<span class="material-symbols-outlined">pause_circle</span>';
+                overviewBanner.querySelector('.status-banner-title').textContent = 'この交渉は中断されています';
+                overviewBanner.querySelector('.status-banner-desc').textContent = suspendReason || '理由の記載はありません';
+            }
 
             break;
+    }
+
+    // suspended以外の時はボタン状態を復帰
+    if (status !== 'suspended') {
+        const resumeBtnEl = document.getElementById('resumeBtn');
+        if (resumeBtnEl) resumeBtnEl.classList.add('hidden');
+        const moreMenuEl = document.getElementById('headerMoreMenu');
+        if (moreMenuEl) moreMenuEl.style.display = '';
+        if (signBtn) signBtn.style.display = '';
     }
 }
 
@@ -3399,5 +3343,362 @@ document.addEventListener('DOMContentLoaded', function() {
             // ユーザーが編集したら自動設定フラグを解除
             this.dataset.autoSet = 'false';
         });
+    }
+});
+
+// ============================================
+// サイドバータブ切替
+// ============================================
+
+function initSidebarTabs() {
+    const icons = document.querySelectorAll('.sidebar-icon');
+    icons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const tabName = this.dataset.tab;
+            switchSidebarTab(tabName);
+        });
+    });
+}
+
+function switchSidebarTab(tabName) {
+    // アイコンのactive切替
+    document.querySelectorAll('.sidebar-icon').forEach(icon => {
+        icon.classList.toggle('active', icon.dataset.tab === tabName);
+    });
+
+    // タブコンテンツの表示切替
+    document.querySelectorAll('.sidebar-tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    const targetTab = document.getElementById(tabName === 'chat' ? 'tabChat' : 'tabAi');
+    if (targetTab) targetTab.classList.add('active');
+
+    // ヘッダータイトル更新
+    const titleText = document.getElementById('panelTitleText');
+    const panelActions = document.getElementById('panelActions');
+    if (tabName === 'chat') {
+        titleText.textContent = 'コメント';
+        titleText.classList.remove('sidebar-panel-label-ai');
+        if (panelActions) panelActions.style.display = 'none';
+    } else if (tabName === 'ai') {
+        titleText.textContent = 'AIとチャット';
+        titleText.classList.add('sidebar-panel-label-ai');
+        if (panelActions) panelActions.style.display = 'flex';
+    }
+}
+
+// ============================================
+// リサイズハンドル
+// ============================================
+
+function initResizeHandle() {
+    const handle = document.getElementById('resizeHandle');
+    const rightColumn = document.querySelector('.right-column');
+    if (!handle || !rightColumn) return;
+
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+
+    handle.addEventListener('mousedown', function(e) {
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = rightColumn.offsetWidth;
+        document.body.classList.add('resizing');
+        handle.classList.add('active');
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isResizing) return;
+        const diff = startX - e.clientX;
+        const newWidth = Math.max(300, Math.min(window.innerWidth * 0.55, startWidth + diff));
+        rightColumn.style.width = newWidth + 'px';
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (isResizing) {
+            isResizing = false;
+            document.body.classList.remove('resizing');
+            handle.classList.remove('active');
+        }
+    });
+}
+
+// ============================================
+// AIチャット
+// ============================================
+
+function initAiChat() {
+    const aiInput = document.getElementById('aiChatInput');
+    if (!aiInput) return;
+
+    // テキストエリア自動リサイズ
+    aiInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+
+    // Enter で送信（Shift+Enter で改行）
+    aiInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendAiMessage();
+        }
+    });
+
+    // / キーでコマンドパレット
+    aiInput.addEventListener('keyup', function(e) {
+        if (this.value === '/') {
+            toggleAiCommandPalette(true);
+        } else {
+            toggleAiCommandPalette(false);
+        }
+    });
+
+    // クリック外でコマンドパレットを閉じる
+    document.addEventListener('click', function(e) {
+        const palette = document.getElementById('aiCommandPalette');
+        const slashBtn = document.getElementById('aiSlashBtn');
+        if (palette && !palette.contains(e.target) && e.target !== slashBtn && !slashBtn.contains(e.target)) {
+            palette.style.display = 'none';
+        }
+    });
+}
+
+function sendAiMessage() {
+    const input = document.getElementById('aiChatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    hideAiWelcome();
+    addAiUserMessage(text);
+
+    input.value = '';
+    input.style.height = 'auto';
+
+    // コマンドパレットを閉じる
+    const palette = document.getElementById('aiCommandPalette');
+    if (palette) palette.style.display = 'none';
+
+    // AI応答シミュレート
+    const loadingMsg = addAiLoadingMessage();
+    setTimeout(() => {
+        loadingMsg.remove();
+        addAiAssistantMessage('ご質問ありがとうございます。この契約書について分析いたします。<br><br>現在のドラフトの内容を確認しました。何か特定の条項について詳しく知りたいことがあれば、お聞かせください。');
+    }, 1500);
+}
+
+function addAiUserMessage(text) {
+    const messagesArea = document.getElementById('aiChatMessages');
+    const msg = document.createElement('div');
+    msg.className = 'ai-chat-msg user';
+    msg.innerHTML = `
+        <div class="ai-msg-bubble user-bubble">${escapeHtml(text)}</div>
+    `;
+    messagesArea.appendChild(msg);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+}
+
+function addAiAssistantMessage(html) {
+    const messagesArea = document.getElementById('aiChatMessages');
+    const msg = document.createElement('div');
+    msg.className = 'ai-chat-msg assistant';
+    msg.innerHTML = `
+        <div class="ai-msg-avatar ai-avatar">
+            <span class="material-symbols-outlined" style="font-size:16px;">smart_toy</span>
+        </div>
+        <div class="ai-msg-bubble ai-bubble">${html}</div>
+    `;
+    messagesArea.appendChild(msg);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+    return msg;
+}
+
+function addAiLoadingMessage() {
+    const messagesArea = document.getElementById('aiChatMessages');
+    const msg = document.createElement('div');
+    msg.className = 'ai-chat-msg assistant';
+    msg.innerHTML = `
+        <div class="ai-msg-avatar ai-avatar">
+            <span class="material-symbols-outlined" style="font-size:16px;">smart_toy</span>
+        </div>
+        <div class="ai-msg-bubble ai-bubble">
+            <div class="ai-typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    `;
+    messagesArea.appendChild(msg);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+    return msg;
+}
+
+function hideAiWelcome() {
+    const welcome = document.getElementById('aiWelcomeScreen');
+    if (welcome) welcome.style.display = 'none';
+}
+
+function handleAiQuickAction(action) {
+    hideAiWelcome();
+    switchSidebarTab('ai');
+
+    // コマンドパレットを閉じる
+    const palette = document.getElementById('aiCommandPalette');
+    if (palette) palette.style.display = 'none';
+
+    const aiInput = document.getElementById('aiChatInput');
+    if (aiInput) {
+        aiInput.value = '';
+        aiInput.style.height = 'auto';
+    }
+
+    const actionLabels = {
+        review: 'この契約書の内容をレビューして',
+        risk: 'この契約書のリスクを分析して',
+        changes: '前回バージョンからの変更点を教えて',
+        explain: 'この契約書の内容を詳しく解説して'
+    };
+
+    const actionResponses = {
+        review: '<strong>📋 契約書レビュー結果</strong><br><br>この業務委託基本契約書について、以下の点を確認しました。<br><br><strong>✅ 問題なし:</strong><br>• 契約期間と更新条件が明確<br>• 報酬の支払い条件が具体的<br>• 秘密保持条項が適切<br><br><strong>⚠️ 要確認:</strong><br>• 第5条の損害賠償上限が未設定<br>• 知的財産の帰属が曖昧<br>• 解約時の精算方法が未記載',
+        risk: '<strong>⚠️ リスク分析</strong><br><br><strong>高リスク:</strong><br>• 損害賠償条項に上限がない<br>→ 無制限の責任を負う可能性<br><br><strong>中リスク:</strong><br>• 競業避止義務の範囲が広い<br>• 契約終了後の成果物扱いが不明確<br><br><strong>低リスク:</strong><br>• 秘密保持期間は業界標準<br>• 支払い条件は一般的',
+        changes: '<strong>📝 変更点サマリー（Ver.7 → Ver.8）</strong><br><br>1. <strong>第3条（契約期間）:</strong> 自動更新期間を「1年」→「6ヶ月」に短縮<br>2. <strong>第7条（報酬）:</strong> 月額報酬を48万円に確定<br>3. <strong>第12条（解約）:</strong> 解約予告期間の追加（2ヶ月前）',
+        explain: '<strong>📖 契約書の概要解説</strong><br><br>この契約書は<strong>業務委託基本契約</strong>で、デジタルマーケティング支援を委託する内容です。<br><br><strong>主な内容:</strong><br>• 業務内容: マーケティング戦略の立案・実行支援<br>• 契約期間: 1年間（6ヶ月ごとの自動更新）<br>• 報酬: 月額48万円（税別）<br>• 支払い: 月末締め翌月末払い<br>• 秘密保持: 契約終了後3年間'
+    };
+
+    addAiUserMessage(actionLabels[action] || action);
+
+    const loadingMsg = addAiLoadingMessage();
+    setTimeout(() => {
+        loadingMsg.remove();
+        addAiAssistantMessage(actionResponses[action] || 'ご質問にお答えします。');
+    }, 1800);
+}
+
+function toggleAiCommandPalette(show) {
+    const palette = document.getElementById('aiCommandPalette');
+    if (!palette) return;
+
+    if (typeof show === 'boolean') {
+        palette.style.display = show ? 'block' : 'none';
+    } else {
+        palette.style.display = palette.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+// ============================================
+// 引用ブロック（コメント → メッセージ統合）
+// ============================================
+
+function setQuoteBlock(text) {
+    const quoteBlock = document.getElementById('inputQuoteBlock');
+    const quoteText = document.getElementById('inputQuoteText');
+    if (!quoteBlock || !quoteText) return;
+
+    quoteText.textContent = text;
+    quoteBlock.style.display = 'flex';
+
+    // メッセージ入力欄にフォーカス
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) messageInput.focus();
+}
+
+function clearQuoteBlock() {
+    const quoteBlock = document.getElementById('inputQuoteBlock');
+    const quoteText = document.getElementById('inputQuoteText');
+    if (quoteBlock) quoteBlock.style.display = 'none';
+    if (quoteText) quoteText.textContent = '';
+}
+
+// コメントインジケーター（契約書内の吹き出しアイコン）クリック時
+function openCommentFromIndicator(text) {
+    switchSidebarTab('chat');
+    setQuoteBlock(text);
+}
+
+// AI分析カード トグル開閉
+function toggleAiExplainCard() {
+    const card = document.getElementById('aiExplainCard');
+    if (card) card.classList.toggle('collapsed');
+}
+
+// ============================================
+// 交渉中断・再開
+// ============================================
+
+function toggleMoreMenu(e) {
+    e.stopPropagation();
+    const dropdown = document.getElementById('moreMenuDropdown');
+    if (dropdown) dropdown.classList.toggle('active');
+
+    const closeOnClick = (ev) => {
+        if (!ev.target.closest('#headerMoreMenu')) {
+            dropdown.classList.remove('active');
+            document.removeEventListener('click', closeOnClick);
+        }
+    };
+    document.addEventListener('click', closeOnClick);
+}
+
+function openSuspendModal() {
+    const dropdown = document.getElementById('moreMenuDropdown');
+    if (dropdown) dropdown.classList.remove('active');
+    const modal = document.getElementById('suspendModal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeSuspendModal(e) {
+    if (e && e.target !== e.currentTarget) return;
+    const modal = document.getElementById('suspendModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function executeSuspend() {
+    const input = document.getElementById('suspendReasonInput');
+    suspendReason = input ? input.value.trim() : '';
+
+    closeSuspendModal();
+    demoStatus = 'suspended';
+    updateDemoStatus('suspended');
+    updateSignatureDisplay();
+
+    alert('他のメンバーに中断の通知が送信されました（デモ）');
+}
+
+function resumeNegotiation() {
+    suspendReason = '';
+    demoStatus = 'negotiating';
+    currentUserRole = 'member';
+    updateDemoStatus('negotiating');
+    updateSignatureDisplay();
+
+    alert('交渉を再開しました。他のメンバーに通知が送信されました（デモ）');
+}
+
+// ============================================
+// sign.html からの辞退メッセージ受信
+// ============================================
+
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'signer_declined') {
+        const name = event.data.signerName || '署名者';
+        const reason = event.data.reason || '';
+
+        demoStatus = 'negotiating';
+        currentUserRole = 'member';
+        signingData = { mySignature: null, partnerSignature: null, mySignedAt: null, partnerSignedAt: null };
+        updateDemoStatus('negotiating');
+        updateSignatureDisplay();
+
+        const banner = document.getElementById('globalSigningDeclinedBanner');
+        if (banner) {
+            banner.classList.remove('hidden');
+            document.body.classList.add('has-status-banner');
+            const titleEl = document.getElementById('declinedBannerTitle');
+            if (titleEl) titleEl.textContent = `${name}さんが署名を辞退しました`;
+            const reasonEl = document.getElementById('declinedBannerReason');
+            if (reasonEl) reasonEl.textContent = reason ? `理由: ${reason}` : '';
+        }
     }
 });

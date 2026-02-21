@@ -58,6 +58,31 @@
         </div>
     </div>
 
+    <!-- 中断バナー（非表示） -->
+    <div class="global-status-banner suspended hidden" id="globalSuspendedBanner">
+        <div class="global-status-content">
+            <div class="global-status-icon"><span class="material-symbols-outlined">pause_circle</span></div>
+            <div class="global-status-text">
+                <div class="global-status-title">この交渉は中断されています</div>
+                <div class="global-status-desc" id="suspendedBannerReason"></div>
+            </div>
+        </div>
+        <div class="global-status-action">
+            <button class="global-status-cert-btn" onclick="resumeNegotiation()"><span class="material-symbols-outlined icon-sm">play_circle</span> 交渉を再開する</button>
+        </div>
+    </div>
+
+    <!-- 署名辞退バナー（非表示） -->
+    <div class="global-status-banner signing-declined hidden" id="globalSigningDeclinedBanner">
+        <div class="global-status-content">
+            <div class="global-status-icon"><span class="material-symbols-outlined">do_not_disturb</span></div>
+            <div class="global-status-text">
+                <div class="global-status-title" id="declinedBannerTitle">署名が辞退されました</div>
+                <div class="global-status-desc" id="declinedBannerReason"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- 署名者ビュー：署名可能バナー（非表示） -->
     <div class="global-status-banner signer-ready hidden" id="globalSignerReadyBanner">
         <div class="global-status-content">
@@ -124,6 +149,21 @@
             </a>
             <button class="header-btn hubble-link" id="hubbleConnectBtn" onclick="openLinkHubbleModal()" style="display:none;">
                 <span class="material-symbols-outlined icon-sm">add_link</span> Hubble連携
+            </button>
+            <!-- その他メニュー -->
+            <div class="header-more-menu" id="headerMoreMenu">
+                <button class="header-btn icon-only" onclick="toggleMoreMenu(event)" id="headerMoreBtn">
+                    <span class="material-symbols-outlined icon-sm">more_horiz</span>
+                </button>
+                <div class="more-menu-dropdown" id="moreMenuDropdown">
+                    <button class="more-menu-item danger" onclick="openSuspendModal()">
+                        <span class="material-symbols-outlined icon-sm">pause_circle</span> この交渉を中断する
+                    </button>
+                </div>
+            </div>
+            <!-- 再開ボタン（中断時のみ表示） -->
+            <button class="header-btn resume-btn hidden" id="resumeBtn" onclick="resumeNegotiation()">
+                <span class="material-symbols-outlined icon-sm">play_circle</span> 交渉を再開する
             </button>
             <button class="header-btn primary sign-btn" id="signBtn" onclick="handleSignButtonClick()">
                 <span class="material-symbols-outlined icon-sm">draw</span> 署名手続き・設定
@@ -602,8 +642,8 @@
                                 <div class="doc-article">
                                     <div class="article-title">第4条（報酬）</div>
                                     <div class="article-content">
-                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change commented" data-comment-id="1">金48万円</span><span class="comment-indicator" onclick="showCommentThread(1)"><span class="material-symbols-outlined icon-xs">chat</span> 2</span>（消費税別）を支払うものとする。<br>
-                                        2. 報酬の支払いは、<span class="commented" data-comment-id="2">毎月末日締め、翌月末日払い</span><span class="comment-indicator" onclick="showCommentThread(2)"><span class="material-symbols-outlined icon-xs">chat</span> 1</span>とする。<br>
+                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change commented" data-comment-id="1">金48万円</span><span class="comment-indicator" onclick="openCommentFromIndicator('金48万円')"><span class="material-symbols-outlined icon-xs">chat</span> 2</span>（消費税別）を支払うものとする。<br>
+                                        2. 報酬の支払いは、<span class="commented" data-comment-id="2">毎月末日締め、翌月末日払い</span><span class="comment-indicator" onclick="openCommentFromIndicator('毎月末日締め、翌月末日払い')"><span class="material-symbols-outlined icon-xs">chat</span> 1</span>とする。<br>
                                         3. 振込手数料は甲の負担とする。
                                     </div>
                                 </div>
@@ -619,7 +659,7 @@
                                     <div class="article-title">第6条（秘密保持）</div>
                                     <div class="article-content">
                                         1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>
-                                        2. 前項の義務は、<span class="commented" data-comment-id="3">本契約終了後3年間</span><span class="comment-indicator" onclick="showCommentThread(3)"><span class="material-symbols-outlined icon-xs">chat</span> 1</span>存続するものとする。<br>
+                                        2. 前項の義務は、<span class="commented" data-comment-id="3">本契約終了後3年間</span><span class="comment-indicator" onclick="openCommentFromIndicator('本契約終了後3年間')"><span class="material-symbols-outlined icon-xs">chat</span> 1</span>存続するものとする。<br>
                                         3. 次の各号に該当する情報は、秘密情報から除外する。<br>
                                         <div class="article-list">
                                             (1) 開示時点で既に公知であった情報<br>
@@ -781,69 +821,165 @@
             </div>
         </div>
 
-        <!-- 右カラム: 交渉チャット -->
+        <!-- リサイズハンドル -->
+        <div class="resize-handle" id="resizeHandle"></div>
+
+        <!-- 右カラム: サイドバー -->
         <div class="right-column">
-            <!-- コメントスレッドパネル -->
-            <div class="comment-thread-panel" id="commentThreadPanel">
-                <div class="thread-header">
-                    <div class="thread-title"><span class="material-symbols-outlined icon-sm">location_on</span> コメントスレッド</div>
-                    <button class="thread-close" onclick="closeCommentThread()">&times;</button>
-                </div>
-                <div class="thread-reference" id="threadReference"></div>
-                <div class="thread-comments" id="threadComments"></div>
-                <div class="thread-input">
-                    <textarea class="thread-textarea" id="threadTextarea" placeholder="返信を入力..."></textarea>
-                    <button class="thread-send-btn" onclick="sendThreadReply()">送信</button>
-                </div>
+            <!-- サイドバーアイコンタブ -->
+            <div class="sidebar-icons">
+                <button class="sidebar-icon active" data-tab="chat" title="コメント">
+                    <span class="material-symbols-outlined">chat</span>
+                </button>
+                <button class="sidebar-icon" data-tab="ai" title="AIとチャット">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                </button>
             </div>
 
-            <div class="chat-header">
-                <div class="chat-title"><span class="material-symbols-outlined icon-sm">chat</span> メッセージ</div>
-            </div>
-
-            <div class="messages-area" id="messages">
-                <div class="message">
-                    <div class="message-header">
-                        <div class="message-avatar avatar-them">田</div>
-                        <span class="message-sender">田中太郎</span>
-                        <span class="message-time">1月28日 10:20</span>
+            <!-- サイドバーパネル本体 -->
+            <div class="sidebar-panel-main">
+                <!-- パネルヘッダー -->
+                <div class="sidebar-panel-header">
+                    <div class="sidebar-panel-title">
+                        <span class="sidebar-panel-label" id="panelTitleText">コメント</span>
                     </div>
-                    <div class="message-bubble">
-                        基本契約書のドラフトをお送りしました。ご確認お願いします。
-                    </div>
-                </div>
-
-                <div class="message">
-                    <div class="message-header">
-                        <div class="message-avatar avatar-me">佐</div>
-                        <span class="message-sender">あなた</span>
-                        <span class="message-time">1月28日 11:35</span>
-                    </div>
-                    <div class="message-bubble">
-                        確認しました!第3条の契約期間を6ヶ月でお願いできますか?
+                    <div class="sidebar-panel-actions" id="panelActions" style="display:none">
+                        <button class="sidebar-action-btn" title="新しいスレッド">
+                            <span class="material-symbols-outlined">edit_square</span>
+                        </button>
+                        <button class="sidebar-action-btn" title="履歴">
+                            <span class="material-symbols-outlined">history</span>
+                        </button>
+                        <button class="sidebar-action-btn" title="ヘルプ">
+                            <span class="material-symbols-outlined">help_outline</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="message">
-                    <div class="message-header">
-                        <div class="message-avatar avatar-them">田</div>
-                        <span class="message-sender">田中太郎</span>
-                        <span class="message-time">1月28日 14:15</span>
+                <!-- メッセージタブ -->
+                <div class="sidebar-tab-content active" id="tabChat">
+                    <div class="messages-area" id="messages">
+                        <div class="message">
+                            <div class="message-header">
+                                <div class="message-avatar avatar-them">田</div>
+                                <span class="message-sender">田中太郎</span>
+                                <span class="message-time">1月28日 10:20</span>
+                            </div>
+                            <div class="message-bubble">
+                                基本契約書のドラフトをお送りしました。ご確認お願いします。
+                            </div>
+                        </div>
+
+                        <div class="message">
+                            <div class="message-header">
+                                <div class="message-avatar avatar-me">佐</div>
+                                <span class="message-sender">あなた</span>
+                                <span class="message-time">1月28日 11:35</span>
+                            </div>
+                            <div class="message-bubble">
+                                確認しました!第3条の契約期間を6ヶ月でお願いできますか?
+                            </div>
+                        </div>
+
+                        <div class="message">
+                            <div class="message-header">
+                                <div class="message-avatar avatar-them">田</div>
+                                <span class="message-sender">田中太郎</span>
+                                <span class="message-time">1月28日 14:15</span>
+                            </div>
+                            <div class="message-bubble">
+                                承知しました!6ヶ月で問題ありません。
+                            </div>
+                        </div>
                     </div>
-                    <div class="message-bubble">
-                        承知しました!6ヶ月で問題ありません。
+
+                    <div class="input-area">
+                        <!-- 引用ブロック（コメント時に表示） -->
+                        <div class="input-quote-block" id="inputQuoteBlock" style="display:none;">
+                            <div class="input-quote-text" id="inputQuoteText"></div>
+                            <button class="input-quote-close" onclick="clearQuoteBlock()">&times;</button>
+                        </div>
+                        <div class="input-container">
+                            <textarea class="input-field" id="messageInput" placeholder="メッセージを入力..." rows="2"></textarea>
+                            <button class="send-btn" onclick="sendMessage()">
+                                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                                    <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="input-area">
-                <div class="input-container">
-                    <textarea class="input-field" id="messageInput" placeholder="メッセージを入力..." rows="2"></textarea>
-                    <button class="send-btn" onclick="sendMessage()">
-                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                            <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                <!-- AIタブ -->
+                <div class="sidebar-tab-content" id="tabAi">
+                    <div class="ai-chat-area">
+                        <div class="ai-chat-messages" id="aiChatMessages">
+                            <!-- ウェルカム画面 -->
+                            <div class="ai-welcome-screen" id="aiWelcomeScreen">
+                                <p class="ai-welcome-text">今日は何から始めますか？</p>
+                                <div class="ai-welcome-grid">
+                                    <button class="ai-welcome-btn" data-action="review" onclick="handleAiQuickAction('review')">
+                                        <span class="material-symbols-outlined icon-sm">fact_check</span>
+                                        <span>内容をレビュー</span>
+                                    </button>
+                                    <button class="ai-welcome-btn" data-action="risk" onclick="handleAiQuickAction('risk')">
+                                        <span class="material-symbols-outlined icon-sm">warning</span>
+                                        <span>リスクを分析</span>
+                                    </button>
+                                    <button class="ai-welcome-btn" data-action="changes" onclick="handleAiQuickAction('changes')">
+                                        <span class="material-symbols-outlined icon-sm">compare_arrows</span>
+                                        <span>変更点を確認</span>
+                                    </button>
+                                    <button class="ai-welcome-btn" data-action="explain" onclick="handleAiQuickAction('explain')">
+                                        <span class="material-symbols-outlined icon-sm">school</span>
+                                        <span>詳しく解説</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ai-chat-input-wrapper">
+                            <div class="ai-chat-input-container">
+                                <textarea class="ai-chat-input" id="aiChatInput" placeholder="メッセージを入力..." rows="3"></textarea>
+                                <div class="ai-input-toolbar">
+                                    <div class="ai-input-toolbar-left">
+                                        <button class="ai-input-tool-btn" id="aiSlashBtn" title="コマンド" onclick="toggleAiCommandPalette()">
+                                            <span style="font-size:16px;font-weight:600;">/</span>
+                                        </button>
+                                    </div>
+                                    <button class="ai-send-btn" id="aiSendBtn" onclick="sendAiMessage()">
+                                        <span class="material-symbols-outlined" style="font-size:16px;">send</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- コマンドパレット -->
+                            <div class="ai-command-palette" id="aiCommandPalette" style="display:none;">
+                                <div class="ai-command-palette-item" onclick="handleAiQuickAction('review')">
+                                    <span class="material-symbols-outlined icon-sm">fact_check</span>
+                                    <span>/review</span>
+                                    <span class="ai-command-desc">内容をレビュー</span>
+                                </div>
+                                <div class="ai-command-palette-item" onclick="handleAiQuickAction('risk')">
+                                    <span class="material-symbols-outlined icon-sm">warning</span>
+                                    <span>/risk</span>
+                                    <span class="ai-command-desc">リスクを分析</span>
+                                </div>
+                                <div class="ai-command-palette-item" onclick="handleAiQuickAction('changes')">
+                                    <span class="material-symbols-outlined icon-sm">compare_arrows</span>
+                                    <span>/changes</span>
+                                    <span class="ai-command-desc">変更点を確認</span>
+                                </div>
+                                <div class="ai-command-palette-item" onclick="handleAiQuickAction('explain')">
+                                    <span class="material-symbols-outlined icon-sm">school</span>
+                                    <span>/explain</span>
+                                    <span class="ai-command-desc">詳しく解説</span>
+                                </div>
+                            </div>
+                            <div class="ai-disclaimer">
+                                AIは不正確な情報を生成する可能性があります。回答は必ずご確認ください。
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -861,46 +997,6 @@
         </button>
     </div>
 
-    <!-- コメント入力モーダル -->
-    <div class="modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
-        <div class="modal-content comment-modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <div class="modal-title"><span class="material-symbols-outlined">chat</span> コメントを追加</div>
-                <button class="modal-close" onclick="closeCommentModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="comment-selected-text" id="commentSelectedText"></div>
-                <textarea class="comment-textarea" id="commentTextarea" placeholder="コメントを入力..."></textarea>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeCommentModal()">キャンセル</button>
-                <button class="modal-btn primary" onclick="submitComment()">コメントを送信</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI解説モーダル -->
-    <div class="modal-overlay" id="aiExplainModal" onclick="closeAiExplainModal(event)">
-        <div class="modal-content ai-explain-modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <div class="modal-title"><span class="material-symbols-outlined">smart_toy</span> AI解説</div>
-                <button class="modal-close" onclick="closeAiExplainModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="ai-selected-text" id="aiSelectedText"></div>
-                <div class="ai-explanation" id="aiExplanation">
-                    <div class="ai-loading" id="aiLoading">
-                        <div class="loading-spinner"></div>
-                        <span>解説を生成中...</span>
-                    </div>
-                    <div class="ai-result" id="aiResult"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeAiExplainModal()">閉じる</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Wordアップロードモーダル -->
     <div class="modal-overlay" id="uploadModal" onclick="closeUploadModal(event)">
@@ -1543,6 +1639,36 @@
                         この書類をダウンロード (PDF)
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 中断確認モーダル -->
+    <div class="modal-overlay" id="suspendModal" onclick="closeSuspendModal(event)">
+        <div class="modal-content suspend-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title"><span class="material-symbols-outlined icon-sm" style="color: var(--color-danger, #ef4444);">pause_circle</span> この交渉を中断する</div>
+                <button class="modal-close" onclick="closeSuspendModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="suspend-warning">
+                    <span class="material-symbols-outlined icon-sm">info</span>
+                    中断すると、契約書のアップロードやコメントができなくなります。中断はいつでも解除できます。
+                </div>
+                <div class="suspend-reason-section">
+                    <label class="suspend-reason-label">中断の理由（任意）</label>
+                    <textarea class="suspend-reason-input" id="suspendReasonInput" placeholder="例: 先方の社内稟議待ち、予算確定待ちなど" rows="3"></textarea>
+                </div>
+                <div class="suspend-notify-note">
+                    <span class="material-symbols-outlined icon-xs">notifications</span>
+                    他のメンバーに中断の通知が送信されます
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeSuspendModal()">キャンセル</button>
+                <button class="modal-btn danger" onclick="executeSuspend()">
+                    <span class="material-symbols-outlined icon-sm">pause_circle</span> 中断する
+                </button>
             </div>
         </div>
     </div>
