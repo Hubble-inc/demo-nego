@@ -164,6 +164,14 @@
                         <div class="status-banner-meta">最終更新: 1/28 14:15</div>
                     </div>
 
+                    <!-- AI免責バナー -->
+                    <div class="ai-disclaimer-banner">
+                        <div class="ai-disclaimer-icon"><span class="material-symbols-outlined icon-sm">smart_toy</span></div>
+                        <div class="ai-disclaimer-text">
+                            このページの内容はAIが契約書から自動生成した<strong>理解サポート</strong>です。正式な内容は<button class="ai-disclaimer-link" onclick="switchMainTab('contract')">契約書本文</button>が優先されます。
+                        </div>
+                    </div>
+
                     <!-- この契約の要点カード -->
                     <div class="summary-card key-points-card ai-generated-card">
                         <div class="card-header">
@@ -177,9 +185,6 @@
                                 <li>期間は6ヶ月間、月額48万円の報酬</li>
                                 <li>問題なければ自動更新される形式</li>
                             </ul>
-                        </div>
-                        <div class="ai-card-footer">
-                            <span class="ai-footer-note"><span class="material-symbols-outlined icon-xs">lightbulb</span> 契約書から自動生成されています。内容をご確認ください。</span>
                         </div>
                     </div>
 
@@ -507,17 +512,52 @@
 
                         <!-- 右側: 契約書本文 -->
                         <div class="contract-content-inner">
-                            <!-- AI解説カード -->
-                            <div class="ai-explain-card">
-                                <div class="explain-header">
-                                    <span class="explain-icon material-symbols-outlined icon-sm">lightbulb</span>
-                                    <span class="explain-title">第3条をわかりやすく</span>
-                                </div>
-                                <div class="explain-text">
-                                    <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。何もしなければ自動的にもう半年延長されます。
-                                </div>
-                                <div class="explain-alert">
-                                    <span class="material-symbols-outlined icon-sm">warning</span> <strong>注意:</strong> 5/31までに連絡しないと自動更新されます
+                            <!-- AI契約書分析カード（トグル開閉） -->
+                            <div class="ai-explain-card" id="aiExplainCard">
+                                <button class="explain-toggle" id="aiExplainToggle" onclick="toggleAiExplainCard()">
+                                    <div class="explain-toggle-left">
+                                        <span class="explain-icon material-symbols-outlined icon-sm">smart_toy</span>
+                                        <span class="explain-title">この契約書のAI分析</span>
+                                        <span class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</span>
+                                    </div>
+                                    <span class="explain-chevron material-symbols-outlined icon-sm">expand_less</span>
+                                </button>
+
+                                <div class="explain-body" id="aiExplainBody">
+                                    <div class="explain-body-inner">
+                                        <div class="explain-section">
+                                            <div class="explain-section-label"><span class="material-symbols-outlined icon-xs">lightbulb</span> やさしく言うと</div>
+                                            <div class="explain-text">
+                                                ABC社がXYZ社にデジタルマーケティング支援を委託する契約です。月額48万円・6ヶ月間で、解約しなければ自動更新されます。成果物の権利はABC社に帰属し、秘密保持義務は契約終了後3年間続きます。
+                                            </div>
+                                        </div>
+
+                                        <div class="explain-section">
+                                            <div class="explain-section-label"><span class="material-symbols-outlined icon-xs">compare_arrows</span> 一般的な業務委託契約との違い</div>
+                                            <div class="explain-diff-list">
+                                                <div class="explain-diff-item differs">
+                                                    <span class="explain-diff-tag">注目</span>
+                                                    <span class="explain-diff-text">解約予告期間が<strong>2ヶ月前</strong>と一般的な1ヶ月前より長め。更新拒否の判断を早めに行う必要があります。</span>
+                                                </div>
+                                                <div class="explain-diff-item differs">
+                                                    <span class="explain-diff-tag">注目</span>
+                                                    <span class="explain-diff-text">損害賠償の上限が<strong>報酬総額</strong>に制限。大きな損害が発生した場合でも上限があります。</span>
+                                                </div>
+                                                <div class="explain-diff-item normal">
+                                                    <span class="explain-diff-tag">標準的</span>
+                                                    <span class="explain-diff-text">知的財産権の帰属（委託者へ）、再委託の制限、反社排除条項は一般的な内容です。</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="explain-alert">
+                                            <span class="material-symbols-outlined icon-sm">warning</span> <strong>期日に注意:</strong> 契約を更新しない場合、5/31までに書面で通知が必要です
+                                        </div>
+
+                                        <div class="explain-footer">
+                                            <span class="material-symbols-outlined icon-xs">info</span> AIによる分析です。正確な内容は契約書本文をご確認ください。
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

@@ -8,16 +8,16 @@ let currentUserRole = 'member'; // 'member' (交渉者) | 'signer' (署名者)
 // ============================================
 // マルチ署名者データモデル
 // ============================================
-const SIGNER_COLORS = ['#4361ee', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
+const SIGNER_COLORS = ['#3c78c8', '#c83c3c', '#249a6c', '#e67e22', '#7e57c2', '#1abc9c'];
 
 let signers = [
     { id: 'signer_1', name: '佐藤 一郎', company: '株式会社ABC',
       type: 'self', email: '', method: 'text', allowForward: true,
-      stampPlacement: null, placedStampEl: null, color: '#4361ee',
+      stampPlacement: null, placedStampEl: null, color: '#3c78c8',
       signatureData: null, signedAt: null },
     { id: 'signer_2', name: '田中 太郎', company: '株式会社XYZ',
       type: 'send', email: 'tanaka@xyz.co.jp', method: 'text', allowForward: true,
-      stampPlacement: null, placedStampEl: null, color: '#e74c3c',
+      stampPlacement: null, placedStampEl: null, color: '#c83c3c',
       signatureData: null, signedAt: null }
 ];
 
@@ -753,20 +753,20 @@ function renderSignerCards() {
         <div class="signing-flow-options">
             <button class="signing-flow-card ${signingFlow === 'relay' ? 'active' : ''}" onclick="switchSigningFlow('relay')">
                 <div class="flow-card-visual">
-                    <span class="flow-dot" style="background:#4361ee;"></span>
+                    <span class="flow-dot" style="background:#3c78c8;"></span>
                     <span class="flow-arrow">→</span>
-                    <span class="flow-dot" style="background:#e74c3c;"></span>
+                    <span class="flow-dot" style="background:#c83c3c;"></span>
                     <span class="flow-arrow">→</span>
-                    <span class="flow-dot" style="background:#2ecc71;"></span>
+                    <span class="flow-dot" style="background:#249a6c;"></span>
                 </div>
                 <div class="flow-card-title">順番に署名</div>
                 <div class="flow-card-desc">前の人が署名してから次の人へ</div>
             </button>
             <button class="signing-flow-card ${signingFlow === 'parallel' ? 'active' : ''}" onclick="switchSigningFlow('parallel')">
                 <div class="flow-card-visual">
-                    <span class="flow-dot" style="background:#4361ee;"></span>
-                    <span class="flow-dot" style="background:#e74c3c;"></span>
-                    <span class="flow-dot" style="background:#2ecc71;"></span>
+                    <span class="flow-dot" style="background:#3c78c8;"></span>
+                    <span class="flow-dot" style="background:#c83c3c;"></span>
+                    <span class="flow-dot" style="background:#249a6c;"></span>
                 </div>
                 <div class="flow-card-title">一斉に署名</div>
                 <div class="flow-card-desc">全員に同時に送付</div>
@@ -944,8 +944,8 @@ function renderSignerConfigSections() {
         const typeLabel = signer.type === 'self' ? '自分で署名' : '送付';
         const isPlaced = signer.stampPlacements && signer.stampPlacements[activeSigningDocId] != null;
         const statusHtml = isPlaced
-            ? '<span class="material-symbols-outlined" style="color: #16a34a;">check_circle</span>'
-            : '<span class="material-symbols-outlined" style="color: #d1d5db;">radio_button_unchecked</span>';
+            ? '<span class="material-symbols-outlined" style="color: var(--color-success);">check_circle</span>'
+            : '<span class="material-symbols-outlined" style="color: var(--border-default);">radio_button_unchecked</span>';
 
         const methodActive = (m) => signer.method === m ? 'active' : '';
 
@@ -1166,8 +1166,8 @@ function updateStep3ExecuteBtn() {
         if (statusEl) {
             const currentDocPlaced = signer.stampPlacements && signer.stampPlacements[activeSigningDocId] != null;
             statusEl.innerHTML = currentDocPlaced
-                ? '<span class="material-symbols-outlined" style="color: #16a34a;">check_circle</span>'
-                : '<span class="material-symbols-outlined" style="color: #d1d5db;">radio_button_unchecked</span>';
+                ? '<span class="material-symbols-outlined" style="color: var(--color-success);">check_circle</span>'
+                : '<span class="material-symbols-outlined" style="color: var(--border-default);">radio_button_unchecked</span>';
         }
     });
 
@@ -1299,7 +1299,7 @@ function showSigningSentDialog(pendingSigners) {
 // ============================
 
 function getStampPreviewHtmlForSigner(signer) {
-    const color = signer.color || '#4361ee';
+    const color = signer.color || '#3c78c8';
     switch (signer.method) {
         case 'text':
             return `<span class="seal-circle" style="font-size: 11px; border-color: ${color}; color: ${color};">署名</span>`;
@@ -1540,11 +1540,11 @@ function openSigningCeremony() {
     signers = [
         { id: 'signer_1', name: '佐藤 一郎', company: '株式会社ABC',
           type: 'self', email: '', method: 'text', allowForward: true,
-          stampPlacements: {}, placedStampEls: {}, color: '#4361ee',
+          stampPlacements: {}, placedStampEls: {}, color: '#3c78c8',
           signatureData: null, signedAt: null },
         { id: 'signer_2', name: '田中 太郎', company: '株式会社XYZ',
           type: 'send', email: 'tanaka@xyz.co.jp', method: 'text', allowForward: true,
-          stampPlacements: {}, placedStampEls: {}, color: '#e74c3c',
+          stampPlacements: {}, placedStampEls: {}, color: '#c83c3c',
           signatureData: null, signedAt: null }
     ];
     nextSignerId = 3;
@@ -2177,7 +2177,7 @@ function renderConcludedInfoPanel(docId) {
 
         html += `<div class="concluded-signer-card">
             <div class="concluded-signer-header">
-                <span style="color: #4361ee;">\u25CF</span> \u3010\u7532\u3011\u682A\u5F0F\u4F1A\u793EABC
+                <span style="color: var(--color-primary);">\u25CF</span> \u3010\u7532\u3011\u682A\u5F0F\u4F1A\u793EABC
             </div>
             <div class="concluded-signer-row"><span>\u7F72\u540D\u8005</span><span>\u4F50\u85E4 \u4E00\u90CE</span></div>
             <div class="concluded-signer-row"><span>\u7F72\u540D\u65E5\u6642</span><span>${escapeHtml(myDate)}</span></div>
@@ -2186,7 +2186,7 @@ function renderConcludedInfoPanel(docId) {
 
         html += `<div class="concluded-signer-card">
             <div class="concluded-signer-header">
-                <span style="color: #e74c3c;">\u25CF</span> \u3010\u4E59\u3011\u682A\u5F0F\u4F1A\u793EXYZ
+                <span style="color: var(--color-attention);">\u25CF</span> \u3010\u4E59\u3011\u682A\u5F0F\u4F1A\u793EXYZ
             </div>
             <div class="concluded-signer-row"><span>\u7F72\u540D\u8005</span><span>\u7530\u4E2D \u592A\u90CE</span></div>
             <div class="concluded-signer-row"><span>\u7F72\u540D\u65E5\u6642</span><span>${escapeHtml(partnerDate)}</span></div>
@@ -2402,6 +2402,10 @@ function closeAiExplainModal(event) {
     }
 }
 
+function toggleAiExplainCard() {
+    document.getElementById('aiExplainCard').classList.toggle('collapsed');
+}
+
 // コメント機能
 function openCommentInput() {
     const popup = document.getElementById('selectionPopup');
@@ -2436,7 +2440,7 @@ function submitComment() {
                 <span class="message-time">今</span>
             </div>
             <div class="message-bubble">
-                <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px;"><span class="material-symbols-outlined icon-xs">location_on</span> 「${escapeHtml(selectedText)}」へのコメント:</div>
+                <div style="font-size: 12px; color: var(--text-assist); margin-bottom: 8px;"><span class="material-symbols-outlined icon-xs">location_on</span> 「${escapeHtml(selectedText)}」へのコメント:</div>
                 ${escapeHtml(text)}
             </div>
         `;
