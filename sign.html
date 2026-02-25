@@ -1123,6 +1123,10 @@
                                 <span class="material-symbols-outlined" style="font-size:18px;">forward_to_inbox</span>
                                 この署名を別の方に転送する
                             </button>
+                            <div class="sign-forward-warning" id="signForwardWarning" style="display:none; font-size: 12px; color: var(--text-assist, #888); text-align: center; padding: 4px 16px; line-height: 1.5;">
+                                <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">info</span>
+                                転送すると、あなたの署名権限は転送先に移ります。元に戻すには依頼者への連絡が必要です。
+                            </div>
                             <button class="sign-decline-link" onclick="openDeclineModal()">
                                 <span class="material-symbols-outlined" style="font-size:18px;">do_not_disturb</span>
                                 署名を辞退する
@@ -1235,10 +1239,11 @@
         const inputEl = document.getElementById('signInput_' + actualMethod);
         if (inputEl) inputEl.style.display = 'block';
 
-        // 転送リンク表示
         if (allowForward) {
             const fwdLink = document.getElementById('signForwardLink');
             if (fwdLink) fwdLink.style.display = 'inline-flex';
+            const fwdWarn = document.getElementById('signForwardWarning');
+            if (fwdWarn) fwdWarn.style.display = 'block';
         }
     });
 

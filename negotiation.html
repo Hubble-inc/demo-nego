@@ -40,6 +40,7 @@
         <div class="global-status-action">
             <button class="global-status-download-btn" onclick="openConcludedViewer()"><span class="material-symbols-outlined icon-sm">description</span> 締結済み契約書を確認</button>
             <button class="global-status-cert-btn" onclick="showSigningCertificate()"><span class="material-symbols-outlined icon-sm">verified_user</span> 署名証明書</button>
+            <button class="global-status-cert-btn" onclick="exportNegotiationRecord()"><span class="material-symbols-outlined icon-sm">download</span> 記録をダウンロード</button>
         </div>
     </div>
 
@@ -55,6 +56,7 @@
         </div>
         <div class="global-status-action">
             <button class="global-status-cert-btn" onclick="openSignPage()" style="cursor: pointer;"><span class="material-symbols-outlined icon-sm">open_in_new</span> 署名者画面をプレビュー</button>
+            <button class="global-status-revoke-btn" onclick="revokeSigningRequest()" style="cursor: pointer; background: none; border: none; color: var(--color-attention); font-size: 13px; font-family: var(--font-family); text-decoration: underline; padding: 4px 8px; margin-left: 8px;">署名依頼を取り消す</button>
         </div>
     </div>
 
@@ -156,6 +158,13 @@
                     <span class="material-symbols-outlined icon-sm">more_horiz</span>
                 </button>
                 <div class="more-menu-dropdown" id="moreMenuDropdown">
+                    <button class="more-menu-item" onclick="showOperationHistory()">
+                        <span class="material-symbols-outlined icon-sm">history</span> 操作履歴
+                    </button>
+                    <button class="more-menu-item" onclick="exportNegotiationRecord()">
+                        <span class="material-symbols-outlined icon-sm">download</span> 交渉記録をエクスポート
+                    </button>
+                    <div style="height: 1px; background: var(--border-default); margin: 4px 0;"></div>
                     <button class="more-menu-item danger" onclick="openSuspendModal()">
                         <span class="material-symbols-outlined icon-sm">pause_circle</span> この交渉を中断する
                     </button>
@@ -859,6 +868,16 @@
                 <!-- メッセージタブ -->
                 <div class="sidebar-tab-content active" id="tabChat">
                     <div class="messages-area" id="messages">
+                        <div class="chat-event">
+                            <span class="chat-event-text">佐藤一郎さんが田中太郎さんを招待しました</span>
+                            <span class="chat-event-time">1月27日 16:00</span>
+                        </div>
+
+                        <div class="chat-event">
+                            <span class="chat-event-text">田中太郎さんが交渉に参加しました</span>
+                            <span class="chat-event-time">1月28日 9:50</span>
+                        </div>
+
                         <div class="message">
                             <div class="message-header">
                                 <div class="message-avatar avatar-them">田</div>
@@ -890,6 +909,11 @@
                             <div class="message-bubble">
                                 承知しました!6ヶ月で問題ありません。
                             </div>
+                        </div>
+
+                        <div class="chat-event">
+                            <span class="chat-event-text">田中太郎さんが新しいバージョン（Ver.2）をアップロードしました</span>
+                            <span class="chat-event-time">1月30日 15:00</span>
                         </div>
                     </div>
 
@@ -1678,9 +1702,22 @@
 
     <script src="script.js"></script>
     <script>
-        // 重要マークトグル
         function toggleImportant(el) {
             el.classList.toggle('checked');
+        }
+
+        function revokeSigningRequest() {
+            if (confirm('署名依頼を取り消しますか？\n取り消すと、すべての署名者のリンクが無効になります。')) {
+                alert('署名依頼を取り消しました。署名者にメールで通知されます。');
+            }
+        }
+
+        function exportNegotiationRecord() {
+            alert('交渉記録のエクスポートを準備中です。完了するとダウンロードが始まります。');
+        }
+
+        function showOperationHistory() {
+            alert('操作履歴はまもなく実装予定です。');
         }
     </script>
 </body>

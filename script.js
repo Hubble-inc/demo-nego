@@ -2827,15 +2827,13 @@ function closeInviteLanding() {
 }
 
 function signInWithGoogle() {
-    // デモ: サインイン成功をシミュレート
-    alert('Googleアカウントでサインインしました！\n\n交渉画面に移動します...');
-    location.href = 'negotiation.html';
+    alert('Googleアカウントでサインインしました！\n\nプロフィール設定画面に移動します...');
+    location.href = 'invite-setup.html';
 }
 
 function signInWithMicrosoft() {
-    // デモ: サインイン成功をシミュレート
-    alert('Microsoftアカウントでサインインしました！\n\n交渉画面に移動します...');
-    location.href = 'negotiation.html';
+    alert('Microsoftアカウントでサインインしました！\n\nプロフィール設定画面に移動します...');
+    location.href = 'invite-setup.html';
 }
 
 // ============================================
