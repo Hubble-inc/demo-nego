@@ -184,182 +184,28 @@
     <div class="main-wrapper">
         <!-- 左カラム -->
         <div class="left-column">
-            <!-- メインタブ -->
-            <div class="main-tabs">
-                <button class="main-tab active" onclick="switchMainTab('overview')">
-                    <span class="material-symbols-outlined icon-sm">dashboard</span>
-                    <span>概要</span>
-                </button>
-                <button class="main-tab" onclick="switchMainTab('contract')">
-                    <span class="material-symbols-outlined icon-sm">description</span>
-                    <span>契約書</span>
-                </button>
-                <button class="main-tab" onclick="switchMainTab('management')">
-                    <span class="material-symbols-outlined icon-sm">attach_file</span>
-                    <span>関連書類</span>
-                </button>
-            </div>
-
-            <!-- 概要タブ -->
-            <div class="tab-content active" id="overview">
-                <div class="overview-container">
-                    <!-- ステータスバナー -->
-                    <div class="overview-status-banner negotiating" id="overviewStatusBanner">
-                        <div class="status-banner-icon"><span class="material-symbols-outlined">sync</span></div>
-                        <div class="status-banner-content">
-                            <div class="status-banner-title">契約書の概要（Ver.8 時点）</div>
-                            <div class="status-banner-desc">この概要は契約書の更新に応じて自動更新されます</div>
-                        </div>
-                        <div class="status-banner-meta">最終更新: 1/28 14:15</div>
-                    </div>
-
-                    <!-- AI免責バナー -->
-                    <div class="ai-disclaimer-banner">
-                        <div class="ai-disclaimer-icon"><span class="material-symbols-outlined icon-sm">smart_toy</span></div>
-                        <div class="ai-disclaimer-text">
-                            このページの内容はAIが契約書から自動生成した<strong>理解サポート</strong>です。正式な内容は<button class="ai-disclaimer-link" onclick="switchMainTab('contract')">契約書本文</button>が優先されます。
-                        </div>
-                    </div>
-
-                    <!-- この契約の要点カード -->
-                    <div class="summary-card key-points-card ai-generated-card">
-                        <div class="card-header">
-                            <div class="card-icon"><span class="material-symbols-outlined icon-filled">adjust</span></div>
-                            <div class="card-title">この契約の要点</div>
-                            <div class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</div>
-                        </div>
-                        <div class="key-points-content">
-                            <ul class="key-points-list">
-                                <li>ABC社がXYZ社にマーケティング支援を提供する契約です</li>
-                                <li>期間は6ヶ月間、月額48万円の報酬</li>
-                                <li>問題なければ自動更新される形式</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 人・モノ・金の流れ図 -->
-                    <div class="summary-card ai-generated-card">
-                        <div class="card-header">
-                            <div class="card-icon"><span class="material-symbols-outlined icon-filled">trending_up</span></div>
-                            <div class="card-title">人・モノ・金の流れ</div>
-                            <div class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</div>
-                        </div>
-                        <div class="flow-section">
-                            <div class="flow-diagram">
-                                <div class="flow-node">
-                                    <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
-                                </div>
-                                <div class="flow-arrow-container">
-                                    <div class="flow-arrow-line"></div>
-                                    <div class="flow-arrow-label">サービス提供</div>
-                                    <div class="flow-arrow-head"><span class="material-symbols-outlined icon-sm">arrow_forward</span></div>
-                                </div>
-                                <div class="flow-node">
-                                    <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
-                                </div>
-                            </div>
-                            <div class="flow-diagram">
-                                <div class="flow-node">
-                                    <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
-                                </div>
-                                <div class="flow-arrow-container">
-                                    <div class="flow-arrow-line reverse"></div>
-                                    <div class="flow-arrow-label money">月48万円</div>
-                                    <div class="flow-arrow-head"><span class="material-symbols-outlined icon-sm">arrow_forward</span></div>
-                                </div>
-                                <div class="flow-node">
-                                    <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- タイムラインカード -->
-                    <div class="summary-card ai-generated-card">
-                        <div class="card-header">
-                            <div class="card-icon"><span class="material-symbols-outlined">calendar_month</span></div>
-                            <div class="card-title">これからのタイムライン</div>
-                            <div class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</div>
-                        </div>
-                        <div class="timeline">
-                            <!-- 契約開始 -->
-                            <div class="timeline-item success">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-date">2026年2月1日</div>
-                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">rocket_launch</span> 契約開始</div>
-                                </div>
-                                <div class="timeline-badge completed">完了</div>
-                            </div>
-                            <!-- 2月請求 -->
-                            <div class="timeline-item payment upcoming">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-date">2026年2月28日</div>
-                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">payments</span> 請求書発行（2月分）</div>
-                                    <div class="timeline-amount">¥480,000（税別）</div>
-                                </div>
-                                <div class="timeline-badge upcoming">今月</div>
-                            </div>
-                            <!-- 2月分支払い -->
-                            <div class="timeline-item payment">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-date">2026年3月31日</div>
-                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">credit_card</span> 支払期日（2月分）</div>
-                                </div>
-                            </div>
-                            <!-- 3月請求 -->
-                            <div class="timeline-item payment recurring">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-date">2026年3月31日</div>
-                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">payments</span> 請求書発行（3月分）</div>
-                                    <div class="timeline-amount">¥480,000（税別）</div>
-                                </div>
-                                <div class="timeline-badge recurring">毎月</div>
-                            </div>
-                            <!-- 更新判断期限 -->
-                            <div class="timeline-item warning">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-date">2026年5月31日</div>
-                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">warning</span> 契約更新判断期限</div>
-                                    <div class="timeline-alert">この日までに連絡しないと自動更新</div>
-                                </div>
-                                <div class="timeline-badge warning">重要</div>
-                            </div>
-                            <!-- 契約満了 -->
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-date">2026年7月31日</div>
-                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">flag</span> 契約満了</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-note">
-                            <span><span class="material-symbols-outlined icon-xs">lightbulb</span> 請求・支払いは契約条件に基づいて自動計算されています</span>
-                        </div>
-                    </div>
+            <!-- ドキュメントタブ（統合） -->
+            <div class="doc-tabs-bar">
+                <div class="doc-tabs-left">
+                    <button class="doc-tab active" onclick="switchDocTab('basic', this)">
+                        <span class="material-symbols-outlined icon-sm">description</span> 基本契約書
+                    </button>
+                    <button class="doc-tab" onclick="switchDocTab('individual-a', this)">
+                        <span class="material-symbols-outlined icon-sm">article</span> 個別契約(案件A)
+                    </button>
+                    <button class="doc-tab-add" onclick="addNewContract()">+</button>
+                </div>
+                <div class="doc-tabs-divider"></div>
+                <div class="doc-tabs-right">
+                    <button class="doc-tab" onclick="switchDocTab('management', this)">
+                        <span class="material-symbols-outlined icon-sm">attach_file</span> 関連書類
+                    </button>
                 </div>
             </div>
 
-            <!-- 契約書タブ -->
-            <div class="tab-content" id="contract">
+            <!-- 契約書ビュー -->
+            <div class="tab-content active" id="contract">
                 <div class="contract-container">
-                    <!-- 契約書サブタブ -->
-                    <div class="contract-subtabs">
-                        <button class="contract-subtab active" onclick="switchContractSubtab('basic')">
-                            <span class="material-symbols-outlined icon-sm">description</span> 基本契約書
-                        </button>
-                        <button class="contract-subtab" onclick="switchContractSubtab('individual-a')">
-                            <span class="material-symbols-outlined icon-sm">article</span> 個別契約(案件A)
-                        </button>
-                        <button class="add-contract-subtab" onclick="addNewContract()">
-                            + 新規追加
-                        </button>
-                    </div>
 
                     <!-- アクションバー -->
                     <div class="contract-status-bar">
@@ -596,6 +442,36 @@
                                                     <span class="explain-diff-tag">標準的</span>
                                                     <span class="explain-diff-text">知的財産権の帰属（委託者へ）、再委託の制限、反社排除条項は一般的な内容です。</span>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="explain-section">
+                                            <div class="explain-section-label"><span class="material-symbols-outlined icon-xs">trending_up</span> 人・モノ・金の流れ</div>
+                                            <div class="explain-mermaid">
+                                                <div class="mermaid-node mermaid-you">ABC社<span class="mermaid-sub">あなたの会社</span></div>
+                                                <div class="mermaid-edges">
+                                                    <div class="mermaid-edge">
+                                                        <div class="mermaid-edge-line"></div>
+                                                        <div class="mermaid-edge-label">サービス提供</div>
+                                                        <div class="mermaid-edge-arrow">▶</div>
+                                                    </div>
+                                                    <div class="mermaid-edge reverse">
+                                                        <div class="mermaid-edge-arrow flip">▶</div>
+                                                        <div class="mermaid-edge-label money">月額 48万円</div>
+                                                        <div class="mermaid-edge-line"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="mermaid-node mermaid-partner">XYZ社<span class="mermaid-sub">田中様</span></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="explain-section">
+                                            <div class="explain-section-label"><span class="material-symbols-outlined icon-xs">calendar_month</span> タイムライン</div>
+                                            <div class="explain-timeline">
+                                                <div class="explain-tl-item"><span class="explain-tl-date">2026/2/1</span><span>契約開始</span></div>
+                                                <div class="explain-tl-item"><span class="explain-tl-date">2026/2/28</span><span>請求書発行（2月分）¥480,000</span></div>
+                                                <div class="explain-tl-item warn"><span class="explain-tl-date">2026/5/31</span><span>更新判断期限 — この日までに連絡しないと自動更新</span></div>
+                                                <div class="explain-tl-item"><span class="explain-tl-date">2026/7/31</span><span>契約満了</span></div>
                                             </div>
                                         </div>
 
@@ -1231,7 +1107,7 @@
                 <div class="stepper-line"></div>
                 <div class="stepper-item" data-step="3">
                     <div class="stepper-circle">3</div>
-                    <div class="stepper-label">署名設定</div>
+                    <div class="stepper-label">署名位置</div>
                 </div>
             </div>
             <div class="signing-modal-header-right"></div>
@@ -1483,7 +1359,7 @@
                     <div class="signing-step-footer">
                         <button class="signing-btn secondary" onclick="showSigningStep(1)">戻る</button>
                         <button class="signing-btn primary" id="step2NextBtn" onclick="showSigningStep(3)">
-                            次へ：署名設定 <span class="material-symbols-outlined icon-sm">arrow_forward</span>
+                            次へ：署名位置 <span class="material-symbols-outlined icon-sm">arrow_forward</span>
                         </button>
                     </div>
                 </div>
@@ -1491,8 +1367,8 @@
                 <!-- Step 3: 各署名者の署名方法と位置を設定 -->
                 <div class="signing-step-content" id="signingStep3">
                     <div class="signing-step-body">
-                        <div class="signing-step-title">各署名者の署名方法と位置を設定</div>
-                        <div class="signing-setup-desc">左側のタブで書類を切り替え、各書類にスタンプをドラッグ&ドロップしてください。</div>
+                        <div class="signing-step-title">署名位置の設定</div>
+                        <div class="signing-setup-desc">左側のタブで書類を切り替え、各書類にスタンプをドラッグ&ドロップしてください。<br><span style="color: var(--text-assist); font-size: 12px;">※ 印影の配置は任意です。設定しなくても署名手続きは完了できます。</span></div>
 
                         <!-- 現在の書類インジケータ -->
                         <div class="signing-active-doc-indicator" id="signingActiveDocIndicator" style="display:none;"></div>
@@ -1705,6 +1581,24 @@
         function toggleImportant(el) {
             el.classList.toggle('checked');
         }
+
+        function switchDocTab(tabId, btn) {
+            document.querySelectorAll('.doc-tab').forEach(function(t) { t.classList.remove('active'); });
+            btn.classList.add('active');
+
+            var contractEl = document.getElementById('contract');
+            var managementEl = document.getElementById('management');
+
+            if (tabId === 'management') {
+                contractEl.classList.remove('active');
+                managementEl.classList.add('active');
+            } else {
+                managementEl.classList.remove('active');
+                contractEl.classList.add('active');
+                switchContractSubtab(tabId);
+            }
+        }
+
 
         function revokeSigningRequest() {
             if (confirm('署名依頼を取り消しますか？\n取り消すと、すべての署名者のリンクが無効になります。')) {
