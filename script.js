@@ -486,129 +486,8 @@ function switchContractSubtab(subtabId) {
     }
 }
 
-// 新しい契約を追加（Hubble連携モーダルを開く）
 function addNewContract() {
-    openLinkHubbleModal();
-}
-
-// ============================================
-// Hubbleドキュメント連携
-// ============================================
-
-// デモ用フェイクデータ
-const hubbleDemoDocuments = {
-    default: {
-        title: '個別契約書（案件B）',
-        version: 'Ver.3',
-        date: '2026/02/05 14:30',
-        status: 'sharing',
-        statusLabel: '共有中'
-    },
-    nda: {
-        title: '秘密保持契約書（NDA）',
-        version: 'Ver.2',
-        date: '2026/02/03 10:00',
-        status: 'from-partner',
-        statusLabel: '先方から受領'
-    },
-    advisory: {
-        title: 'アドバイザリー契約書',
-        version: 'Ver.5',
-        date: '2026/01/28 09:15',
-        status: 'sharing',
-        statusLabel: '共有中'
-    }
-};
-
-let linkedHubbleDoc = null;
-
-function openLinkHubbleModal() {
-    document.getElementById('hubbleUrlInput').value = '';
-    document.getElementById('linkHubbleStep2').classList.add('hidden');
-    document.getElementById('linkHubbleConfirmBtn').disabled = true;
-    const fetchBtn = document.getElementById('hubbleFetchBtn');
-    fetchBtn.disabled = false;
-    fetchBtn.textContent = '取得';
-    linkedHubbleDoc = null;
-
-    document.getElementById('linkHubbleModal').classList.add('active');
-    setTimeout(() => document.getElementById('hubbleUrlInput').focus(), 100);
-}
-
-function closeLinkHubbleModal(event) {
-    if (!event || event.target === event.currentTarget) {
-        document.getElementById('linkHubbleModal').classList.remove('active');
-        linkedHubbleDoc = null;
-    }
-}
-
-function fetchHubbleDocument() {
-    const url = document.getElementById('hubbleUrlInput').value.trim();
-    if (!url) {
-        alert('URLを入力してください。');
-        return;
-    }
-    if (!url.startsWith('http')) {
-        alert('有効なURLを入力してください。');
-        return;
-    }
-
-    // ローディング表示
-    const fetchBtn = document.getElementById('hubbleFetchBtn');
-    fetchBtn.disabled = true;
-    fetchBtn.innerHTML = '<span class="material-symbols-outlined icon-xs link-hubble-spin">progress_activity</span>';
-
-    setTimeout(() => {
-        // URLに基づいてデモデータを選択
-        let docData;
-        if (url.toLowerCase().includes('nda') || url.toLowerCase().includes('secret')) {
-            docData = hubbleDemoDocuments.nda;
-        } else if (url.toLowerCase().includes('advisory') || url.toLowerCase().includes('consult')) {
-            docData = hubbleDemoDocuments.advisory;
-        } else {
-            docData = hubbleDemoDocuments.default;
-        }
-
-        linkedHubbleDoc = { ...docData, url };
-
-        // プレビューカードに反映
-        document.getElementById('hubblePreviewTitle').textContent = docData.title;
-        document.getElementById('hubblePreviewVersion').textContent = docData.version;
-        document.getElementById('hubblePreviewDate').textContent = docData.date;
-        const statusBadge = document.getElementById('hubblePreviewStatus');
-        statusBadge.className = 'link-hubble-status-badge ' + docData.status;
-        statusBadge.textContent = docData.statusLabel;
-
-        // Step2表示、確定ボタン有効化
-        document.getElementById('linkHubbleStep2').classList.remove('hidden');
-        document.getElementById('linkHubbleConfirmBtn').disabled = false;
-
-        // フェッチボタン復元
-        fetchBtn.disabled = false;
-        fetchBtn.textContent = '取得';
-    }, 800);
-}
-
-function confirmLinkHubble() {
-    if (!linkedHubbleDoc) return;
-
-    const subtabs = document.querySelector('.contract-subtabs');
-    const addBtn = document.querySelector('.add-contract-subtab');
-    const docTitle = linkedHubbleDoc.title;
-    const docVersion = linkedHubbleDoc.version;
-    const docUrl = linkedHubbleDoc.url;
-
-    const newTab = document.createElement('button');
-    newTab.className = 'contract-subtab';
-    newTab.innerHTML = `<span class="material-symbols-outlined icon-xs">description</span> ${docTitle} <span class="material-symbols-outlined hubble-linked-icon" title="Hubble連携 (${docVersion})">link</span>`;
-    newTab.onclick = function() {
-        document.querySelectorAll('.contract-subtab').forEach(t => t.classList.remove('active'));
-        newTab.classList.add('active');
-        alert(`「${docTitle}」（${docVersion}）を表示します。\n\nHubble URL: ${docUrl}`);
-    };
-
-    subtabs.insertBefore(newTab, addBtn);
-    closeLinkHubbleModal();
+    alert('新しい契約書を追加します（デモ）');
 }
 
 // アップロードモーダル
@@ -2937,37 +2816,6 @@ function initDemoStatusBanner() {
     updateDemoStatus(demoStatus);
 }
 
-// デモ用: Hubble連携状態の切り替え
-function toggleDemoHubbleLink() {
-    const toggle = document.getElementById('demoHubbleToggle');
-    const linkBtn = document.getElementById('hubbleLinkBtn');
-    const connectBtn = document.getElementById('hubbleConnectBtn');
-    if (!toggle || !linkBtn || !connectBtn) return;
-
-    const isLinked = !toggle.classList.contains('unlinked') && !toggle.classList.contains('no-hubble');
-    const isUnlinked = toggle.classList.contains('unlinked');
-    const isNoHubble = toggle.classList.contains('no-hubble');
-
-    if (isLinked) {
-        // 連携済み → 未連携（Hubble登録あり）
-        toggle.classList.add('unlinked');
-        toggle.classList.remove('no-hubble');
-        linkBtn.style.display = 'none';
-        connectBtn.style.display = '';
-    } else if (isUnlinked) {
-        // 未連携 → Hubble未登録
-        toggle.classList.remove('unlinked');
-        toggle.classList.add('no-hubble');
-        linkBtn.style.display = 'none';
-        connectBtn.style.display = 'none';
-    } else {
-        // Hubble未登録 → 連携済みに戻す
-        toggle.classList.remove('no-hubble');
-        toggle.classList.remove('unlinked');
-        linkBtn.style.display = '';
-        connectBtn.style.display = 'none';
-    }
-}
 
 function toggleDemoStatus() {
     // ステータスを順番に切り替え
@@ -3330,7 +3178,6 @@ document.addEventListener('DOMContentLoaded', function() {
             closeSigningModal();
             closeSignConfirmModal();
             closeSigningCertificate();
-            closeLinkHubbleModal();
         }
     });
 
